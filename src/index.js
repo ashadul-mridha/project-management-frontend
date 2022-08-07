@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
+import './index.css';
 import AppThemeProvider from './themes/AppThemeProvider';
+import NavbarContextProvider from './utils/providers/NavbarContextProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AppThemeProvider>
-    <App />
+    <NavbarContextProvider>
+      <App />
+    </NavbarContextProvider>
   </AppThemeProvider>
 );

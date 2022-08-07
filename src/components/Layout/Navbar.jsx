@@ -16,11 +16,10 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import HomeIcon from "@mui/icons-material/Home";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext"
 
 
-    const click = () => {
-      console.log("click");
-    };
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -63,6 +62,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  
+  const { showSideBar, setShowSideBar } = useNavbarContextHooks();
+  
+  const useClick = () => {
+    setShowSideBar(!showSideBar);
+  };
     
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -127,7 +132,7 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton onClick={click} size="large" color="inherit">
+        <IconButton size="large" color="inherit">
           <AddIcon />
         </IconButton>
         <p>Add Todo</p>
@@ -176,6 +181,7 @@ export default function PrimarySearchAppBar() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
+            onClick={useClick}
           >
             <MenuIcon />
           </IconButton>
@@ -211,7 +217,7 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" color="inherit" onClick={click}>
+            <IconButton size="large" color="inherit">
               <AddIcon />
             </IconButton>
             <IconButton

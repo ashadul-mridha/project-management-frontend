@@ -1,0 +1,98 @@
+.accordionWrapper{
+    margin-left: 35px;
+    margin-right: 8px;
+    padding: 8px 12px 12px 12px;
+}
+/* accordion title */
+.accorionTitleWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.accordionTitleWrapper__text{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.accorionTitleWrapper__text__Collapslogo{
+    padding-top: 4px;
+}
+.accorionTitleWrapper__text__text > span {
+    color: #222;
+    margin-left: 8px;
+    font-size: 15px;
+}
+.accorianTitleWrapper__addProject{
+    padding: 3px 5px;
+    border-radius: 2px;
+    background-color: #EEEEEE;
+    visibility: hidden;
+}
+.accorionTitleWrapper:hover > .accorianTitleWrapper__addProject{
+    visibility: visible;
+}
+
+
+/* accordion item  */
+
+.allProject{
+    margin-right: -5px;
+}
+.allProject__item> a{
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px 12px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.allProject__item> a > p{
+    margin: 0px;
+}
+.allProject__item > a:hover{
+    background-color: #EEEEEE;
+}
+
+.allProject__item> a > .allProject__item__imgWithTitle{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.allProject__item__imgWithTitle__img{
+    height: 30px;
+    width: 30px;
+}
+.allProject__item__imgWithTitle__img > img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.allProject__item> a > .allProject__item__imgWithTitle > p{
+    font-size: 14px;
+    margin: 0px 0px 0px 8px;
+    color: #000000;
+}
+
+.allProject__item> a > .allProject__item__notification{
+    font-size: 14px;
+    color: #aaaaaa;
+}
+.allProject__item> a >  .allProject__item__notification__delete{
+    display: none;
+}
+.allProject__item:hover > a > .allProject__item__notification{
+    display: none;
+}
+.allProject__item:hover > a >  .allProject__item__notification__delete{
+    display: block;
+}
+
+/* .allProject__item:hover > a > .allProject__item__notification > .allProject__item__notification__delete{
+    visibility: visible;
+} */

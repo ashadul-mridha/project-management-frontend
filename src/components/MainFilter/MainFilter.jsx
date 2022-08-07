@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from "react";
-import { MdOutlineInbox } from "react-icons/md";
 import styles from "./mainFilter.module.css";
 import { navbar } from "../../i18n/NavbarData.js";
 
