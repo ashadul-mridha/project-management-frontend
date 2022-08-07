@@ -1,0 +1,37 @@
+.mainFilters{
+    margin-left: 35px;
+    margin-right: 8px;
+}
+.mainFilters__item> a{
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px 12px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.mainFilters__item> a > p{
+    margin: 0px;
+}
+.mainFilters__item > a:hover{
+    background-color: #EEEEEE;
+}
+
+.mainFilters__item> a > .mainFilters__item__iconWithTitle{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.mainFilters__item> a > .mainFilters__item__iconWithTitle > p{
+    font-size: 14px;
+    margin: 0px 0px 0px 8px;
+    color: #000000;
+}
+
+.mainFilters__item> a > .mainFilters__item__notification{
+    font-size: 14px;
+    color: #aaaaaa;
+}

@@ -1,11 +1,10 @@
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {  pink } from '@mui/material/colors';
 
 const theme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Roboto',
       textTransform: 'none',
       fontSize: 15,
     },
@@ -15,7 +14,7 @@ const theme = createTheme({
       main: "#DB4C3F",
     },
     secondary: {
-      main: pink[500],
+      main: "#FAFAFA",
     },
   },
   components: {
