@@ -15,6 +15,7 @@ const theme = createTheme({
     },
     secondary: {
       main: "#FAFAFA",
+      dark : 'gray',
     },
   },
   components: {
@@ -58,6 +59,17 @@ const theme = createTheme({
       },
       variant: 'text',
     },
+    // MuiTextField : {
+    //   defaultProps: {
+    //     size: 'small',
+    //     sx : {
+    //       mt: 2,
+    //       p: 2
+    //     },
+    //     fullWidth : true,
+    //     color: "primary"
+    //   },
+    // },
     MuiTab: {
       defaultProps: {
         disableRipple: true,

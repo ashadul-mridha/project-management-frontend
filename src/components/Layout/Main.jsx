@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import React from "react";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+import AddProjectModal from "../Modal/AddProjectModal";
 import ViewHeader from "../ViewHeader";
 
 export default function Main() {
@@ -27,6 +28,7 @@ export default function Main() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <ViewHeader />
+              <AddProjectModal />
             </Grid>
           </Grid>
         </Container>

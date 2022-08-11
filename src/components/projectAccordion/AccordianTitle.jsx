@@ -8,7 +8,8 @@ import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./ProjectAccordian.module.css";
 
 const AccordianTitle = () => {
-  const { showProject, setShowProject } = useNavbarContextHooks();
+  const { showProject, setShowProject, setOpenAddProject } =
+    useNavbarContextHooks();
 
   const showProjectClick = () => {
     setShowProject(!showProject);
@@ -32,7 +33,10 @@ const AccordianTitle = () => {
             <span>Projects</span>
           </div>
         </div>
-        <div className={styles.accorianTitleWrapper__addProject}>
+        <div
+          onClick={() => setOpenAddProject(true)}
+          className={styles.accorianTitleWrapper__addProject}
+        >
           <MdAdd color="#222" size={20} />
         </div>
       </div>

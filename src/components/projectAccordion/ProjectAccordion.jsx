@@ -5,7 +5,9 @@ import AllProject from "./AllProject";
 import styles from "./ProjectAccordian.module.css";
 
 const ProjectAccordion = () => {
-  const { showProject } = useNavbarContextHooks();
+  const { showProject } =
+    useNavbarContextHooks();
+
 
   return (
     <>
