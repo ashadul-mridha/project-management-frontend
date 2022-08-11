@@ -61,6 +61,8 @@ const handleClose = () => setOpenAddProject(false);
               sx={{
                 margin: "10px 0px",
                 p: 2,
+                maxHeight: "60vh",
+                overflowY: "scroll",
               }}
             >
               <TextField
