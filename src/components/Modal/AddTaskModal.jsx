@@ -2,6 +2,7 @@ import React from "react";
 
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import Tooltip from "@mui/material/Tooltip";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from './Taskmodal.module.css';
 import { BsAlarm, BsFlag } from "react-icons/bs";
@@ -56,12 +57,26 @@ const AddTaskModal = () => {
               </Button>
             </Box>
             <Box className={styles.leftSide}>
-              <Box className={styles.leftSide__flagIcon}>
-                <BsFlag />
-              </Box>
-              <Box className={styles.leftSide__alarmIcon}>
-                <BsAlarm />
-              </Box>
+              <Tooltip
+                className={styles.tooltipCustomClass}
+                title="set priority"
+                placement="bottom-start"
+                arrow
+              >
+                <Box className={styles.leftSide__flagIcon}>
+                  <BsFlag />
+                </Box>
+              </Tooltip>
+              <Tooltip
+                className={styles.tooltipCustomClass}
+                title="set alarm"
+                placement="bottom-start"
+                arrow
+              >
+                <Box className={styles.leftSide__alarmIcon}>
+                  <BsAlarm />
+                </Box>
+              </Tooltip>
             </Box>
           </Box>
           <Box className={styles.actionBtn}>

@@ -24,6 +24,7 @@ const LeftBar = () => {
                   top: "50px",
                   boxSizing: "border-box",
                   paddingTop: "30px",
+                  zindex: 999,
                 }
               : {
                   backgroundColor: (theme) => theme.palette.secondary.main,
@@ -35,6 +36,7 @@ const LeftBar = () => {
                   top: "50px",
                   boxSizing: "border-box",
                   paddingTop: "30px",
+                  zindex: 999,
                 }
           }
         >
