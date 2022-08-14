@@ -1,6 +1,7 @@
 import React from 'react';
 import ViewHeader from '../ViewHeader';
 import TaskCard from './TaskCard';
+import { Box } from "@mui/material";
 
 const AllTask = () => {
     const headerData ={
@@ -28,13 +29,67 @@ const AllTask = () => {
         desc: "Asolation Chapter",
         time: "12 Sep 2023",
       },
+      {
+        name: "English Exam",
+        desc: "Math Business Letter",
+        time: "30 Sep 2023",
+      },
+      {
+        name: "Digital Signal Exam",
+        desc: "Signal K-map Chapter",
+        time: "1 Sep 2023",
+      },
+      {
+        name: "Chemisty Exam",
+        desc: "Asolation Chapter",
+        time: "12 Sep 2023",
+      },
+      {
+        name: "English Exam",
+        desc: "Math Business Letter",
+        time: "30 Sep 2023",
+      },
+      {
+        name: "Digital Signal Exam",
+        desc: "Signal K-map Chapter",
+        time: "1 Sep 2023",
+      },
+      {
+        name: "Chemisty Exam",
+        desc: "Asolation Chapter",
+        time: "12 Sep 2023",
+      },
+      {
+        name: "English Exam",
+        desc: "Math Business Letter",
+        time: "30 Sep 2023",
+      },
+      {
+        name: "Digital Signal Exam",
+        desc: "Signal K-map Chapter",
+        time: "1 Sep 2023",
+      },
+      {
+        name: "Chemisty Exam",
+        desc: "Asolation Chapter",
+        time: "12 Sep 2023",
+      },
     ];
     return (
       <>
-        <ViewHeader data={headerData} />
-        {tasks.map((task) => (
-          <TaskCard key={task.name} data={task} />
-        ))}
+        <Box
+          sx={{
+            // overflowY: "scroll",
+            // maxHeight: "100vh",
+            // height: "100vh",
+            background: "#ffffff",
+          }}
+        >
+          <ViewHeader data={headerData} />
+          {tasks.map((task) => (
+            <TaskCard key={task.name} data={task} />
+          ))}
+        </Box>
       </>
     );
 };

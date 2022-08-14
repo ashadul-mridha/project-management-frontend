@@ -21,9 +21,9 @@ const LeftBar = () => {
                   overflowY: "auto",
                   position: "fixed",
                   left: 0,
-                  top: "50px",
+                  top: "0px",
                   boxSizing: "border-box",
-                  paddingTop: "30px",
+                  paddingTop: "80px",
                   zindex: 999,
                 }
               : {

@@ -4,15 +4,23 @@ import React from "react";
 import styles from "./ProjectAccordian.module.css";
 import { project } from "../../i18n/ProjectData";
 import { MdDeleteOutline } from "react-icons/md";
+import { NavLink } from "react-router-dom";
 
 
 const AllProject = () => {
+  //active class style
+  let activeStyle = {
+    backgroundColor: "#EEEEEE"
+  };
   return (
     <>
       <ul className={styles.allProject}>
         {project.map((data, index) => (
           <li className={styles.allProject__item} key={index}>
-            <a href="#">
+            <NavLink
+              to={`/project/${data?.name}`}
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+            >
               <div className={styles.allProject__item__imgWithTitle}>
                 <div className={styles.allProject__item__imgWithTitle__img}>
                   <img
@@ -28,7 +36,7 @@ const AllProject = () => {
               <div className={styles.allProject__item__notification__delete}>
                 <MdDeleteOutline color="red" size={23} />
               </div>
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>

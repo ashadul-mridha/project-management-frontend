@@ -16,19 +16,12 @@ export default function Main() {
             ? {
                 marginLeft: "350px",
                 paddingTop: "50px",
-                overflowY: "scroll",
                 width: "100%",
-                maxHeight: "100vh",
-                height: "100vh",
-                background: "#ffffff",
               }
             : {
                 paddingTop: "50px",
                 overflowY: "scroll",
                 width: "100%",
-                maxHeight: "100vh",
-                height: "100vh",
-                background: "#ffffff",
               }
         }
       >
