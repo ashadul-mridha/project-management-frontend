@@ -8,6 +8,8 @@ const NavbarContextProvider = ({ children }) => {
 
   //add project modal
   const [openAddProject, setOpenAddProject] = React.useState(false);
+  //add task modal
+  const [openAddTask, setOpenAddTask] = React.useState(false);
 
   return (
     <NavContext.Provider
@@ -18,6 +20,8 @@ const NavbarContextProvider = ({ children }) => {
         setShowProject,
         openAddProject,
         setOpenAddProject,
+        openAddTask,
+        setOpenAddTask,
       }}
     >
       {children}

@@ -150,6 +150,24 @@ const handleClose = () => setOpenAddProject(false);
                     <ClearIcon />
                   </IconButton>
                 </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "start",
+                    alignitems: "center",
+                    padding: "1px 0px",
+                    marginTop: "10px",
+                  }}
+                >
+                  <TextField
+                    id="outlined-basic"
+                    label="Enter Status"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    color="primary"
+                  />
+                </Box>
                 <Button
                   sx={{ pt: 1, pb: 1, mt: 1 }}
                   variant="contained"

@@ -1,0 +1,58 @@
+.name > input {
+    width: 100%;
+    border: none;
+    padding: 8px 0px;
+    margin: 2px 0px 4px 0px;
+}
+.name > input[type=text]::placeholder {
+    font-size: 14px;
+    color: #202020;
+    font-weight: 500;
+    opacity: 0.7;
+}
+.name > input[type=text]:focus {
+    outline: none;
+}
+.desc > input {
+    width: 100%;
+    border: none;
+    padding: 5px 0px;
+    margin: 0px 0px 5px 0px;
+}
+.desc > input[type=text]::placeholder {
+    font-size: 13px;
+    color: #000000;
+    font-weight: 400;
+    opacity: 0.6;
+}
+.desc > input[type=text]:focus {
+    outline: none;
+}
+
+
+/* task icon section  */
+.iconBox{
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin: 10px 0px;
+}
+.leftSide{
+    display: flex;
+   align-items: center;
+}
+.leftSide__flagIcon{
+    cursor: pointer;
+}
+.leftSide__alarmIcon{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* action button section  */
+
+.actionBtn{
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px 0px;
+}

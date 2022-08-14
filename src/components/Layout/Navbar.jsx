@@ -63,7 +63,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   
-  const { showSideBar, setShowSideBar } = useNavbarContextHooks();
+  const { showSideBar, setShowSideBar , setOpenAddTask } = useNavbarContextHooks();
   
   const useClick = () => {
     setShowSideBar(!showSideBar);
@@ -132,7 +132,11 @@ export default function PrimarySearchAppBar() {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton size="large" color="inherit">
+        <IconButton
+          onClick={() => setOpenAddTask(true)}
+          size="large"
+          color="inherit"
+        >
           <AddIcon />
         </IconButton>
         <p>Add Todo</p>
@@ -217,7 +221,11 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" color="inherit">
+            <IconButton
+              onClick={() => setOpenAddTask(true)}
+              size="large"
+              color="inherit"
+            >
               <AddIcon />
             </IconButton>
             <IconButton

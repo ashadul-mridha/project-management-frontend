@@ -5,7 +5,8 @@ import {displayflex} from '../../themes/commonStyles.js';
 import LeftBar from './LeftBar';
 import Main from './Main';
 
-const HomeLayout = () => {
+const HomeLayout = ( ) => {
+
     return (
       <>
         <Box>
@@ -14,7 +15,7 @@ const HomeLayout = () => {
         <Box
           sx={{
             ...displayflex,
-            marginTop: '50px',
+            marginTop: "50px",
           }}
         >
           <LeftBar />
