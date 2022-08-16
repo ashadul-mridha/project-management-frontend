@@ -1,0 +1,40 @@
+
+
+.projectDetailsWrapper{
+    height: calc(100vh - 151px);
+    width: 100%;
+    overflow-x: scroll;
+}
+.ProjectCardWrapper{
+    padding: 0px 10px;
+    margin-right: 20px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+}
+.ProjectCardWrapper:hover{
+    border: 1px solid rgb(0 0 0 / 12%);
+    /* border-bottom: none; */
+}
+
+.projectTaskCard{
+    padding: 10px 20px 10px 10px;
+    margin: 3px 0px 5px 0px;
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    border: 1px solid rgb(0 0 0 / 12%);
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #ffffff;
+}
+.projectTaskCard:hover{
+    background-color: #fafafa;
+    border: 1px solid rgba(31,96,194,.4);
+}
+.ProjectCardTaskWrapper{
+    /* height: auto; */
+    max-height: calc(100vh - 270px);
+    overflow-y: scroll;
+}

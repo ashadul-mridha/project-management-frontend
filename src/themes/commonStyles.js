@@ -1,6 +1,6 @@
 export const displayflex = {
     display : 'flex',
     direction: 'row',
-    justifyContent : 'between',
+    justifyContent : 'space-between',
     alignItems : 'center'
 }
