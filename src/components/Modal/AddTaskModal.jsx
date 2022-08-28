@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import Tooltip from "@mui/material/Tooltip";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from './Taskmodal.module.css';
 import { BsAlarm, BsFlag } from "react-icons/bs";
-import Button from '@mui/material/Button'
+import Button from '@mui/material/Button';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+
 
 
 const style = {
@@ -25,6 +32,34 @@ const style = {
 const AddTaskModal = () => {
   const { openAddTask, setOpenAddTask } = useNavbarContextHooks();
 
+  // state of components
+  const [prorityEL, setprorityEL] = React.useState(null);
+  const [project, setProject] = useState(null);
+  const [priority , setPriority] = useState(4);
+
+  // get all project
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(`${process.env.REACT_APP_API_KEY}/project`, {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
+        },
+      });
+      setProject(res.data.data);
+    };
+    fetchData();
+  }, []);
+
+  // close priority
+  const open = Boolean(prorityEL);
+  const handlePriority = (event) => {
+    setprorityEL(event.currentTarget);
+  };
+  const closePriority = () => {
+    setprorityEL(null);
+  };
+
+  // close task model
   const handleClose = () => setOpenAddTask(false);
 
   return (
@@ -40,21 +75,29 @@ const AddTaskModal = () => {
             <input type="text" name="name" id="name" placeholder="Task Name" />
           </Box>
           <Box className={styles.desc}>
-            <input
+            <textarea
               type="text"
               name="desc"
               id="desc"
               placeholder="Description"
-            />
+            ></textarea>
+            {/* <input /> */}
           </Box>
           <Box className={styles.iconBox}>
             <Box className={styles.rightSide}>
-              <Button variant="text" color="primary">
-                Today
-              </Button>
-              <Button variant="outline" color="secondary">
-                Inbox
-              </Button>
+              <Autocomplete
+                id="free-solo-demo"
+                freeSolo
+                options={project?.map((option) => option.name)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="Select Project"
+                    size="small"
+                  />
+                )}
+              />
             </Box>
             <Box className={styles.leftSide}>
               <Tooltip
@@ -63,13 +106,79 @@ const AddTaskModal = () => {
                 placement="bottom-start"
                 arrow
               >
-                <Box className={styles.leftSide__flagIcon}>
-                  <BsFlag />
+                <Box
+                  onClick={handlePriority}
+                  className={styles.leftSide__flagIcon}
+                >
+                  {priority === 1 && <BsFlag color="yellow" />}
+                  {priority === 2 && <BsFlag color="green" />}
+                  {priority === 3 && <BsFlag color="red" />}
+                  {priority === 4 && <BsFlag />}
                 </Box>
               </Tooltip>
+              <Menu
+                anchorEl={prorityEL}
+                id="priority-level"
+                open={open}
+                onClose={closePriority}
+                onClick={closePriority}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem onClick={() => setPriority(1)}>
+                  <ListItemIcon>
+                    <BsFlag color="yellow" />
+                  </ListItemIcon>
+                  Prority 1
+                </MenuItem>
+                <MenuItem onClick={() => setPriority(2)}>
+                  <ListItemIcon>
+                    <BsFlag color="green" />
+                  </ListItemIcon>
+                  Prority 2
+                </MenuItem>
+                <MenuItem onClick={() => setPriority(3)}>
+                  <ListItemIcon>
+                    <BsFlag color="red" />
+                  </ListItemIcon>
+                  Prority 3
+                </MenuItem>
+                <MenuItem onClick={() => setPriority(4)}>
+                  <ListItemIcon>
+                    <BsFlag />
+                  </ListItemIcon>
+                  Prority 4
+                </MenuItem>
+              </Menu>
               <Tooltip
                 className={styles.tooltipCustomClass}
-                title="set alarm"
+                title="Goto Pro"
                 placement="bottom-start"
                 arrow
               >

@@ -36,7 +36,6 @@ const AddProjectModal = () => {
     { id: 0, name: "start", active: true },
     { id: 2, name: "Complete", active: true },
   ]);
-  const [file, setFile] = useState(null);
 
   const handleClose = () => setOpenAddProject(false);
 
@@ -58,10 +57,7 @@ const AddProjectModal = () => {
     setStatus(data);
   }
 
-  //get project file
-  const handleFile = () => {
-    setFile(imageEl.current.files[0]);
-  };
+  
 
   const addStatus = () => {
     // console.log(nameEl.current.value, file , status);
@@ -171,7 +167,6 @@ const AddProjectModal = () => {
                 fullWidth
                 variant="contained"
                 component="label"
-                onClick={handleFile}
               >
                 Upload Image
                 <input hidden accept="image/*" type="file" ref={imageEl} />

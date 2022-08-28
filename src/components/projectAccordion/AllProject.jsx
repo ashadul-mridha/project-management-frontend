@@ -18,19 +18,19 @@ const AllProject = () => {
     backgroundColor: "#EEEEEE"
   };
 
-
+  // get all project
   useEffect( () => {
     const fetchData = async () => {
       const res = await axios.get(`${process.env.REACT_APP_API_KEY}/project`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEsIm5hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwiaW1hZ2UiOiJhc2hhZHVsLTE2NjEzMzMzNDE0MTMuanBnIiwidXNlclJvbGUiOiJhZG1pbiIsImlhdCI6MTY2MTY3MjA0MiwiZXhwIjoxNjYxNjgwNjgyfQ.cI6qwu7Jzos1Bvwvc3BV_5wz-v6abm69MWYtbaKGyjM`,
+          Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
         },
       });
       setData(res.data.data);
-      // console.log(res.data.data);
     }
     fetchData();
-  } , [])
+  } , []);
+  
   return (
     <>
       <ul className={styles.allProject}>

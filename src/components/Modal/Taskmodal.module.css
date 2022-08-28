@@ -18,11 +18,20 @@
 .name > input[type=text]:focus {
     outline: none;
 }
-.desc > input {
+.desc > textarea {
     width: 100%;
     border: none;
     padding: 5px 0px;
     margin: 0px 0px 5px 0px;
+}
+.desc > textarea::placeholder {
+    font-size: 13px;
+    color: #000000;
+    font-weight: 400;
+    opacity: 0.6;
+}
+.desc > textarea:focus {
+    outline: none;
 }
 .desc > input[type=text]::placeholder {
     font-size: 13px;
@@ -41,6 +50,9 @@
    justify-content: space-between;
    align-items: center;
    margin: 10px 0px;
+}
+.rightSide{
+    min-width: 130px;
 }
 .leftSide{
     display: flex;
