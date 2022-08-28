@@ -1,20 +1,19 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
 
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Tooltip from "@mui/material/Tooltip";
-import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import styles from './Taskmodal.module.css';
-import { BsAlarm, BsFlag } from "react-icons/bs";
-import Button from '@mui/material/Button';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-
-
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import { useRef } from "react";
+import { BsAlarm, BsFlag } from "react-icons/bs";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+import styles from "./Taskmodal.module.css";
 
 const style = {
   position: "absolute",
@@ -26,7 +25,7 @@ const style = {
   boxShadow: 50,
   outline: "none",
   borderRadius: "8px",
-  padding: "15px 15px"
+  padding: "15px 15px",
 };
 
 const AddTaskModal = () => {
@@ -35,7 +34,10 @@ const AddTaskModal = () => {
   // state of components
   const [prorityEL, setprorityEL] = React.useState(null);
   const [project, setProject] = useState(null);
-  const [priority , setPriority] = useState(4);
+  const nameEL = useRef();
+  const descEL = useRef();
+  const [projectEL, setProjectEL] = useState();
+  const [priority, setPriority] = useState(4);
 
   // get all project
   useEffect(() => {
@@ -62,6 +64,16 @@ const AddTaskModal = () => {
   // close task model
   const handleClose = () => setOpenAddTask(false);
 
+  // add task click
+  const addTask = () => {
+    console.log(
+      nameEL.current.value,
+      descEL.current.value,
+      projectEL,
+      priority
+    );
+  };
+
   return (
     <>
       <Modal
@@ -72,13 +84,20 @@ const AddTaskModal = () => {
       >
         <Box sx={style}>
           <Box className={styles.name}>
-            <input type="text" name="name" id="name" placeholder="Task Name" />
+            <input
+              ref={nameEL}
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Task Name"
+            />
           </Box>
           <Box className={styles.desc}>
             <textarea
               type="text"
               name="desc"
               id="desc"
+              ref={descEL}
               placeholder="Description"
             ></textarea>
             {/* <input /> */}
@@ -88,7 +107,8 @@ const AddTaskModal = () => {
               <Autocomplete
                 id="free-solo-demo"
                 freeSolo
-                options={project?.map((option) => option.name)}
+                options={project}
+                getOptionLabel={(options) => options.name}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -97,6 +117,9 @@ const AddTaskModal = () => {
                     size="small"
                   />
                 )}
+                onChange={(event, newValue) => {
+                  setProjectEL(newValue.id);
+                }}
               />
             </Box>
             <Box className={styles.leftSide}>
@@ -193,6 +216,7 @@ const AddTaskModal = () => {
               Cancel
             </Button>
             <Button
+              onClick={addTask}
               sx={{ marginLeft: "10px" }}
               variant="contained"
               color="primary"
