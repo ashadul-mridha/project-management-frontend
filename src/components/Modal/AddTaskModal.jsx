@@ -1,5 +1,7 @@
 import axios from "axios";
+import "../../../src/App.css";
 import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
@@ -17,9 +19,9 @@ import styles from "./Taskmodal.module.css";
 
 const style = {
   position: "absolute",
-  top: "30%",
+  top: "50%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
+  transform: "translate( -50%, -50%)",
   width: 600,
   bgcolor: "#ffffff",
   boxShadow: 50,
@@ -34,8 +36,8 @@ const AddTaskModal = () => {
   // state of components
   const [prorityEL, setprorityEL] = React.useState(null);
   const [project, setProject] = useState(null);
+  const [desc, setDesc] = useState("");
   const nameEL = useRef();
-  const descEL = useRef();
   const [projectEL, setProjectEL] = useState();
   const [priority, setPriority] = useState(4);
 
@@ -69,7 +71,7 @@ const AddTaskModal = () => {
     const statusId = await getStatusId(projectEL);
     const data = {
       name: nameEL.current.value,
-      desc: descEL.current.value,
+      desc,
       projectId: projectEL,
       statusId: statusId,
       remain: "2023-04-21"
@@ -81,6 +83,17 @@ const AddTaskModal = () => {
       alert('Data Added Successfull')
     }
   };
+
+  // react quill modules
+   const modules = {
+     toolbar: [
+       [{ header: [1, 2, 5, 6, false] }],
+       ["bold", "italic", "underline", "strike"],
+       [{ align: [] }],
+       [{ list: "ordered" }, { list: "bullet" }],
+       [{ color: [] }, { background: [] }],
+     ],
+   };
 
   return (
     <>
@@ -101,14 +114,13 @@ const AddTaskModal = () => {
             />
           </Box>
           <Box className={styles.desc}>
-            <textarea
-              type="text"
-              name="desc"
-              id="desc"
-              ref={descEL}
-              placeholder="Description"
-            ></textarea>
-            {/* <input /> */}
+            <ReactQuill
+              placeholder={"Write Description"}
+              theme="snow"
+              modules={modules}
+              value={desc}
+              onChange={setDesc}
+            />
           </Box>
           <Box className={styles.iconBox}>
             <Box className={styles.rightSide}>
