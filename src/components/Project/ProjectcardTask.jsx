@@ -25,7 +25,7 @@ const ProjectcardTask = ({data}) => {
               variant="h6"
               component="div"
             >
-              {data.name}
+              {data?.name}
             </Typography>
 
             <Typography
@@ -33,7 +33,7 @@ const ProjectcardTask = ({data}) => {
               variant="subtitle2"
               component="div"
             >
-              {data.time}
+              {data?.desc}
             </Typography>
           </Box>
         </Box>

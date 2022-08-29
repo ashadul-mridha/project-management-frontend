@@ -37,7 +37,7 @@ const AllProject = () => {
         {data?.map((data, index) => (
           <li className={styles.allProject__item} key={index}>
             <NavLink
-              to={`/project/${data?.name}`}
+              to={`/project/${data?.id}`}
               style={({ isActive }) => (isActive ? activeStyle : undefined)}
             >
               <div className={styles.allProject__item__imgWithTitle}>

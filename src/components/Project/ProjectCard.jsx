@@ -17,9 +17,9 @@ const ProjectCard = ({data}) => {
           flexShrink: 0,
         }}
       >
-        <ProjectStatusHeader header={data?.statusName} />
+        <ProjectStatusHeader header={data?.name} />
         <Box className={styles.ProjectCardTaskWrapper}>
-          {data?.task.map((data, index) => (
+          {data?.tasks.map((data, index) => (
             <ProjectcardTask key={index} data={data} />
           ))}
         </Box>

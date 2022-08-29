@@ -1,97 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ViewHeader from '../ViewHeader';
 import TaskCard from './TaskCard';
 import { Box } from "@mui/material";
+import axios from 'axios';
 
 const AllTask = () => {
-    const headerData ={
-        title: "All Task",
-        date: "14 Aug 2023"
-    }
-    const tasks = [
-      {
-        name: "Math Exam",
-        desc: "Math 3rd Chapter",
-        time: "4 Sep 2023",
-      },
-      {
-        name: "English Exam",
-        desc: "Math Business Letter",
-        time: "30 Sep 2023",
-      },
-      {
-        name: "Digital Signal Exam",
-        desc: "Signal K-map Chapter",
-        time: "1 Sep 2023",
-      },
-      {
-        name: "Chemisty Exam",
-        desc: "Asolation Chapter",
-        time: "12 Sep 2023",
-      },
-      {
-        name: "English Exam",
-        desc: "Math Business Letter",
-        time: "30 Sep 2023",
-      },
-      {
-        name: "Digital Signal Exam",
-        desc: "Signal K-map Chapter",
-        time: "1 Sep 2023",
-      },
-      {
-        name: "Chemisty Exam",
-        desc: "Asolation Chapter",
-        time: "12 Sep 2023",
-      },
-      {
-        name: "English Exam",
-        desc: "Math Business Letter",
-        time: "30 Sep 2023",
-      },
-      {
-        name: "Digital Signal Exam",
-        desc: "Signal K-map Chapter",
-        time: "1 Sep 2023",
-      },
-      {
-        name: "Chemisty Exam",
-        desc: "Asolation Chapter",
-        time: "12 Sep 2023",
-      },
-      {
-        name: "English Exam",
-        desc: "Math Business Letter",
-        time: "30 Sep 2023",
-      },
-      {
-        name: "Digital Signal Exam",
-        desc: "Signal K-map Chapter",
-        time: "1 Sep 2023",
-      },
-      {
-        name: "Chemisty Exam",
-        desc: "Asolation Chapter",
-        time: "12 Sep 2023",
-      },
-    ];
-    return (
-      <>
-        <Box
-          sx={{
-            // overflowY: "scroll",
-            // maxHeight: "100vh",
-            // height: "100vh",
-            background: "#ffffff",
-          }}
-        >
-          <ViewHeader data={headerData} />
-          {tasks.map((task) => (
-            <TaskCard key={task.name} data={task} />
-          ))}
-        </Box>
-      </>
-    );
+  const [tasks, setTasks] = useState();
+
+  // get all project
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(`${process.env.REACT_APP_API_KEY}/task`, {
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
+        },
+      });
+      setTasks(res.data);
+    };
+    fetchData();
+  }, []);
+  const headerData = {
+    title: "All Task",
+    date: "14 Aug 2023",
+  };
+  
+
+  return (
+    <>
+      <Box
+        sx={{
+          // overflowY: "scroll",
+          // maxHeight: "100vh",
+          // height: "100vh",
+          background: "#ffffff",
+        }}
+      >
+        <ViewHeader data={headerData} />
+        {tasks?.data.map((task) => (
+          <TaskCard key={task.id} data={task} />
+        ))}
+      </Box>
+    </>
+  );
 };
 
 export default AllTask;

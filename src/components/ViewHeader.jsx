@@ -25,7 +25,7 @@ const ViewHeader = ({data}) => {
             sx={{ fontSize: "20px", fontWeight: "700" }}
             color="#000"
           >
-            {data.title && data.title}
+            {data.name && data.name}
           </Typography>
           <Typography
             variant="p"
@@ -39,7 +39,7 @@ const ViewHeader = ({data}) => {
             }}
             color="grey"
           >
-            {data.date && data.date}
+            {data.name && data.name}
           </Typography>
         </Box>
       </>
