@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { createContext, useState } from "react";
 
 export const NavContext = createContext();
@@ -11,6 +12,12 @@ const NavbarContextProvider = ({ children }) => {
   //add task modal
   const [openAddTask, setOpenAddTask] = React.useState(false);
 
+  const getStatusId =  async (id) => {
+    const res = await axios.get(`http://localhost:5000/api/project/${id}`);
+    const statusID = res.data.data.projectStatuses[0].id;
+    return statusID;
+  }
+
   return (
     <NavContext.Provider
       value={{
@@ -22,6 +29,7 @@ const NavbarContextProvider = ({ children }) => {
         setOpenAddProject,
         openAddTask,
         setOpenAddTask,
+        getStatusId,
       }}
     >
       {children}

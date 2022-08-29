@@ -29,7 +29,7 @@ const style = {
 };
 
 const AddTaskModal = () => {
-  const { openAddTask, setOpenAddTask } = useNavbarContextHooks();
+  const { openAddTask, setOpenAddTask, getStatusId } = useNavbarContextHooks();
 
   // state of components
   const [prorityEL, setprorityEL] = React.useState(null);
@@ -65,13 +65,21 @@ const AddTaskModal = () => {
   const handleClose = () => setOpenAddTask(false);
 
   // add task click
-  const addTask = () => {
-    console.log(
-      nameEL.current.value,
-      descEL.current.value,
-      projectEL,
-      priority
-    );
+  const addTask = async () => {
+    const statusId = await getStatusId(projectEL);
+    const data = {
+      name: nameEL.current.value,
+      desc: descEL.current.value,
+      projectId: projectEL,
+      statusId: statusId,
+      remain: "2023-04-21"
+    };
+    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/task`, data);
+    console.log(res.data);
+    if(res.data.status){
+      handleClose();
+      alert('Data Added Successfull')
+    }
   };
 
   return (
