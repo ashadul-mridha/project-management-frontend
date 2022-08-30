@@ -7,9 +7,15 @@ import { MdDeleteOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import { useState } from "react";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 
 const AllProject = () => {
+
+  const { getToken, logout } = useAuthHooks();
+  
+  const getTokenStr = getToken();
+  const token = getTokenStr || "klsdfklsd232";
 
   const [data , setData] = useState();
 
@@ -19,17 +25,21 @@ const AllProject = () => {
   };
 
   // get all project
-  useEffect( () => {
+  useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`${process.env.REACT_APP_API_KEY}/project`, {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      setData(res.data.data);
-    }
+      if (res.data.statusCode === 401){
+        logout();
+      } else {
+        setData(res.data.data);
+      }
+    };
     fetchData();
-  } , []);
+  }, [token]);
   
   return (
     <>

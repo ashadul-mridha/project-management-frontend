@@ -16,6 +16,7 @@ import { useRef } from "react";
 import { BsAlarm, BsFlag } from "react-icons/bs";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./Taskmodal.module.css";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 const style = {
   position: "absolute",
@@ -33,6 +34,10 @@ const style = {
 const AddTaskModal = () => {
   const { openAddTask, setOpenAddTask, getStatusId } = useNavbarContextHooks();
 
+  const { getToken } = useAuthHooks();
+  const getTokenStr = getToken();
+  const token = getTokenStr || "klsdfklsd232";
+
   // state of components
   const [prorityEL, setprorityEL] = React.useState(null);
   const [project, setProject] = useState(null);
@@ -46,13 +51,13 @@ const AddTaskModal = () => {
     const fetchData = async () => {
       const res = await axios.get(`${process.env.REACT_APP_API_KEY}/project`, {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setProject(res.data.data);
     };
     fetchData();
-  }, []);
+  }, [token]);
 
   // close priority
   const open = Boolean(prorityEL);

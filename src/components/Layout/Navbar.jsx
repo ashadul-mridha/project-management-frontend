@@ -17,6 +17,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import HomeIcon from "@mui/icons-material/Home";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext"
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 
 
@@ -64,6 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
   
   const { showSideBar, setShowSideBar , setOpenAddTask } = useNavbarContextHooks();
+  const { logout } = useAuthHooks();
   
   const useClick = () => {
     setShowSideBar(!showSideBar);
@@ -109,8 +111,9 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
+      <MenuItem onClick={() => logout()}>Log Out</MenuItem>
     </Menu>
   );
 
@@ -175,6 +178,8 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
     </Menu>
   );
+
+  
 
   return (
     <Box sx={{ flexGrow: 1 }}>

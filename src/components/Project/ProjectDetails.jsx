@@ -2,11 +2,16 @@ import { Box } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import useAuthHooks from "../../utils/hooks/useAuth";
 import ViewHeader from "../ViewHeader";
 import styles from "./project.module.css";
 import ProjectCard from "./ProjectCard";
 
 const ProjectDetails = () => {
+
+  const { getToken } = useAuthHooks();
+  const getTokenStr = getToken();
+  const token = getTokenStr || "klsdfklsd232";
 
   let { id } = useParams();
   const [projectDetailsData , setProjectDetailsData] = useState([]);
@@ -17,7 +22,7 @@ const ProjectDetails = () => {
         `${process.env.REACT_APP_API_KEY}/project/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -25,7 +30,7 @@ const ProjectDetails = () => {
       setProjectDetailsData(res.data.data);
     };
     fetchData();
-  }, [id]);
+  }, [id, token]);
 
   
   return (

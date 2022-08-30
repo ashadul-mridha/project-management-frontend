@@ -3,6 +3,7 @@
 import React from "react";
 import styles from "./mainFilter.module.css";
 import { navbar } from "../../i18n/NavbarData.js";
+import { Link } from "react-router-dom";
 
 const MainFilter = () => {
   return (
@@ -10,7 +11,7 @@ const MainFilter = () => {
       <ul className={styles.mainFilters}>
         {navbar.map((data, index) => (
           <li className={styles.mainFilters__item} key={index}>
-            <a href="#">
+            <Link to="/">
               <div className={styles.mainFilters__item__iconWithTitle}>
                 {data.icon && data.icon}
                 <p>{data?.name}</p>
@@ -18,7 +19,7 @@ const MainFilter = () => {
               <div className={styles.mainFilters__item__notification}>
                 <span>{data?.message}</span>
               </div>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

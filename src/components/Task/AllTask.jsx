@@ -3,22 +3,27 @@ import ViewHeader from '../ViewHeader';
 import TaskCard from './TaskCard';
 import { Box } from "@mui/material";
 import axios from 'axios';
+import useAuthHooks from '../../utils/hooks/useAuth';
 
 const AllTask = () => {
   const [tasks, setTasks] = useState();
+  
+  const { getToken } = useAuthHooks();
+  const getTokenStr = getToken();
+  const token = getTokenStr || "klsdfklsd232";
 
   // get all project
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`${process.env.REACT_APP_API_KEY}/task`, {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_JWT}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setTasks(res.data);
     };
     fetchData();
-  }, []);
+  }, [token]);
   const headerData = {
     title: "All Task",
     date: "14 Aug 2023",
