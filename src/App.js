@@ -1,15 +1,13 @@
-import './App.css';
 import 'react-quill/dist/quill.snow.css';
-import HomeLayout from './components/Layout/HomeLayout';
+import './App.css';
 import AddProjectModal from './components/Modal/AddProjectModal';
 import AddTaskModal from './components/Modal/AddTaskModal';
+import AppRouter from './routes/appRoutes';
 
 function App() {
   return (
     <>
-      <HomeLayout />
-      
-      {/* all model and popup  */}
+      <AppRouter />
       <AddProjectModal />
       <AddTaskModal />
     </>

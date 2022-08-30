@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import React from "react";
-import AppRouter from "../../routes";
+import { Outlet } from "react-router-dom";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 export default function Main() {
@@ -28,7 +28,8 @@ export default function Main() {
         <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <AppRouter />
+              <Outlet />
+              {/* <DashboardRouter /> */}
             </Grid>
           </Grid>
         </Container>

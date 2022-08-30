@@ -5,7 +5,7 @@ import {displayflex} from '../../themes/commonStyles.js';
 import LeftBar from './LeftBar';
 import Main from './Main';
 
-const HomeLayout = ( ) => {
+const HomeLayout = () => {
 
     return (
       <>

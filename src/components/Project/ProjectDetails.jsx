@@ -33,7 +33,7 @@ const ProjectDetails = () => {
       <ViewHeader data={projectDetailsData} />
       <Box className={styles.projectDetailsWrapper}>
         <Box sx={{ display: "flex" }}>
-          {projectDetailsData?.projectStatuses.map((project, index) => (
+          {projectDetailsData?.projectStatuses?.map((project, index) => (
             <ProjectCard key={index} data={project} />
           ))}
         </Box>

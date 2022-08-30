@@ -128,6 +128,7 @@ const AddTaskModal = () => {
                 id="free-solo-demo"
                 freeSolo
                 options={project}
+                // defaultValue={project[1]}
                 getOptionLabel={(options) => options.name}
                 renderInput={(params) => (
                   <TextField

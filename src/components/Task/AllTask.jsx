@@ -27,19 +27,19 @@ const AllTask = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          // overflowY: "scroll",
-          // maxHeight: "100vh",
-          // height: "100vh",
-          background: "#ffffff",
-        }}
-      >
-        <ViewHeader data={headerData} />
-        {tasks?.data.map((task) => (
-          <TaskCard key={task.id} data={task} />
-        ))}
-      </Box>
+        <Box
+          sx={{
+            // overflowY: "scroll",
+            // maxHeight: "100vh",
+            // height: "100vh",
+            background: "#ffffff",
+          }}
+        >
+          <ViewHeader data={headerData} />
+          {tasks?.data.map((task) => (
+            <TaskCard key={task.id} data={task} />
+          ))}
+        </Box>
     </>
   );
 };
