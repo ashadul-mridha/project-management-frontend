@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import ViewHeader from "../ViewHeader";
 import styles from "./project.module.css";
 import ProjectCard from "./ProjectCard";
@@ -10,6 +11,9 @@ import ProjectCard from "./ProjectCard";
 const ProjectDetails = () => {
 
   const { getToken } = useAuthHooks();
+
+  const { callTask } = useNavbarContextHooks();
+
   const getTokenStr = getToken();
   const token = getTokenStr || "klsdfklsd232";
 
@@ -30,7 +34,7 @@ const ProjectDetails = () => {
       setProjectDetailsData(res.data.data);
     };
     fetchData();
-  }, [id, token]);
+  }, [id, token, callTask]);
 
   
   return (

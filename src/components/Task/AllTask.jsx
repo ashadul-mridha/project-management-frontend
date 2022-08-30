@@ -4,11 +4,14 @@ import TaskCard from './TaskCard';
 import { Box } from "@mui/material";
 import axios from 'axios';
 import useAuthHooks from '../../utils/hooks/useAuth';
+import useNavbarContextHooks from '../../utils/hooks/useNavbarContext';
 
 const AllTask = () => {
   const [tasks, setTasks] = useState();
   
   const { getToken } = useAuthHooks();
+  const {callTask} = useNavbarContextHooks();
+  
   const getTokenStr = getToken();
   const token = getTokenStr || "klsdfklsd232";
 
@@ -23,7 +26,8 @@ const AllTask = () => {
       setTasks(res.data);
     };
     fetchData();
-  }, [token]);
+  }, [token, callTask]);
+  
   const headerData = {
     title: "All Task",
     date: "14 Aug 2023",

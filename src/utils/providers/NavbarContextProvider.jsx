@@ -12,6 +12,10 @@ const NavbarContextProvider = ({ children }) => {
   //add task modal
   const [openAddTask, setOpenAddTask] = React.useState(false);
 
+  //api call again
+  const [callProject , setCallProject] = useState(false);
+  const [callTask, setCallTask] = useState(false);
+
   const getStatusId =  async (id) => {
     const res = await axios.get(`http://localhost:5000/api/project/${id}`);
     const statusID = res.data.data.projectStatuses[0].id;
@@ -30,6 +34,10 @@ const NavbarContextProvider = ({ children }) => {
         openAddTask,
         setOpenAddTask,
         getStatusId,
+        callProject,
+        setCallProject,
+        callTask,
+        setCallTask,
       }}
     >
       {children}

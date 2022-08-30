@@ -32,7 +32,7 @@ const style = {
 };
 
 const AddTaskModal = () => {
-  const { openAddTask, setOpenAddTask, getStatusId } = useNavbarContextHooks();
+  const { openAddTask, setOpenAddTask, getStatusId, setCallTask } = useNavbarContextHooks();
 
   const { getToken } = useAuthHooks();
   const getTokenStr = getToken();
@@ -85,7 +85,7 @@ const AddTaskModal = () => {
     console.log(res.data);
     if(res.data.status){
       handleClose();
-      alert('Data Added Successfull')
+      setCallTask( prevState => !prevState);
     }
   };
 

@@ -27,7 +27,8 @@ const style = {
 
 const AddProjectModal = () => {
 
-  const { openAddProject, setOpenAddProject } = useNavbarContextHooks();
+  const { openAddProject, setOpenAddProject, setCallProject } =
+    useNavbarContextHooks();
   // state of project modal
   const nameEl = useRef(null);
   const imageEl = useRef(null);
@@ -94,6 +95,7 @@ const AddProjectModal = () => {
             .then(function (response) {
               //handle success
               if(response.data.status){
+                setCallProject( prevState => !prevState)
                 handleClose();
               }
             })

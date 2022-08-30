@@ -8,12 +8,14 @@ import { NavLink } from "react-router-dom";
 import axios from 'axios';
 import { useState } from "react";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 
 const AllProject = () => {
 
   const { getToken, logout } = useAuthHooks();
-  
+  const {callProject} = useNavbarContextHooks();
+
   const getTokenStr = getToken();
   const token = getTokenStr || "klsdfklsd232";
 
@@ -32,14 +34,14 @@ const AllProject = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (res.data.statusCode === 401){
+      if (res.data.statusCode === 401) {
         logout();
       } else {
         setData(res.data.data);
       }
     };
     fetchData();
-  }, [token]);
+  }, [token, logout, callProject]);
   
   return (
     <>
