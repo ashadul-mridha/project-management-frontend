@@ -7,6 +7,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
@@ -17,6 +18,7 @@ import { BsAlarm, BsFlag } from "react-icons/bs";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./Taskmodal.module.css";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import { Stack } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -44,6 +46,7 @@ const AddTaskModal = () => {
   const [project, setProject] = useState(null);
   const [desc, setDesc] = useState("");
   const nameEL = useRef();
+  const fileEl = useRef();
   const [projectEL, setProjectEL] = useState();
   const [priority, setPriority] = useState(4);
 
@@ -82,11 +85,42 @@ const AddTaskModal = () => {
       statusId: statusId,
       remain: "2023-04-21"
     };
+    // task request
     const res = await axios.post(`${process.env.REACT_APP_API_KEY}/task`, data);
-    console.log(res.data);
-    if(res.data.status){
+    
+    const taskId = res.data.data.id;
+
+    if (res.data.status && fileEl.current.files.length > 0) {
+
+      // apeend form data
+      const formData = new FormData();
+      formData.append("taskId", taskId);
+      const TaskImg = fileEl.current.files;
+      Array.from(TaskImg).forEach((image) => {
+        formData.append("image", image);
+      });
+
+      const taskRes = await axios({
+        method: "post",
+        url: `${process.env.REACT_APP_API_KEY}/task/image`,
+        data: formData,
+        headers: {
+          "Content-Type": `multipart/form-data`,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(taskRes.data);
+
+      if (taskRes.data.status){
+        handleClose();
+        setCallTask((prevState) => !prevState);
+      }else {
+        console.log('image not upload');
+      }
+      
+    } else {
       handleClose();
-      setCallTask( prevState => !prevState);
+      setCallTask((prevState) => !prevState);
     }
   };
 
@@ -237,6 +271,20 @@ const AddTaskModal = () => {
                 </Box>
               </Tooltip>
             </Box>
+          </Box>
+          <Box sx={{ margin : '10px 0px'}}>
+            <Stack direction="row" alignItems="center" sx={{ mt: 2 }}>
+              <Button
+                sx={{ pt: 1, pb: 1 }}
+                fullWidth
+                variant="contained"
+                component="label"
+              >
+                Upload Image
+                <input multiple hidden accept="image/*" type="file" ref={fileEl} />
+                <FileUploadIcon />
+              </Button>
+            </Stack>
           </Box>
           <Box className={styles.actionBtn}>
             <Button onClick={handleClose} variant="contained" color="secondary">

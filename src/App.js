@@ -15,10 +15,11 @@ function App() {
     const isMyTokenExpired = isExpired(token);
 
     useEffect( () => {
-      if (isMyTokenExpired) {
+      if (isMyTokenExpired && token) {
         logout();
-        console.log('logout');
+        console.log('logout', isMyTokenExpired , token);
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     } , [isMyTokenExpired])
 
   return (

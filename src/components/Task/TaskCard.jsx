@@ -53,13 +53,16 @@ const TaskCard = ({data}) => {
                 {data.name}
               </Typography>
 
-              <Typography
-                sx={{ color: "#808080", fontSize: "12px", fontWeight: "400" }}
-                variant="caption"
-                display="block"
-              >
-                {data.desc}
-              </Typography>
+              <div
+                style={{
+                  color: "#808080",
+                  fontSize: "12px",
+                  fontWeight: "400",
+                }}
+                dangerouslySetInnerHTML={{ __html: data.desc }}
+              />
+              {/* {data.desc} */}
+              {/* </Typography> */}
 
               <Typography
                 sx={{ color: "#d1453b", fontSize: "12px", fontWeight: "400" }}
