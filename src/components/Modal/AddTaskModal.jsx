@@ -32,7 +32,8 @@ const style = {
 };
 
 const AddTaskModal = () => {
-  const { openAddTask, setOpenAddTask, getStatusId, setCallTask } = useNavbarContextHooks();
+  const { openAddTask, setOpenAddTask, getStatusId, setCallTask, callProject } =
+    useNavbarContextHooks();
 
   const { getToken } = useAuthHooks();
   const getTokenStr = getToken();
@@ -57,7 +58,7 @@ const AddTaskModal = () => {
       setProject(res.data.data);
     };
     fetchData();
-  }, [token]);
+  }, [token, callProject]);
 
   // close priority
   const open = Boolean(prorityEL);

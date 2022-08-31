@@ -75,7 +75,6 @@ const AddProjectModal = () => {
       },
     })
       .then(function (response) {
-        
         // if project insert successfull
         if (response.data.status) {
           //status insert

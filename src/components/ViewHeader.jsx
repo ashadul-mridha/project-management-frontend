@@ -10,7 +10,7 @@ const ViewHeader = ({data}) => {
             display: "flex",
             justifyContent: "start",
             alignItems: "center",
-            marginBottom : "20px"
+            marginBottom: "20px",
             // position: "sticky",
             // top: 0,
             // backgroundColor: "#ffffff",
@@ -25,7 +25,7 @@ const ViewHeader = ({data}) => {
             sx={{ fontSize: "20px", fontWeight: "700" }}
             color="#000"
           >
-            {data.name && data.name}
+            {data?.name}
           </Typography>
           <Typography
             variant="p"
@@ -39,7 +39,7 @@ const ViewHeader = ({data}) => {
             }}
             color="grey"
           >
-            {data.name && data.name}
+            {data?.name}
           </Typography>
         </Box>
       </>

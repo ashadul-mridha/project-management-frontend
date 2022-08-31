@@ -29,7 +29,7 @@ const AllTask = () => {
   }, [token, callTask]);
   
   const headerData = {
-    title: "All Task",
+    name: "All Task",
     date: "14 Aug 2023",
   };
   
