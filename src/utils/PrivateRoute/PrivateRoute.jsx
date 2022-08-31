@@ -6,7 +6,6 @@ const PrivateRoute = ({ children, redirectTo }) => {
     const { getUser } = useAuthHooks();
 
     const user = getUser(); 
-    console.log(user);
 
     return (
       <>

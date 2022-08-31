@@ -30,7 +30,7 @@ const AuthContextProvider = ({children}) => {
     // remove user From Browser or logout
     const logout = () => {
         localStorage.removeItem('userInfo');
-        window.location.reload();
+        // window.location.reload();
         navigate('/login');
     }
 

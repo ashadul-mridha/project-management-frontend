@@ -30,7 +30,7 @@ const ProjectDetails = () => {
           },
         }
       );
-      console.log(res.data.data);
+      
       setProjectDetailsData(res.data.data);
     };
     fetchData();
