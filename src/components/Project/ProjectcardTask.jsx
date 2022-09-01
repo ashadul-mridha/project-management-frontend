@@ -28,13 +28,7 @@ const ProjectcardTask = ({data}) => {
               {data?.name}
             </Typography>
 
-            <Typography
-              sx={{ color: "#d1453b", fontSize: "12px", fontWeight: "400" }}
-              variant="subtitle2"
-              component="div"
-            >
-              {data?.desc}
-            </Typography>
+            <div style={{ fontSize: '12px'}} dangerouslySetInnerHTML={{ __html: data.desc }}></div>
           </Box>
         </Box>
       </>

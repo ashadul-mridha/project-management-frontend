@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 
 const TaskCard = ({data}) => {
+
      const [anchorEl, setAnchorEl] = React.useState(null);
      const open = Boolean(anchorEl);
      const handleClick = (event) => {
@@ -53,16 +54,15 @@ const TaskCard = ({data}) => {
                 {data.name}
               </Typography>
 
-              <div
-                style={{
+              <Typography
+                sx={{
                   color: "#808080",
                   fontSize: "12px",
                   fontWeight: "400",
                 }}
-                dangerouslySetInnerHTML={{ __html: data.desc }}
-              />
-              {/* {data.desc} */}
-              {/* </Typography> */}
+              >
+                {data.remain.substring(0, 10)}
+              </Typography>
 
               <Typography
                 sx={{ color: "#d1453b", fontSize: "12px", fontWeight: "400" }}
