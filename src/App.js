@@ -6,10 +6,11 @@ import AppRouter from './routes/appRoutes';
 import { isExpired } from "react-jwt";
 import useAuthHooks from './utils/hooks/useAuth';
 import { useEffect } from 'react';
+import EditTaskModal from './components/Modal/EditTaskModal';
 
 function App() {
 
-  // if token expire then louout automatic
+  // if token expire then logout automatic
     const { getToken, logout } = useAuthHooks();
     const token = getToken();
     const isMyTokenExpired = isExpired(token);
@@ -27,6 +28,7 @@ function App() {
       <AppRouter />
       <AddProjectModal />
       <AddTaskModal />
+      <EditTaskModal />
     </>
   );
 }

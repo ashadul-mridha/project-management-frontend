@@ -11,16 +11,20 @@ const NavbarContextProvider = ({ children }) => {
   const [openAddProject, setOpenAddProject] = React.useState(false);
   //add task modal
   const [openAddTask, setOpenAddTask] = React.useState(false);
+  //add task modal
+  const [openEditTask, setOpenEditTask] = React.useState(false);
+  // edit task id
+  const [taskId, setEditTaskId] = useState();
 
   //api call again
-  const [callProject , setCallProject] = useState(false);
+  const [callProject, setCallProject] = useState(false);
   const [callTask, setCallTask] = useState(false);
 
-  const getStatusId =  async (id) => {
+  const getStatusId = async (id) => {
     const res = await axios.get(`http://localhost:5000/api/project/${id}`);
     const statusID = res.data.data.projectStatuses[0].id;
     return statusID;
-  }
+  };
 
   return (
     <NavContext.Provider
@@ -38,6 +42,10 @@ const NavbarContextProvider = ({ children }) => {
         setCallProject,
         callTask,
         setCallTask,
+        openEditTask,
+        setOpenEditTask,
+        taskId,
+        setEditTaskId,
       }}
     >
       {children}

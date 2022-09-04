@@ -9,8 +9,13 @@ import {
   MdSettings,
   MdCheckBoxOutlineBlank,
 } from "react-icons/md";
+import useNavbarContextHooks from '../../utils/hooks/useNavbarContext';
 
 const TaskCard = ({data}) => {
+
+
+        
+    const { setOpenEditTask, setEditTaskId } = useNavbarContextHooks();
 
      const [anchorEl, setAnchorEl] = React.useState(null);
      const open = Boolean(anchorEl);
@@ -20,9 +25,15 @@ const TaskCard = ({data}) => {
      const handleClose = () => {
        setAnchorEl(null);
      };
+
+     const handleTaskDetails = async () => {
+      setOpenEditTask(true);
+      setEditTaskId(data.id);
+     }
     return (
       <>
         <Box
+          onClick={handleTaskDetails}
           sx={{
             display: "flex",
             justifyContent: "space-between",
