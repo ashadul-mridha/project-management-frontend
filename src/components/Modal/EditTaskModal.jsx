@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
@@ -17,6 +18,8 @@ import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./Taskmodal.module.css";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import { Stack } from "@mui/material";
+import TaskImage from "../Task/TaskImage";
+import { insertFormData } from "../../api/axios";
 
 const style = {
   position: "absolute",
@@ -24,13 +27,16 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 800,
+  height: 'auto',
+  maxHeight: '100vh',
+  overflowY: 'scroll',
+  margin: '10px 0px',
   bgcolor: "background.paper",
-  boxShadow: 24,
   p: 4,
 };
 
 const EditTaskModal = () => {
-  const { openEditTask, setOpenEditTask, taskId } =
+  const { openEditTask, setOpenEditTask, taskId, setCallTask, callTask } =
     useNavbarContextHooks();
 
   const handleClose = () => {
@@ -42,6 +48,7 @@ const EditTaskModal = () => {
   const token = getToken();
 
   // state of components
+  const [taskImage, setTaskImage] = useState([])
   const [prorityEL, setprorityEL] = React.useState(null);
   const [desc, setDesc] = useState("");
   const nameEL = useRef();
@@ -62,9 +69,10 @@ const EditTaskModal = () => {
       setDesc(res.data.data.desc);
       nameEL.current.value = res.data.data.name;
       setPriority(res.data.data.priority);
+      setTaskImage(res.data.data?.taskImages);
     };
     fetchData();
-  }, [taskId, token]);
+  }, [taskId, token, callTask]);
 
 
   // close priority
@@ -76,20 +84,52 @@ const EditTaskModal = () => {
     setprorityEL(null);
   };
 
-  // close task model
-  // const handleClose = () => setOpenAddTask(false);
-
-  // add task click
+  // edit task click
   const addTask = async () => {
+
     const data = {
       name: nameEL.current.value,
       desc,
       remain: "2023-04-21",
       priority,
     };
-    // task request
+    // task update Request
+    const res = await axios.put(
+      `${process.env.REACT_APP_API_KEY}/task/${taskId}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-    console.log(data);
+    console.log(res.data);
+
+    if (fileEl.current.files.length > 0) {
+      // apeend form data
+      const formData = new FormData();
+      formData.append("taskId", taskId);
+      const TaskImg = fileEl.current.files;
+      Array.from(TaskImg).forEach((image) => {
+        formData.append("image", image);
+      });
+
+      const url = `${process.env.REACT_APP_API_KEY}/task/image`;
+
+      const ImgRes = await insertFormData(url, formData);
+
+      if (ImgRes.data.status) {
+        handleClose();
+        setCallTask((prevState) => !prevState);
+      } else {
+        console.log("image not upload");
+      }
+    } else {
+      handleClose();
+      setCallTask((prevState) => !prevState);
+    }
+
   };
 
   // react quill modules
@@ -219,6 +259,20 @@ const EditTaskModal = () => {
                   <BsAlarm />
                 </Box>
               </Tooltip>
+            </Box>
+          </Box>
+          <Box sx={{ margin: "20px 0px" }}>
+            <Typography
+              sx={{ fontSize: "14px", fontWeight: 400 }}
+              variant="h1"
+              color="initial"
+            >
+              Attacment
+            </Typography>
+            <Box className={styles.AttacmentImageContainer}>
+              {taskImage?.map( (image) => (
+                <TaskImage key={image.id} data={image} />
+              ))}
             </Box>
           </Box>
           <Box sx={{ margin: "10px 0px" }}>

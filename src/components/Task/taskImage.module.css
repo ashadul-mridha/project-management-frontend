@@ -1,0 +1,30 @@
+.taskImageContainer{
+    padding: 0px 2px 5px 2px;
+    margin-top: 5px;
+}
+.taskImageContainer > .taskImage{
+    margin: 8px 0px
+}
+.taskImageContainer > .taskImage> img{
+    height: 130px;
+    width: 100%;
+    object-fit: cover;
+}
+.taskImageInfo{
+    padding: 3px 0px;
+}
+.taskImageAction{
+    display: flex;
+    justify-content: center;
+    visibility: hidden;
+}
+
+/* hover effect */
+.taskImageContainer:hover{
+    cursor: pointer;
+    box-shadow:  5px 5px 8px #cecece,
+                -5px -5px 8px #f2f2f2;
+}
+.taskImageContainer:hover > .taskImageAction{
+    visibility: visible;
+}

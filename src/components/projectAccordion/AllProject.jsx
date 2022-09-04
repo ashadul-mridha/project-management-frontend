@@ -16,8 +16,7 @@ const AllProject = () => {
   const { getToken, logout } = useAuthHooks();
   const {callProject} = useNavbarContextHooks();
 
-  const getTokenStr = getToken();
-  const token = getTokenStr || "klsdfklsd232";
+  const token = getToken();
 
   const [data , setData] = useState();
 
