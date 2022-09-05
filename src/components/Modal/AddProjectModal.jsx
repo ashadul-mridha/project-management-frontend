@@ -12,6 +12,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+import UserSelect from "../Form/UserSelect";
 
 const style = {
   position: "absolute",
@@ -35,8 +36,8 @@ const AddProjectModal = () => {
   const statusEl = useRef(null);
   const [status, setStatus] = useState([
     { id: 0, name: "start", active: true },
-    { id: 2, name: "Complete", active: true },
   ]);
+  const [personName, setPersonName] = React.useState([]);
 
   const handleClose = () => setOpenAddProject(false);
 
@@ -222,7 +223,7 @@ const AddProjectModal = () => {
                   </Typography>
                   <IconButton
                     onClick={() => removeStatus(data.id)}
-                    sx={{ color: "black" }}
+                    sx={{ color: "black", fontSize: "10px !important" }}
                   >
                     <ClearIcon />
                   </IconButton>
@@ -258,6 +259,21 @@ const AddProjectModal = () => {
                 <AddIcon />
                 Add Status
               </Button>
+            </Box>
+            <Box sx={{ mt: 2 }}>
+              <Typography
+                sx={{ fontSize: "14px", fontWeight: "500" }}
+                variant="h2"
+                display="block"
+                gutterBottom
+                color={"primary"}
+              >
+                Assign People
+              </Typography>
+              <UserSelect
+                personName={personName}
+                setPersonName={setPersonName}
+              />
             </Box>
           </Box>
           {/* popup footer  */}

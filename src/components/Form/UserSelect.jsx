@@ -19,20 +19,14 @@ const MenuProps = {
 };
 
 const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
+  { id: 1, name: "Ashadul" },
+  { id: 2, name: "Sani" },
+  { id: 3, name: "Sourav" },
+  { id: 4, name: "Mufid" },
+  { id: 5, name: "Hridoy" }
 ];
 
-export default function MultipleSelectCheckmarks() {
-  const [personName, setPersonName] = React.useState([]);
+export default function UserSelect({ personName , setPersonName }) {
 
   const handleChange = (event) => {
     const {
@@ -44,9 +38,12 @@ export default function MultipleSelectCheckmarks() {
     );
   };
 
+
+  console.log("user", personName);
+
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ mt: 1, width: "100%" }}>
         <InputLabel id="demo-multiple-checkbox-label">User</InputLabel>
         <Select
           labelId="demo-multiple-checkbox-label"
@@ -54,14 +51,16 @@ export default function MultipleSelectCheckmarks() {
           multiple
           value={personName}
           onChange={handleChange}
-          input={<OutlinedInput label="User" />}
-          renderValue={(selected) => selected.join(", ")}
+          input={<OutlinedInput fullWidth label="User" />}
+          renderValue={(selected) =>
+            selected.map((user) => user.name).join(", ")
+          }
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
-            <MenuItem key={name} value={name}>
-              <Checkbox checked={personName.indexOf(name) > -1} />
-              <ListItemText primary={name} />
+          {names.map((user) => (
+            <MenuItem key={user.id} value={user}>
+              <Checkbox checked={personName.indexOf(user) > -1} />
+              <ListItemText primary={user.name} />
             </MenuItem>
           ))}
         </Select>
