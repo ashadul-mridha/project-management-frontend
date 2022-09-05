@@ -9,6 +9,17 @@ const getToken = () => {
 }
 const token = getToken();
 
+
+//get data
+const getData = async (url) => {
+    const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+   return res;
+}
+
 // insert data
 const insertFormData = async (url , data) => {
 
@@ -36,4 +47,4 @@ const deleteById = async (url) => {
    return res;
 }
 
-export {deleteById, insertFormData}
+export {deleteById, insertFormData, getData}

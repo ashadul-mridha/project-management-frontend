@@ -18,16 +18,15 @@ const MenuProps = {
   },
 };
 
-const names = [
-  { id: 1, name: "Ashadul" },
-  { id: 2, name: "Sani" },
-  { id: 3, name: "Sourav" },
-  { id: 4, name: "Mufid" },
-  { id: 5, name: "Hridoy" }
-];
+// const names = [
+//   { id: 1, name: "Ashadul" },
+//   { id: 2, name: "Sani" },
+//   { id: 3, name: "Sourav" },
+//   { id: 4, name: "Mufid" },
+//   { id: 5, name: "Hridoy" }
+// ];
 
-export default function UserSelect({ personName , setPersonName }) {
-
+export default function UserSelect({ personName, setPersonName, alluser }) {
   const handleChange = (event) => {
     const {
       target: { value },
@@ -37,7 +36,6 @@ export default function UserSelect({ personName , setPersonName }) {
       typeof value === "string" ? value.split(",") : value
     );
   };
-
 
   console.log("user", personName);
 
@@ -57,7 +55,7 @@ export default function UserSelect({ personName , setPersonName }) {
           }
           MenuProps={MenuProps}
         >
-          {names.map((user) => (
+          {alluser?.map((user) => (
             <MenuItem key={user.id} value={user}>
               <Checkbox checked={personName.indexOf(user) > -1} />
               <ListItemText primary={user.name} />

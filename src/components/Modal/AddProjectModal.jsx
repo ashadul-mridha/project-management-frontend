@@ -1,5 +1,4 @@
-import React, { useRef, useState } from "react";
-import axios from 'axios';
+import React, { useRef, useState, useEffect } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -13,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import UserSelect from "../Form/UserSelect";
+import { getData, insertFormData } from "../../api/axios";
 
 const style = {
   position: "absolute",
@@ -30,6 +30,11 @@ const AddProjectModal = () => {
 
   const { openAddProject, setOpenAddProject, setCallProject } =
     useNavbarContextHooks();
+
+  // state of api calling data
+  const [personName, setPersonName] = React.useState([]);
+  const [user, setUser] = React.useState(false);
+
   // state of project modal
   const nameEl = useRef(null);
   const imageEl = useRef(null);
@@ -37,7 +42,24 @@ const AddProjectModal = () => {
   const [status, setStatus] = useState([
     { id: 0, name: "start", active: true },
   ]);
-  const [personName, setPersonName] = React.useState([]);
+
+  // file variable
+  const userUrl = "http://localhost:5000/api/user";
+
+  //calling api via useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getData(userUrl);
+      console.log(res.data);
+      setUser(res.data.data);
+    }
+    
+    fetchData();
+
+  }, [])
+  
+  console.log(user);
+  
 
   const handleClose = () => setOpenAddProject(false);
 
@@ -61,59 +83,29 @@ const AddProjectModal = () => {
 
   
 
-  const addStatus = () => {
-    // console.log(nameEl.current.value, file , status);
+  const addStatus = async () => {
+
+    const statusData = status.map((singleStatus, index) => {
+      return {
+        name: singleStatus.name,
+      };
+    });
+
     const formData = new FormData();
     formData.append("name", nameEl.current.value );
     formData.append("image", imageEl.current.files[0]);
+    formData.append("project_status", JSON.stringify(statusData));
+    formData.append("assignUser", JSON.stringify(personName));
 
-    axios({
-      method: "post",
-      url: `${process.env.REACT_APP_API_KEY}/project`,
-      data: formData,
-      headers: {
-        "Content-Type": `multipart/form-data`,
-      },
-    })
-      .then(function (response) {
-        // if project insert successfull
-        if (response.data.status) {
-          //status insert
-          const statusData = status.map((singleStatus, index) => {
-            return {
-              name: singleStatus.name,
-              projectId: response.data.data.id,
-              active: true,
-            };
-          });
+    const url = `${process.env.REACT_APP_API_KEY}/project/all`;
 
-          axios({
-            method: "post",
-            url: `${process.env.REACT_APP_API_KEY}/projectStatus`,
-            data: statusData,
-          })
-            .then(function (response) {
-              //handle success
-              if(response.data.status){
-                setCallProject( prevState => !prevState)
-                handleClose();
-              }
-            })
-            .catch(function (response) {
-              //handle error
-              console.log(response);
-            });
-        }
+    const res = await insertFormData(url, formData );
 
-      })
-      .catch(function (response) {
-        //handle error
-        console.log(response);
-      });
-
-
-     
-
+    if (res.data.status) {
+      setCallProject((prevState) => !prevState);
+      handleClose();
+    }
+    
 
     };
 
@@ -273,6 +265,7 @@ const AddProjectModal = () => {
               <UserSelect
                 personName={personName}
                 setPersonName={setPersonName}
+                alluser={user}
               />
             </Box>
           </Box>

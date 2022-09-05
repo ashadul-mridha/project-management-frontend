@@ -5,18 +5,14 @@ import styles from "./ProjectAccordian.module.css";
 // import { project } from "../../i18n/ProjectData";
 import { MdDeleteOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import axios from 'axios';
 import { useState } from "react";
-import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+import { getData } from "../../api/axios";
 
 
 const AllProject = () => {
 
-  const { getToken, logout } = useAuthHooks();
   const {callProject} = useNavbarContextHooks();
-
-  const token = getToken();
 
   const [data , setData] = useState();
 
@@ -28,19 +24,11 @@ const AllProject = () => {
   // get all project
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_KEY}/project`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (res.data.statusCode === 401) {
-        logout();
-      } else {
-        setData(res.data.data);
-      }
+      const res = await getData(`${process.env.REACT_APP_API_KEY}/project`);
+      setData(res.data.data);
     };
     fetchData();
-  }, [token, logout, callProject]);
+  }, [callProject]);
   
   return (
     <>
