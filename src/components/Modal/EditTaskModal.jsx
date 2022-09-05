@@ -104,9 +104,20 @@ const EditTaskModal = () => {
       }
     );
 
+    if(res.data.status){
+      // handleClose();
+      setCallTask((prevState) => !prevState);
+    }
+
     console.log(res.data);
 
-    if (fileEl.current.files.length > 0) {
+    
+
+  };
+
+  // upload image
+  const uploadImage = async () => {
+
       // apeend form data
       const formData = new FormData();
       formData.append("taskId", taskId);
@@ -118,19 +129,17 @@ const EditTaskModal = () => {
       const url = `${process.env.REACT_APP_API_KEY}/task/image`;
 
       const ImgRes = await insertFormData(url, formData);
+      console.log("imageres",ImgRes.data);
 
       if (ImgRes.data.status) {
-        handleClose();
+        // handleClose();
         setCallTask((prevState) => !prevState);
       } else {
         console.log("image not upload");
       }
-    } else {
-      handleClose();
-      setCallTask((prevState) => !prevState);
-    }
+   
 
-  };
+  }
 
   // react quill modules
   const modules = {
@@ -261,6 +270,19 @@ const EditTaskModal = () => {
               </Tooltip>
             </Box>
           </Box>
+          <Box className={styles.actionBtn}>
+            <Button onClick={handleClose} variant="contained" color="secondary">
+              Cancel
+            </Button>
+            <Button
+              onClick={addTask}
+              sx={{ marginLeft: "10px" }}
+              variant="contained"
+              color="primary"
+            >
+              Update Task
+            </Button>
+          </Box>
           <Box sx={{ margin: "20px 0px" }}>
             <Typography
               sx={{ fontSize: "14px", fontWeight: 400 }}
@@ -270,7 +292,7 @@ const EditTaskModal = () => {
               Attacment
             </Typography>
             <Box className={styles.AttacmentImageContainer}>
-              {taskImage?.map( (image) => (
+              {taskImage?.map((image) => (
                 <TaskImage key={image.id} data={image} />
               ))}
             </Box>
@@ -283,7 +305,7 @@ const EditTaskModal = () => {
                 variant="contained"
                 component="label"
               >
-                Upload Image
+                Select Image
                 <input
                   multiple
                   hidden
@@ -300,12 +322,12 @@ const EditTaskModal = () => {
               Cancel
             </Button>
             <Button
-              onClick={addTask}
+              onClick={uploadImage}
               sx={{ marginLeft: "10px" }}
               variant="contained"
               color="primary"
             >
-              Add Task
+              Upload Image
             </Button>
           </Box>
         </Box>
