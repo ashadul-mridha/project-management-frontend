@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
+import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import axios from 'axios';
@@ -28,14 +28,10 @@ const Login = () => {
     if( res.data.status){
 
         const userData = res.data.data;
-
         setUserToBrowser(userData);
         window.location.reload();
         navigate(`/`);
 
-
-
-        console.log(userData);
     }
 
 
@@ -110,13 +106,8 @@ const Login = () => {
               >
                 Don’t have an account?
                 <Link
-                  sx={{ marginLeft: "5px" }}
-                  component="button"
-                  variant="body2"
-                  underline="always"
-                  onClick={() => {
-                    console.info("I'm a button.");
-                  }}
+                  style={{ paddingLeft: "5px", color: "#DB4C3F" }}
+                  to={"/signup"}
                 >
                   Sign up
                 </Link>
