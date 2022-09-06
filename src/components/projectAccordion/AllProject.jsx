@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React, { useEffect } from "react";
@@ -8,11 +9,13 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import { getData } from "../../api/axios";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 
 const AllProject = () => {
 
   const {callProject} = useNavbarContextHooks();
+  const {getUser} = useAuthHooks();
 
   const [data , setData] = useState();
 
@@ -24,8 +27,12 @@ const AllProject = () => {
   // get all project
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getData(`${process.env.REACT_APP_API_KEY}/project`);
-      setData(res.data.data);
+      const {userid} = getUser();
+      // console.log('user', userid);
+      const res = await getData(
+        `${process.env.REACT_APP_API_KEY}/user/${userid}`
+      );
+      setData(res.data.data.projects);
     };
     fetchData();
   }, [callProject]);

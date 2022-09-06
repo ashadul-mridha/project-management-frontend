@@ -29,7 +29,7 @@ const Login = () => {
 
         const userData = res.data.data;
         setUserToBrowser(userData);
-        window.location.reload();
+        // window.location.reload();
         navigate(`/`);
 
     }
