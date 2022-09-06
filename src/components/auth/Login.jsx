@@ -64,12 +64,6 @@ const Login = () => {
                       <TextField {...field} fullWidth label="Email" />
                     )}
                   />
-                  {/* <TextField
-                      id="outlined-basic"
-                      label="Email"
-                      variant="outlined"
-                      fullWidth
-                    /> */}
                 </Box>
                 <Box sx={{ margin: "15px 0px 15px 0px" }}>
                   <Controller
@@ -79,12 +73,6 @@ const Login = () => {
                       <TextField {...field} fullWidth label="Password" />
                     )}
                   />
-                  {/* <TextField
-                      id="outlined-basic"
-                      label="Password"
-                      variant="outlined"
-                      fullWidth
-                    /> */}
                 </Box>
                 <Box sx={{ margin: "15px 0px 15px 0px" }}>
                   <Button
@@ -109,7 +97,7 @@ const Login = () => {
                   style={{ paddingLeft: "5px", color: "#DB4C3F" }}
                   to={"/signup"}
                 >
-                  Sign up
+                  Registration
                 </Link>
               </Typography>
             </Box>
