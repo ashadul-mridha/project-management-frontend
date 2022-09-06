@@ -36,8 +36,16 @@ const style = {
 };
 
 const EditTaskModal = () => {
-  const { openEditTask, setOpenEditTask, taskId, setCallTask, callTask } =
-    useNavbarContextHooks();
+
+  const {
+    openEditTask,
+    setOpenEditTask,
+    taskId,
+    setCallTask,
+    callTask,
+    showNotification,
+    setShowNotification,
+  } = useNavbarContextHooks();
 
   const handleClose = () => {
     setOpenEditTask(false);
@@ -106,12 +114,13 @@ const EditTaskModal = () => {
 
     if(res.data.status){
       // handleClose();
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: "Task Edit Successfull",
+      });
       setCallTask((prevState) => !prevState);
     }
-
-    console.log(res.data);
-
-    
 
   };
 
@@ -133,6 +142,14 @@ const EditTaskModal = () => {
 
       if (ImgRes.data.status) {
         // handleClose();
+        
+      
+        setShowNotification({
+          ...showNotification,
+          status: true,
+          message: "Attacement Upload Successfull",
+        });  
+
         setCallTask((prevState) => !prevState);
       } else {
         console.log("image not upload");

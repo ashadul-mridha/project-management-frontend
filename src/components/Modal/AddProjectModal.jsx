@@ -28,8 +28,13 @@ const style = {
 
 const AddProjectModal = () => {
 
-  const { openAddProject, setOpenAddProject, setCallProject } =
-    useNavbarContextHooks();
+  const {
+    openAddProject,
+    setOpenAddProject,
+    setCallProject,
+    showNotification,
+    setShowNotification,
+  } = useNavbarContextHooks();
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
@@ -104,9 +109,13 @@ const AddProjectModal = () => {
     if (res.data.status) {
       setCallProject((prevState) => !prevState);
       handleClose();
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: "Project Create Successfull",
+      }); 
     }
     
-
     };
 
     

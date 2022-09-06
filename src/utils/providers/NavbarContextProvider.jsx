@@ -16,6 +16,9 @@ const NavbarContextProvider = ({ children }) => {
   // edit task id
   const [taskId, setEditTaskId] = useState();
 
+  // notification show
+  const [showNotification, setShowNotification] = React.useState({ status : false , message: ''});
+
   //api call again
   const [callProject, setCallProject] = useState(false);
   const [callTask, setCallTask] = useState(false);
@@ -46,6 +49,8 @@ const NavbarContextProvider = ({ children }) => {
         setOpenEditTask,
         taskId,
         setEditTaskId,
+        showNotification,
+        setShowNotification,
       }}
     >
       {children}

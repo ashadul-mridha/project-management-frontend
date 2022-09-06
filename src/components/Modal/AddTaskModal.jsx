@@ -34,8 +34,15 @@ const style = {
 };
 
 const AddTaskModal = () => {
-  const { openAddTask, setOpenAddTask, getStatusId, setCallTask, callProject } =
-    useNavbarContextHooks();
+  const {
+    openAddTask,
+    setOpenAddTask,
+    getStatusId,
+    setCallTask,
+    callProject,
+    showNotification,
+    setShowNotification,
+  } = useNavbarContextHooks();
 
   const { getToken } = useAuthHooks();
   const token = getToken();
@@ -112,6 +119,11 @@ const AddTaskModal = () => {
       console.log(taskRes.data);
 
       if (taskRes.data.status){
+        setShowNotification({
+          ...showNotification,
+          status: true,
+          message: "Task Create Successfull",
+        }); 
         handleClose();
         setCallTask((prevState) => !prevState);
       }else {
@@ -119,6 +131,11 @@ const AddTaskModal = () => {
       }
       
     } else {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: "Task Create Successfull",
+      }); 
       handleClose();
       setCallTask((prevState) => !prevState);
     }
