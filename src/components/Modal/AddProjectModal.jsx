@@ -12,7 +12,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import UserSelect from "../Form/UserSelect";
-import { getData, insertFormData } from "../../api/axios";
+import { getData } from "../../api/axios";
+import axios from "axios";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 const style = {
   position: "absolute",
@@ -35,6 +37,8 @@ const AddProjectModal = () => {
     showNotification,
     setShowNotification,
   } = useNavbarContextHooks();
+    const { getToken } = useAuthHooks();
+    const token = getToken();
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
@@ -104,7 +108,17 @@ const AddProjectModal = () => {
 
     const url = `${process.env.REACT_APP_API_KEY}/project/all`;
 
-    const res = await insertFormData(url, formData );
+    const res = await axios({
+      method: "post",
+      url: url,
+      data: formData,
+      headers: {
+        "Content-Type": `multipart/form-data`,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // const res = await insertFormData(url, formData );
 
     if (res.data.status) {
       setCallProject((prevState) => !prevState);
