@@ -8,11 +8,20 @@ import {
 //   MdSettings,
   MdCheckBoxOutlineBlank,
 } from "react-icons/md";
+import useNavbarContextHooks from '../../utils/hooks/useNavbarContext';
 
 const ProjectcardTask = ({data}) => {
+
+    const { setOpenEditTask, setEditTaskId } = useNavbarContextHooks(); 
+
+    const handleTaskDetails = async () => {
+      setOpenEditTask(true);
+      setEditTaskId(data.id);
+    };
+
     return (
       <>
-        <Box className={styles.projectTaskCard}>
+        <Box onClick={handleTaskDetails} className={styles.projectTaskCard}>
           <IconButton
             sx={{ p: 0, margin: "0px 5px 0px 0px" }}
             aria-label="check"
@@ -28,7 +37,10 @@ const ProjectcardTask = ({data}) => {
               {data?.name}
             </Typography>
 
-            <div style={{ fontSize: '12px'}} dangerouslySetInnerHTML={{ __html: data.desc }}></div>
+            <div
+              style={{ fontSize: "12px" }}
+              dangerouslySetInnerHTML={{ __html: data.desc }}
+            ></div>
           </Box>
         </Box>
       </>

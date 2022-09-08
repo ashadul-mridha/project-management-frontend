@@ -187,7 +187,7 @@ const SignUp = () => {
                 Already have an account?
                 <Link
                   style={{ paddingLeft: "5px", color: "#DB4C3F" }}
-                  to={"/signup"}
+                  to={"/login"}
                 >
                   login
                 </Link>

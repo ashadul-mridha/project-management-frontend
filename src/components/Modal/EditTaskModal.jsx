@@ -19,7 +19,7 @@ import styles from "./Taskmodal.module.css";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import { Stack } from "@mui/material";
 import TaskImage from "../Task/TaskImage";
-import { insertFormData } from "../../api/axios";
+// import { insertFormData } from "../../api/axios";
 
 const style = {
   position: "absolute",
@@ -137,8 +137,32 @@ const EditTaskModal = () => {
 
       const url = `${process.env.REACT_APP_API_KEY}/task/image`;
 
-      const ImgRes = await insertFormData(url, formData);
-      console.log("imageres",ImgRes.data);
+
+      const ImgRes = await axios({
+        method: "post",
+        url: url,
+        data: formData,
+        headers: {
+          "Content-Type": `multipart/form-data`,
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // task update Request
+      // const ImgRes = await axios.post(
+      //   `${process.env.REACT_APP_API_KEY}/task/image`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      // );
+
+      // const url = `${process.env.REACT_APP_API_KEY}/task/image`;
+
+      // const ImgRes = await insertFormData(url, formData);
+      // console.log("imageres",ImgRes.data);
 
       if (ImgRes.data.status) {
         // handleClose();
