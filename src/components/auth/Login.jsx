@@ -29,7 +29,6 @@ const Login = () => {
 
         const userData = res.data.data;
         setUserToBrowser(userData);
-        // window.location.reload();
         navigate(`/`);
 
     }
@@ -92,12 +91,12 @@ const Login = () => {
                 variant="p"
                 color="#222222"
               >
-                Don’t have an account?
+                Forget Password?
                 <Link
                   style={{ paddingLeft: "5px", color: "#DB4C3F" }}
                   to={"/signup"}
                 >
-                  Registration
+                  Forget Password
                 </Link>
               </Typography>
             </Box>

@@ -1,11 +1,18 @@
 import { Box, Button } from "@mui/material";
 import React from "react";
 import { MdAdd } from "react-icons/md";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./project.module.css";
 import ProjectcardTask from "./ProjectcardTask";
 import ProjectStatusHeader from "./ProjectStatusHeader";
 
 const ProjectCard = ({data}) => {
+
+  const { setOpenAddTask } = useNavbarContextHooks();
+
+  const handleAddTaskButton = () => {
+      setOpenAddTask( (prevState) => !prevState );
+  }
     
   return (
     <>
@@ -28,6 +35,7 @@ const ProjectCard = ({data}) => {
           fullWidth
           variant="outlined"
           startIcon={<MdAdd />}
+          onClick={handleAddTaskButton}
         >
           Add Task
         </Button>

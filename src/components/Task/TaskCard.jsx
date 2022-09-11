@@ -97,7 +97,7 @@ const TaskCard = ({data}) => {
               </Box>
             </Box>
             <Box>
-              <UsersList avatarSize={28} />
+              <UsersList avatarSize={25} />
             </Box>
 
           </Box>
