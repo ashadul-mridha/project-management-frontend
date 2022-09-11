@@ -1,11 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import AddIcon from "@mui/icons-material/Add";
-import ClearIcon from "@mui/icons-material/Clear";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -15,6 +12,10 @@ import UserSelect from "../Form/UserSelect";
 import { getData } from "../../api/axios";
 import axios from "axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
+
+// react hook form 
+import { Controller, useForm } from "react-hook-form";
+import ProjectStatus from "../Form/ProjectStatus";
 
 const style = {
   position: "absolute",
@@ -40,14 +41,21 @@ const AddProjectModal = () => {
     const { getToken } = useAuthHooks();
     const token = getToken();
 
+
+  // hook form control
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({ defaultValues: {} });
+
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
-  const [user, setUser] = React.useState(false);
+  const [users, setUsers] = React.useState(false);
 
-  // state of project modal
-  const nameEl = useRef(null);
-  const imageEl = useRef(null);
-  const statusEl = useRef(null);
+  // state of project status
   const [status, setStatus] = useState([
     { id: 0, name: "start", active: true },
   ]);
@@ -60,39 +68,15 @@ const AddProjectModal = () => {
     const fetchData = async () => {
       const res = await getData(userUrl);
       console.log(res.data);
-      setUser(res.data.data);
+      setUsers(res.data.data);
     }
     
     fetchData();
 
-  }, [])
-  
-  console.log(user);
+  }, []);
   
 
   const handleClose = () => setOpenAddProject(false);
-
-  //find learge id
-  const leargeId = status.reduce( (prevState , currentData) => Math.max(prevState, currentData.id) , -1);
-
-  //handle status
-  const handleStatus = () => {
-    setStatus((prevState) => [
-      ...prevState,
-      { id: leargeId + 1 , name: statusEl.current.value, active: true },
-    ]);
-    statusEl.current.value = ' ';
-  };
-
-  //remove status
-  const removeStatus = (id) => {
-    const data = status.filter((singleStatus) => singleStatus.id !== id);
-    setStatus(data);
-  }
-
-  
-
-  const addStatus = async () => {
 
     const statusData = status.map((singleStatus, index) => {
       return {
@@ -100,37 +84,44 @@ const AddProjectModal = () => {
       };
     });
 
-    const formData = new FormData();
-    formData.append("name", nameEl.current.value );
-    formData.append("image", imageEl.current.files[0]);
-    formData.append("project_status", JSON.stringify(statusData));
-    formData.append("assignUser", JSON.stringify(personName));
 
-    const url = `${process.env.REACT_APP_API_KEY}/project/all`;
+    const onSubmit = async (data) => {
 
-    const res = await axios({
-      method: "post",
-      url: url,
-      data: formData,
-      headers: {
-        "Content-Type": `multipart/form-data`,
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      if (statusData.length > 0 && personName.length > 0) {
 
-    // const res = await insertFormData(url, formData );
+        const formData = new FormData();
+        formData.append("name", data.name);
+        formData.append("image", data.image[0]);
+        formData.append("project_status", JSON.stringify(statusData));
+        formData.append("assignUser", JSON.stringify(personName));
 
-    if (res.data.status) {
-      setCallProject((prevState) => !prevState);
-      handleClose();
-      setShowNotification({
-        ...showNotification,
-        status: true,
-        message: "Project Create Successfull",
-      }); 
+        const url = `${process.env.REACT_APP_API_KEY}/project/all`;
+
+        const res = await axios({
+          method: "post",
+          url: url,
+          data: formData,
+          headers: {
+            "Content-Type": `multipart/form-data`,
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.data.status) {
+          reset({ name: "", image: "" });
+          setPersonName([])
+          setStatus([{ id: 0, name: "start", active: true }]);
+          setCallProject((prevState) => !prevState);
+          handleClose();
+          setShowNotification({
+            ...showNotification,
+            status: true,
+            message: "Project Create Successfull",
+          });
+        }
+
+      }
     }
-    
-    };
 
     
 
@@ -161,160 +152,100 @@ const AddProjectModal = () => {
             </Typography>
           </Box>
           {/* modal input field  */}
-          <Box
-            sx={{
-              margin: "10px 0px",
-              p: 2,
-              maxHeight: "60vh",
-              overflowY: "scroll",
-            }}
-          >
-            <TextField
-              id="outlined-basic"
-              label="Name"
-              inputRef={nameEl}
-              variant="outlined"
-              size="small"
-              fullWidth
-              color="primary"
-            />
-            <Stack direction="row" alignItems="center" sx={{ mt: 2 }}>
-              <Button
-                sx={{ pt: 1, pb: 1 }}
-                fullWidth
-                variant="contained"
-                component="label"
-              >
-                Upload Image
-                <input hidden accept="image/*" type="file" ref={imageEl} />
-                <FileUploadIcon />
-              </Button>
-            </Stack>
-            <Box sx={{ mt: 2 }}>
-              <Typography
-                sx={{ fontSize: "14px", fontWeight: "500" }}
-                variant="h2"
-                display="block"
-                gutterBottom
-                color={"primary"}
-              >
-                What task statuses do you want?
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "12px",
-                  fontWeight: "400",
-                  color: "gray",
-                  marginTop: "5px",
-                }}
-                variant="caption"
-                display="block"
-              >
-                Add Statues
-              </Typography>
-              {status.map((data, index) => (
-                <Box
-                  key={data.id}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignitems: "center",
-                    border: "1px solid gray",
-                    padding: "0.5px 5px",
-                    marginTop: "1px",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      color: "black",
-                    }}
-                    variant="overline"
-                    display="block"
-                    gutterBottom
-                  >
-                    {data?.name}
-                  </Typography>
-                  <IconButton
-                    onClick={() => removeStatus(data.id)}
-                    sx={{ color: "black", fontSize: "10px !important" }}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </Box>
-              ))}
 
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "start",
-                  alignitems: "center",
-                  padding: "1px 0px",
-                  marginTop: "10px",
-                }}
-              >
-                <TextField
-                  inputRef={statusEl}
-                  id="outlined-basic"
-                  label="Enter Status"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  color="primary"
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box
+              sx={{
+                margin: "10px 0px",
+                p: 2,
+                maxHeight: "60vh",
+                overflowY: "scroll",
+              }}
+            >
+              <Box sx={{ margin: "10px 0px 0px 0px" }}>
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{
+                    required: "Name Field Is Required",
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      helperText={errors?.name?.message}
+                      error={errors.name ? true : false}
+                      {...field}
+                      fullWidth
+                      label="Name"
+                      size="small"
+                    />
+                  )}
                 />
               </Box>
+              {/* select a image  */}
+              <Box sx={{ margin: "15px 0px 15px 0px" }}>
+                <Stack direction="column" sx={{ mt: 2 }}>
+                  <Button
+                    sx={{ pt: 1, pb: 1 }}
+                    fullWidth
+                    variant="contained"
+                    component="label"
+                  >
+                    Upload Image
+                    <input
+                      {...register("image")}
+                      hidden
+                      accept="image/*"
+                      type="file"
+                    />
+                    <FileUploadIcon />
+                  </Button>
+                </Stack>
+              </Box>
+              {/* select status */}
+              <ProjectStatus status={status} setStatus={setStatus} />
+              {/* select user */}
+              <Box sx={{ mt: 2 }}>
+                <Typography
+                  sx={{ fontSize: "14px", fontWeight: "500" }}
+                  variant="h2"
+                  display="block"
+                  gutterBottom
+                  color={"primary"}
+                >
+                  Assign People
+                </Typography>
+
+                <UserSelect
+                  personName={personName}
+                  setPersonName={setPersonName}
+                  alluser={users}
+                />
+              </Box>
+            </Box>
+            {/* popup footer  */}
+            <Box
+              sx={{
+                backgroundColor: (theme) => theme.palette.secondary.main,
+                p: 2,
+                borderTop: "1px solid gray",
+                borderRadius: "0px 0px 10px 10px",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
               <Button
-                sx={{ pt: 1, pb: 1, mt: 1 }}
+                onClick={handleClose}
+                sx={{ marginRight: "10px" }}
                 variant="contained"
-                component="label"
-                size="small"
-                onClick={handleStatus}
+                color="secondary"
               >
-                <AddIcon />
-                Add Status
+                Cancel
+              </Button>
+              <Button type="submit" variant="contained" color="primary">
+                Add
               </Button>
             </Box>
-            <Box sx={{ mt: 2 }}>
-              <Typography
-                sx={{ fontSize: "14px", fontWeight: "500" }}
-                variant="h2"
-                display="block"
-                gutterBottom
-                color={"primary"}
-              >
-                Assign People
-              </Typography>
-              <UserSelect
-                personName={personName}
-                setPersonName={setPersonName}
-                alluser={user}
-              />
-            </Box>
-          </Box>
-          {/* popup footer  */}
-          <Box
-            sx={{
-              backgroundColor: (theme) => theme.palette.secondary.main,
-              p: 2,
-              borderTop: "1px solid gray",
-              borderRadius: "0px 0px 10px 10px",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Button
-              onClick={handleClose}
-              sx={{ marginRight: "10px" }}
-              variant="contained"
-              color="secondary"
-            >
-              Cancel
-            </Button>
-            <Button onClick={addStatus} variant="contained" color="primary">
-              Add
-            </Button>
-          </Box>
+          </form>
         </Box>
       </Modal>
     </>

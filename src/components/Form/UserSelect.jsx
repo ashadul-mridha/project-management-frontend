@@ -6,6 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -18,13 +19,6 @@ const MenuProps = {
   },
 };
 
-// const names = [
-//   { id: 1, name: "Ashadul" },
-//   { id: 2, name: "Sani" },
-//   { id: 3, name: "Sourav" },
-//   { id: 4, name: "Mufid" },
-//   { id: 5, name: "Hridoy" }
-// ];
 
 export default function UserSelect({ personName, setPersonName, alluser }) {
   const handleChange = (event) => {
@@ -37,7 +31,7 @@ export default function UserSelect({ personName, setPersonName, alluser }) {
     );
   };
 
-  console.log("user", personName);
+  // console.log("user", personName);
 
   return (
     <div>
@@ -62,6 +56,17 @@ export default function UserSelect({ personName, setPersonName, alluser }) {
             </MenuItem>
           ))}
         </Select>
+        {personName.length < 1 && (
+          <Typography
+            sx={{ fontSize: "12px", fontWeight: "400" }}
+            variant="overline"
+            display="block"
+            gutterBottom
+            color={"primary"}
+          >
+            Must Assigne This Project With People
+          </Typography>
+        )}
       </FormControl>
     </div>
   );

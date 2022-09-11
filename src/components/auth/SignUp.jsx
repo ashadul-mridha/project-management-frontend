@@ -26,8 +26,6 @@ const SignUp = () => {
     formState: { errors },
   } = useForm({ defaultValues: {} });
 
-  console.log("Errors:", errors);
-
   //after submit form
   const onSubmit = async (data) => {
 
