@@ -8,6 +8,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import useNavbarContextHooks from '../../utils/hooks/useNavbarContext';
 import CustomMenu from '../MuiCustomComponent/CustomMenu';
+import UsersList from '../MuiCustomComponent/UsersList';
 
 const TaskCard = ({data}) => {
 
@@ -49,45 +50,56 @@ const TaskCard = ({data}) => {
             onClick={handleTaskDetails}
             sx={{
               display: "flex",
-              justifyContent: "start",
-              alignItems: "start",
+              justifyContent: "space-between",
+              alignItems: "center",
               width: "100%",
             }}
           >
-            <IconButton
-              sx={{ p: 0, margin: "0px 5px 0px 0px" }}
-              aria-label="check"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "start",
+              }}
             >
-              <MdCheckBoxOutlineBlank color="#eb8909" />
-            </IconButton>
-
-            <Box>
-              <Typography
-                sx={{ fontSize: "14px", fontWeight: "400", color: "#202020" }}
-                variant="h6"
-                component="div"
+              <IconButton
+                sx={{ p: 0, margin: "0px 5px 0px 0px" }}
+                aria-label="check"
               >
-                {data.name}
-              </Typography>
+                <MdCheckBoxOutlineBlank color="#eb8909" />
+              </IconButton>
+              <Box>
+                <Typography
+                  sx={{ fontSize: "14px", fontWeight: "400", color: "#202020" }}
+                  variant="h6"
+                  component="div"
+                >
+                  {data.name}
+                </Typography>
 
-              <Typography
-                sx={{
-                  color: "#808080",
-                  fontSize: "12px",
-                  fontWeight: "400",
-                }}
-              >
-                {data.remain.substring(0, 10)}
-              </Typography>
+                <Typography
+                  sx={{
+                    color: "#808080",
+                    fontSize: "12px",
+                    fontWeight: "400",
+                  }}
+                >
+                  {data.remain.substring(0, 10)}
+                </Typography>
 
-              <Typography
-                sx={{ color: "#d1453b", fontSize: "12px", fontWeight: "400" }}
-                variant="subtitle2"
-                component="div"
-              >
-                {data.time}
-              </Typography>
+                <Typography
+                  sx={{ color: "#d1453b", fontSize: "12px", fontWeight: "400" }}
+                  variant="subtitle2"
+                  component="div"
+                >
+                  {data.time}
+                </Typography>
+              </Box>
             </Box>
+            <Box>
+              <UsersList avatarSize={28} />
+            </Box>
+
           </Box>
           <Tooltip title="Edit Task">
             <IconButton
