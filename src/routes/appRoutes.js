@@ -18,7 +18,7 @@ const AppRouter = () => {
                         }
                     >
                     <Route path="/" element={<AllTask />} />
-                    <Route path="/project/:id" element={<ProjectDetails />} />
+                    <Route path="/project/:id" element={<ProjectDetails />} /> 
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />

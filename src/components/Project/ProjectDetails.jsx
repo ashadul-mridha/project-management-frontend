@@ -14,8 +14,7 @@ const ProjectDetails = () => {
 
   const { callTask } = useNavbarContextHooks();
 
-  const getTokenStr = getToken();
-  const token = getTokenStr || "klsdfklsd232";
+  const token = getToken();
 
   let { id } = useParams();
   const [projectDetailsData , setProjectDetailsData] = useState([]);
@@ -23,7 +22,7 @@ const ProjectDetails = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(
-        `${process.env.REACT_APP_API_KEY}/project/${id}`,
+        `${process.env.REACT_APP_API_KEY}/project/slug/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
