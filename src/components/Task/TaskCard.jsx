@@ -1,15 +1,13 @@
 import React from 'react';
-import { Typography, Box, IconButton, Tooltip, Menu, MenuItem, Divider, ListItemIcon } from "@mui/material";
+import { Typography, Box, IconButton, Tooltip} from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import {
-  MdLogout,
-  MdPersonAdd,
-  MdSettings,
   MdCheckBoxOutlineBlank,
 } from "react-icons/md";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import useNavbarContextHooks from '../../utils/hooks/useNavbarContext';
+import CustomMenu from '../MuiCustomComponent/CustomMenu';
 
 const TaskCard = ({data}) => {
 
@@ -19,21 +17,26 @@ const TaskCard = ({data}) => {
 
      const [anchorEl, setAnchorEl] = React.useState(null);
      const open = Boolean(anchorEl);
+
      const handleClick = (event) => {
        setAnchorEl(event.currentTarget);
-     };
-     const handleClose = () => {
-       setAnchorEl(null);
      };
 
      const handleTaskDetails = async () => {
       setOpenEditTask(true);
       setEditTaskId(data.id);
      }
+
+     const menuItemData = [
+       { icon: <DeleteOutlineIcon />, name: "Delete Task" },
+       { icon: <ModeEditOutlineIcon />, name: "Edit Task" },
+     ];
+
+     const compoId = "account-menu";
+
     return (
       <>
         <Box
-          onClick={handleTaskDetails}
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -43,10 +46,12 @@ const TaskCard = ({data}) => {
           }}
         >
           <Box
+            onClick={handleTaskDetails}
             sx={{
               display: "flex",
               justifyContent: "start",
               alignItems: "start",
+              width: "100%",
             }}
           >
             <IconButton
@@ -89,7 +94,7 @@ const TaskCard = ({data}) => {
               onClick={handleClick}
               size="small"
               sx={{ ml: 2 }}
-              aria-controls={open ? "account-menu" : undefined}
+              aria-controls={open ? compoId : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
             >
@@ -97,67 +102,13 @@ const TaskCard = ({data}) => {
             </IconButton>
           </Tooltip>
         </Box>
-        <Menu
+        <CustomMenu
           anchorEl={anchorEl}
-          id="account-menu"
+          setAnchorEl={setAnchorEl}
           open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          PaperProps={{
-            elevation: 0,
-            sx: {
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-              mt: 1.5,
-              "& .MuiAvatar-root": {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-              },
-              "&:before": {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                top: 0,
-                right: 14,
-                width: 10,
-                height: 10,
-                bgcolor: "background.paper",
-                transform: "translateY(-50%) rotate(45deg)",
-                zIndex: 0,
-              },
-            },
-          }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        >
-          <MenuItem>
-            <DeleteOutlineIcon /> Delete Task
-          </MenuItem>
-          <MenuItem>
-            <ModeEditOutlineIcon /> Edit Task
-          </MenuItem>
-          <Divider />
-          <MenuItem>
-            <ListItemIcon>
-              <MdPersonAdd fontSize="small" />
-            </ListItemIcon>
-            Add another account
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <MdSettings fontSize="small" />
-            </ListItemIcon>
-            Settings
-          </MenuItem>
-          <MenuItem>
-            <ListItemIcon>
-              <MdLogout fontSize="small" />
-            </ListItemIcon>
-            Logout
-          </MenuItem>
-        </Menu>
+          menuItemData={menuItemData}
+          compoId={compoId}
+        />
       </>
     );
 };
