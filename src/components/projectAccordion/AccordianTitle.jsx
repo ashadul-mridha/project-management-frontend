@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  MdAdd,
   MdKeyboardArrowDown,
   MdKeyboardArrowRight,
 } from "react-icons/md";
@@ -8,7 +7,7 @@ import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./ProjectAccordian.module.css";
 
 const AccordianTitle = () => {
-  const { showProject, setShowProject, setOpenAddProject } =
+  const { showProject, setShowProject } =
     useNavbarContextHooks();
 
   const showProjectClick = () => {
@@ -33,12 +32,12 @@ const AccordianTitle = () => {
             <span>Projects</span>
           </div>
         </div>
-        <div
+        {/* <div
           onClick={() => setOpenAddProject(true)}
           className={styles.accorianTitleWrapper__addProject}
         >
           <MdAdd color="#222" size={20} />
-        </div>
+        </div> */}
       </div>
     </>
   );

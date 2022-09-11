@@ -18,6 +18,7 @@ import MoreIcon from "@mui/icons-material/MoreVert";
 import HomeIcon from "@mui/icons-material/Home";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext"
 import useAuthHooks from "../../utils/hooks/useAuth";
+import Button from '@mui/material/Button'
 
 
 
@@ -64,7 +65,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   
-  const { showSideBar, setShowSideBar , setOpenAddTask } = useNavbarContextHooks();
+  const { showSideBar, setShowSideBar, setOpenAddProject } =
+    useNavbarContextHooks();
   const { logout } = useAuthHooks();
   
   const useClick = () => {
@@ -136,13 +138,13 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem>
         <IconButton
-          onClick={() => setOpenAddTask(true)}
+          onClick={() => setOpenAddProject(true)}
           size="large"
           color="inherit"
         >
           <AddIcon />
         </IconButton>
-        <p>Add Todo</p>
+        <p>Add Project</p>
       </MenuItem>
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
@@ -226,13 +228,16 @@ export default function PrimarySearchAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              onClick={() => setOpenAddTask(true)}
+            {/* <IconButton
+              onClick={() => setOpenAddProject(true)}
               size="large"
               color="inherit"
             >
               <AddIcon />
-            </IconButton>
+            </IconButton> */}
+            <Button onClick={() => setOpenAddProject(true)} variant="text" color="secondary">
+              Add Project
+            </Button>
             <IconButton
               size="large"
               aria-label="show 4 new mails"
