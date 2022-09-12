@@ -35,15 +35,16 @@ export default function UserSelect({ personName, setPersonName, alluser }) {
 
   return (
     <div>
-      <FormControl sx={{ mt: 1, width: "100%" }}>
+      <FormControl sx={{  width: "100%" }}>
         <InputLabel id="demo-multiple-checkbox-label">User</InputLabel>
         <Select
+          // size=""
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
           value={personName}
           onChange={handleChange}
-          input={<OutlinedInput fullWidth label="User" />}
+          input={<OutlinedInput fullWidth label="Select User" />}
           renderValue={(selected) =>
             selected.map((user) => user.name).join(", ")
           }

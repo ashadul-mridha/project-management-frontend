@@ -60,7 +60,7 @@ const AddProjectModal = () => {
     { id: 0, name: "start", active: true },
   ]);
 
-  // file variable
+  // get all user
   const userUrl = "http://localhost:5000/api/user";
 
   //calling api via useEffect

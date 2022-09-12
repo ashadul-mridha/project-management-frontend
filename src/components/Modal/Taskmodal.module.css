@@ -50,10 +50,11 @@
    display: flex;
    justify-content: space-between;
    align-items: center;
-   margin: 10px 0px;
+   margin: 15px 0px;
 }
 .rightSide{
-    min-width: 130px;
+    /* min-width: 130px; */
+    max-width: 250px;
 }
 .leftSide{
     display: flex;
@@ -63,7 +64,8 @@
     cursor: pointer;
 }
 .leftSide__alarmIcon{
-    margin-left: 10px;
+    /* margin-left: 20px; */
+    margin-right: 15px;
     cursor: pointer;
 }
 

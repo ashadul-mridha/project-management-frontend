@@ -1,24 +1,24 @@
-import axios from "axios";
-import "../../../src/App.css";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
+import "../../../src/App.css";
 
-import Autocomplete from "@mui/material/Autocomplete";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { Select, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import { useRef } from "react";
 import { BsAlarm, BsFlag } from "react-icons/bs";
+import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./Taskmodal.module.css";
-import useAuthHooks from "../../utils/hooks/useAuth";
-import { Stack } from "@mui/material";
+
+// react hook form
+import { Controller, useForm } from "react-hook-form";
+import { getData } from "../../api/axios";
+import UserSelect from "../Form/UserSelect";
 
 const style = {
   position: "absolute",
@@ -30,7 +30,7 @@ const style = {
   boxShadow: 50,
   outline: "none",
   borderRadius: "8px",
-  padding: "15px 15px",
+  // padding: "15px 15px",
 };
 
 const AddTaskModal = () => {
@@ -47,27 +47,37 @@ const AddTaskModal = () => {
   const { getToken } = useAuthHooks();
   const token = getToken();
 
-  // state of components
-  const [prorityEL, setprorityEL] = React.useState(null);
-  const [project, setProject] = useState(null);
-  const [desc, setDesc] = useState("");
-  const nameEL = useRef();
-  const fileEl = useRef();
-  const [projectEL, setProjectEL] = useState();
-  const [priority, setPriority] = useState("four");
+  // hook form control
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({ defaultValues: { priority: "four",  } });
 
-  // get all project
+  // state of api calling data
+  const [personName, setPersonName] = React.useState([]);
+  const [users, setUsers] = React.useState(false);
+
+  // get all user
+  const userUrl = "http://localhost:5000/api/user";
+
+  //calling api via useEffect
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_API_KEY}/project`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setProject(res.data.data);
+      const res = await getData(userUrl);
+      console.log(res.data);
+      setUsers(res.data.data);
     };
+
     fetchData();
-  }, [token, callProject]);
+  }, []);
+
+  // state of components
+  const [prorityEL, setprorityEL] = React.useState(null);
+  const [desc, setDesc] = useState("");
+  const [priority, setPriority] = useState("four");
 
   // close priority
   const open = Boolean(prorityEL);
@@ -82,75 +92,77 @@ const AddTaskModal = () => {
   const handleClose = () => setOpenAddTask(false);
 
   // add task click
-  const addTask = async () => {
-    const statusId = await getStatusId(projectEL);
-    const data = {
-      name: nameEL.current.value,
-      desc,
-      projectId: projectEL,
-      statusId: statusId,
-      priority,
-      remain: "2023-04-21"
-    };
-    // task request
-    const res = await axios.post(`${process.env.REACT_APP_API_KEY}/task`, data);
-    
-    const taskId = res.data.data.id;
+  // const addTask = async () => {
+  //   const statusId = await getStatusId(projectEL);
+  //   const data = {
+  //     name: nameEL.current.value,
+  //     desc,
+  //     projectId: projectEL,
+  //     statusId: statusId,
+  //     priority,
+  //     remain: "2023-04-21",
+  //   };
+  //   // task request
+  //   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/task`, data);
 
-    if (res.data.status && fileEl.current.files.length > 0) {
+  //   const taskId = res.data.data.id;
 
-      // apeend form data
-      const formData = new FormData();
-      formData.append("taskId", taskId);
-      const TaskImg = fileEl.current.files;
-      Array.from(TaskImg).forEach((image) => {
-        formData.append("image", image);
-      });
+  //   if (res.data.status && fileEl.current.files.length > 0) {
+  //     // apeend form data
+  //     const formData = new FormData();
+  //     formData.append("taskId", taskId);
+  //     const TaskImg = fileEl.current.files;
+  //     Array.from(TaskImg).forEach((image) => {
+  //       formData.append("image", image);
+  //     });
 
-      const taskRes = await axios({
-        method: "post",
-        url: `${process.env.REACT_APP_API_KEY}/task/image`,
-        data: formData,
-        headers: {
-          "Content-Type": `multipart/form-data`,
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(taskRes.data);
+  //     const taskRes = await axios({
+  //       method: "post",
+  //       url: `${process.env.REACT_APP_API_KEY}/task/image`,
+  //       data: formData,
+  //       headers: {
+  //         "Content-Type": `multipart/form-data`,
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     console.log(taskRes.data);
 
-      if (taskRes.data.status){
-        setShowNotification({
-          ...showNotification,
-          status: true,
-          message: "Task Create Successfull",
-        }); 
-        handleClose();
-        setCallTask((prevState) => !prevState);
-      }else {
-        console.log('image not upload');
-      }
-      
-    } else {
-      setShowNotification({
-        ...showNotification,
-        status: true,
-        message: "Task Create Successfull",
-      }); 
-      handleClose();
-      setCallTask((prevState) => !prevState);
-    }
-  };
+  //     if (taskRes.data.status) {
+  //       setShowNotification({
+  //         ...showNotification,
+  //         status: true,
+  //         message: "Task Create Successfull",
+  //       });
+  //       handleClose();
+  //       setCallTask((prevState) => !prevState);
+  //     } else {
+  //       console.log("image not upload");
+  //     }
+  //   } else {
+  //     setShowNotification({
+  //       ...showNotification,
+  //       status: true,
+  //       message: "Task Create Successfull",
+  //     });
+  //     handleClose();
+  //     setCallTask((prevState) => !prevState);
+  //   }
+  // };
 
   // react quill modules
-   const modules = {
-     toolbar: [
-       [{ header: [1, 2, 5, 6, false] }],
-       ["bold", "italic", "underline", "strike"],
-       [{ align: [] }],
-       [{ list: "ordered" }, { list: "bullet" }],
-       [{ color: [] }, { background: [] }],
-     ],
-   };
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ align: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ color: [] }, { background: [] }],
+    ],
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -161,161 +173,202 @@ const AddTaskModal = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box className={styles.name}>
-            <input
-              ref={nameEL}
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Task Name"
-            />
-          </Box>
-          <Box className={styles.desc}>
-            <ReactQuill
-              placeholder={"Write Description"}
-              theme="snow"
-              modules={modules}
-              value={desc}
-              onChange={setDesc}
-            />
-          </Box>
-          <Box className={styles.iconBox}>
-            <Box className={styles.rightSide}>
-              <Autocomplete
-                id="free-solo-demo"
-                freeSolo
-                options={project}
-                // defaultValue={project[1]}
-                getOptionLabel={(options) => options.name}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Select Project"
-                    size="small"
-                  />
-                )}
-                onChange={(event, newValue) => {
-                  setProjectEL(newValue.id);
-                }}
-              />
-            </Box>
-            <Box className={styles.leftSide}>
-              <Tooltip
-                className={styles.tooltipCustomClass}
-                title="set priority"
-                placement="bottom-start"
-                arrow
-              >
-                <Box
-                  onClick={handlePriority}
-                  className={styles.leftSide__flagIcon}
-                >
-                  {priority === "first" && <BsFlag color="yellow" />}
-                  {priority === "second" && <BsFlag color="green" />}
-                  {priority === "thired" && <BsFlag color="red" />}
-                  {priority === "four" && <BsFlag />}
-                </Box>
-              </Tooltip>
-              <Menu
-                anchorEl={prorityEL}
-                id="priority-level"
-                open={open}
-                onClose={closePriority}
-                onClick={closePriority}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    "&:before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <MenuItem onClick={() => setPriority("first")}>
-                  <ListItemIcon>
-                    <BsFlag color="yellow" />
-                  </ListItemIcon>
-                  Prority 1
-                </MenuItem>
-                <MenuItem onClick={() => setPriority("second")}>
-                  <ListItemIcon>
-                    <BsFlag color="green" />
-                  </ListItemIcon>
-                  Prority 2
-                </MenuItem>
-                <MenuItem onClick={() => setPriority("thired")}>
-                  <ListItemIcon>
-                    <BsFlag color="red" />
-                  </ListItemIcon>
-                  Prority 3
-                </MenuItem>
-                <MenuItem onClick={() => setPriority("four")}>
-                  <ListItemIcon>
-                    <BsFlag />
-                  </ListItemIcon>
-                  Prority 4
-                </MenuItem>
-              </Menu>
-              <Tooltip
-                className={styles.tooltipCustomClass}
-                title="Goto Pro"
-                placement="bottom-start"
-                arrow
-              >
-                <Box className={styles.leftSide__alarmIcon}>
-                  <BsAlarm />
-                </Box>
-              </Tooltip>
-            </Box>
-          </Box>
-          <Box sx={{ margin : '10px 0px'}}>
-            <Stack direction="row" alignItems="center" sx={{ mt: 2 }}>
-              <Button
-                sx={{ pt: 1, pb: 1 }}
-                fullWidth
-                variant="contained"
-                component="label"
-              >
-                Upload Image
-                <input multiple hidden accept="image/*" type="file" ref={fileEl} />
-                <FileUploadIcon />
-              </Button>
-            </Stack>
-          </Box>
-          <Box className={styles.actionBtn}>
-            <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancel
-            </Button>
-            <Button
-              onClick={addTask}
-              sx={{ marginLeft: "10px" }}
-              variant="contained"
-              color="primary"
+          <Box
+            sx={{
+              backgroundColor: (theme) => theme.palette.secondary.main,
+              p: 2,
+              borderBottom: "1px solid gray",
+              borderRadius: "10px 10px 0px 0px",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "16px", fontWeight: 700 }}
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
             >
               Add Task
-            </Button>
+            </Typography>
           </Box>
+
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box
+              sx={{
+                margin: "6px 0px",
+                py: 2,
+                px: 1.5,
+                maxHeight: "60vh",
+                overflowY: "scroll",
+              }}
+            >
+              {/* task name  */}
+              <Box sx={{ margin: "10px 0px 0px 0px" }}>
+                <Controller
+                  name="name"
+                  control={control}
+                  rules={{
+                    required: "Please add task name",
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      helperText={errors?.name?.message}
+                      error={errors.name ? true : false}
+                      {...field}
+                      fullWidth
+                      label="Task Name"
+                      size="small"
+                    />
+                  )}
+                />
+              </Box>
+              {/* task desc  */}
+              <Box sx={{ margin: "10px 0px 0px 0px" }}>
+                <Controller
+                  name="desc"
+                  control={control}
+                  // rules={{
+                  //   required: "Please enter task description",
+                  // }}
+                  theme="snow"
+                  modules={modules}
+                  render={({ field }) => (
+                    <ReactQuill
+                      {...field}
+                      placeholder={"Write Description"}
+                      onChange={(text) => {
+                        field.onChange(text);
+                      }}
+                    />
+                  )}
+                />
+                {errors.desc && (
+                  <Typography
+                    sx={{ fontSize: "12px", fontWeight: "400" }}
+                    variant="overline"
+                    display="block"
+                    gutterBottom
+                    color={"primary"}
+                  >
+                    {errors.desc.message}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* select user and priority and time  */}
+              <Box className={styles.iconBox}>
+                <Box className={styles.rightSide}>
+                  <UserSelect
+                    personName={personName}
+                    setPersonName={setPersonName}
+                    alluser={users}
+                  />
+                </Box>
+                <Box className={styles.leftSide}>
+                  <Tooltip title="set priority" placement="top-start" arrow>
+                    <Box
+                    // className={styles.leftSide__flagIcon}
+                    >
+                      <Controller
+                        name="priority"
+                        autoWidth
+                        size="small"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            sx={{
+                              color: "#fff",
+                              paddingRight: "0px",
+                              position: "static",
+                              "& .MuiSvgIcon-root": {
+                                color: "white",
+                              },
+                              "& .MuiSelect-select": {
+                                paddingRight: "0px",
+                              },
+                              "& .MuiOutlinedInput-root": {
+                                position: "static",
+                              },
+                              "& .Mui-focused": {
+                                position: "static",
+                              },
+                            }}
+                            {...field}
+                          >
+                            <MenuItem value="first">
+                              <BsFlag color="yellow" />
+                            </MenuItem>
+                            <MenuItem value="second">
+                              <BsFlag color="green" />
+                            </MenuItem>
+                            <MenuItem value="thired">
+                              <BsFlag color="red" />
+                            </MenuItem>
+                            <MenuItem value="four">
+                              <BsFlag color="black" />
+                            </MenuItem>
+                          </Select>
+                        )}
+                      />
+                    </Box>
+                  </Tooltip>
+                  <Tooltip
+                    className={styles.tooltipCustomClass}
+                    title="Goto Pro"
+                    placement="bottom-start"
+                    arrow
+                  >
+                    <Box className={styles.leftSide__alarmIcon}>
+                      <BsAlarm />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              </Box>
+
+              {/* select a image  */}
+              <Box sx={{ margin: "5px 0px 5px 0px" }}>
+                <Stack direction="column" sx={{ mt: 2 }}>
+                  <Button
+                    sx={{ pt: 1, pb: 1 }}
+                    fullWidth
+                    variant="contained"
+                    component="label"
+                  >
+                    Upload Image
+                    <input
+                      {...register("image")}
+                      hidden
+                      accept="image/*"
+                      type="file"
+                    />
+                    <FileUploadIcon />
+                  </Button>
+                </Stack>
+              </Box>
+            </Box>
+            {/* popup footer  */}
+            <Box
+              sx={{
+                backgroundColor: (theme) => theme.palette.secondary.main,
+                p: 2,
+                borderTop: "1px solid gray",
+                borderRadius: "0px 0px 10px 10px",
+                display: "flex",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                onClick={handleClose}
+                sx={{ marginRight: "10px" }}
+                variant="contained"
+                color="secondary"
+              >
+                Cancel
+              </Button>
+              <Button type="submit" variant="contained" color="primary">
+                Add Task
+              </Button>
+            </Box>
+          </form>
         </Box>
       </Modal>
     </>
