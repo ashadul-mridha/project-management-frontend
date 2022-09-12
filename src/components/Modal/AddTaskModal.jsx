@@ -241,17 +241,7 @@ const AddTaskModal = () => {
                     />
                   )}
                 />
-                {errors.desc && (
-                  <Typography
-                    sx={{ fontSize: "12px", fontWeight: "400" }}
-                    variant="overline"
-                    display="block"
-                    gutterBottom
-                    color={"primary"}
-                  >
-                    {errors.desc.message}
-                  </Typography>
-                )}
+                {/*    */}
               </Box>
 
               {/* select user and priority and time  */}
