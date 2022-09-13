@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import { BsAlarm, BsFlag } from "react-icons/bs";
+import { BsFlag } from "react-icons/bs";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./Taskmodal.module.css";
@@ -19,6 +19,14 @@ import styles from "./Taskmodal.module.css";
 import { Controller, useForm } from "react-hook-form";
 import { getData } from "../../api/axios";
 import UserSelect from "../Form/UserSelect";
+
+import DateFnsUtils from "@date-io/date-fns";
+
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import DateTimePickeres from "../Form/DateTimePickeres";
 
 const style = {
   position: "absolute",
@@ -54,7 +62,7 @@ const AddTaskModal = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: { priority: "four",  } });
+  } = useForm({ defaultValues: { priority: "four" } });
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
@@ -308,7 +316,26 @@ const AddTaskModal = () => {
                     arrow
                   >
                     <Box className={styles.leftSide__alarmIcon}>
-                      <BsAlarm />
+                      <DateTimePickeres />
+                      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <Controller
+                          name="MUIPicker"
+                          control={control}
+                          render={({ field: { ref, ...rest } }) => (
+                            <KeyboardDatePicker
+                              margin="normal"
+                              id="date-picker-dialog"
+                              label="Date   dialog"
+                              // format="MM/dd/yyyy"
+                              KeyboardButtonProps={{
+                                "aria-label": "change date",
+                              }}
+                              {...rest}
+                            />
+                          )}
+                        />
+                      </MuiPickersUtilsProvider> */}
+                      {/* <BsAlarm /> */}
                     </Box>
                   </Tooltip>
                 </Box>
