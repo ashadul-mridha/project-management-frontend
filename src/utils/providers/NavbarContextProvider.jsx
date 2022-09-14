@@ -13,6 +13,8 @@ const NavbarContextProvider = ({ children }) => {
   const [openAddTask, setOpenAddTask] = React.useState(false);
   //add task modal
   const [openEditTask, setOpenEditTask] = React.useState(false);
+  const [projectId, setProjectId] = React.useState();
+  const [statusId, setStatusId] = React.useState();
   // edit task id
   const [taskId, setEditTaskId] = useState();
 
@@ -51,6 +53,10 @@ const NavbarContextProvider = ({ children }) => {
         setEditTaskId,
         showNotification,
         setShowNotification,
+        projectId,
+        setProjectId,
+        statusId,
+        setStatusId,
       }}
     >
       {children}

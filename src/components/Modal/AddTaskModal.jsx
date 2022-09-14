@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "../../../src/App.css";
 
@@ -13,20 +13,18 @@ import Tooltip from "@mui/material/Tooltip";
 import { BsFlag } from "react-icons/bs";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import styles from "./Taskmodal.module.css";
 
 // react hook form
 import { Controller, useForm } from "react-hook-form";
 import { getData } from "../../api/axios";
 import UserSelect from "../Form/UserSelect";
 
-import DateFnsUtils from "@date-io/date-fns";
+// date time picker
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import axios from "axios";
+import {insertFormData} from "../../api/axios"
 
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
-import DateTimePickeres from "../Form/DateTimePickeres";
+// import {
 
 const style = {
   position: "absolute",
@@ -45,6 +43,10 @@ const AddTaskModal = () => {
   const {
     openAddTask,
     setOpenAddTask,
+    projectId,
+    setProjectId,
+    statusId,
+    setStatusId,
     getStatusId,
     setCallTask,
     callProject,
@@ -82,22 +84,12 @@ const AddTaskModal = () => {
     fetchData();
   }, []);
 
-  // state of components
-  const [prorityEL, setprorityEL] = React.useState(null);
-  const [desc, setDesc] = useState("");
-  const [priority, setPriority] = useState("four");
-
-  // close priority
-  const open = Boolean(prorityEL);
-  const handlePriority = (event) => {
-    setprorityEL(event.currentTarget);
-  };
-  const closePriority = () => {
-    setprorityEL(null);
-  };
-
   // close task model
-  const handleClose = () => setOpenAddTask(false);
+  const handleClose = () => {
+    reset({ priority: "four" });
+    setPersonName([]);
+    setOpenAddTask(false);
+  };
 
   // add task click
   // const addTask = async () => {
@@ -169,7 +161,30 @@ const AddTaskModal = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+
+    // check task user added or not
+    if (personName.length > 0) {
+
+      // create form data
+      const formData = new FormData();
+      formData.append("name", data.name);
+      formData.append("desc", data.name);
+      formData.append("projectId", projectId);
+      formData.append("statusId", statusId);
+      formData.append("priority", data.priority);
+      formData.append("remain", data.remain);
+      formData.append("assignUser", JSON.stringify(personName));
+
+      // const res = await axios.post(
+      //   `${process.env.REACT_APP_API_KEY}/task/imageUser`,
+      //   formData
+      // );
+
+      const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
+      // const data = formData;
+      const res = await insertFormData(url, formData)
+      console.log(res.data);
+    }
   };
 
   return (
@@ -210,7 +225,7 @@ const AddTaskModal = () => {
               }}
             >
               {/* task name  */}
-              <Box sx={{ margin: "10px 0px 0px 0px" }}>
+              <Box sx={{ margin: "10px 0px 10px" }}>
                 <Controller
                   name="name"
                   control={control}
@@ -219,8 +234,6 @@ const AddTaskModal = () => {
                   }}
                   render={({ field }) => (
                     <TextField
-                      helperText={errors?.name?.message}
-                      error={errors.name ? true : false}
                       {...field}
                       fullWidth
                       label="Task Name"
@@ -228,15 +241,24 @@ const AddTaskModal = () => {
                     />
                   )}
                 />
+                {errors.name && (
+                  <Typography
+                    sx={{ fontSize: "12px", fontWeight: "400" }}
+                    variant="overline"
+                    display="block"
+                    gutterBottom
+                    color={"primary"}
+                  >
+                    {errors.name.message}
+                  </Typography>
+                )}
               </Box>
+
               {/* task desc  */}
-              <Box sx={{ margin: "10px 0px 0px 0px" }}>
+              <Box sx={{ margin: "10px 0px 10px 0px" }}>
                 <Controller
                   name="desc"
                   control={control}
-                  // rules={{
-                  //   required: "Please enter task description",
-                  // }}
                   theme="snow"
                   modules={modules}
                   render={({ field }) => (
@@ -249,96 +271,96 @@ const AddTaskModal = () => {
                     />
                   )}
                 />
-                {/*    */}
               </Box>
 
-              {/* select user and priority and time  */}
-              <Box className={styles.iconBox}>
-                <Box className={styles.rightSide}>
-                  <UserSelect
-                    personName={personName}
-                    setPersonName={setPersonName}
-                    alluser={users}
-                  />
-                </Box>
-                <Box className={styles.leftSide}>
-                  <Tooltip title="set priority" placement="top-start" arrow>
-                    <Box
-                    // className={styles.leftSide__flagIcon}
-                    >
-                      <Controller
-                        name="priority"
-                        autoWidth
-                        size="small"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            sx={{
-                              color: "#fff",
-                              paddingRight: "0px",
-                              position: "static",
-                              "& .MuiSvgIcon-root": {
-                                color: "white",
-                              },
-                              "& .MuiSelect-select": {
-                                paddingRight: "0px",
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                position: "static",
-                              },
-                              "& .Mui-focused": {
-                                position: "static",
-                              },
-                            }}
-                            {...field}
-                          >
-                            <MenuItem value="first">
-                              <BsFlag color="yellow" />
-                            </MenuItem>
-                            <MenuItem value="second">
-                              <BsFlag color="green" />
-                            </MenuItem>
-                            <MenuItem value="thired">
-                              <BsFlag color="red" />
-                            </MenuItem>
-                            <MenuItem value="four">
-                              <BsFlag color="black" />
-                            </MenuItem>
-                          </Select>
-                        )}
-                      />
-                    </Box>
-                  </Tooltip>
-                  <Tooltip
-                    className={styles.tooltipCustomClass}
-                    title="Goto Pro"
-                    placement="bottom-start"
-                    arrow
+              {/* task users  */}
+              <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                <UserSelect
+                  personName={personName}
+                  setPersonName={setPersonName}
+                  alluser={users}
+                />
+              </Box>
+
+              {/* task remain  */}
+              <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                <Controller
+                  name="remain"
+                  control={control}
+                  rules={{
+                    required: "Please add remain time",
+                  }}
+                  render={({ field }) => (
+                    <DateTimePicker
+                      label="Remain Date"
+                      disablePast
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} />
+                      )}
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.remain && (
+                  <Typography
+                    sx={{ fontSize: "12px", fontWeight: "400" }}
+                    variant="overline"
+                    display="block"
+                    gutterBottom
+                    color={"primary"}
                   >
-                    <Box className={styles.leftSide__alarmIcon}>
-                      <DateTimePickeres />
-                      {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Controller
-                          name="MUIPicker"
-                          control={control}
-                          render={({ field: { ref, ...rest } }) => (
-                            <KeyboardDatePicker
-                              margin="normal"
-                              id="date-picker-dialog"
-                              label="Date   dialog"
-                              // format="MM/dd/yyyy"
-                              KeyboardButtonProps={{
-                                "aria-label": "change date",
-                              }}
-                              {...rest}
-                            />
-                          )}
-                        />
-                      </MuiPickersUtilsProvider> */}
-                      {/* <BsAlarm /> */}
-                    </Box>
-                  </Tooltip>
-                </Box>
+                    {errors.remain.message}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* task prioroty  */}
+              <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                <Tooltip title="set priority" placement="top-start" arrow>
+                  <Box>
+                    <Controller
+                      name="priority"
+                      autoWidth
+                      size="small"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          sx={{
+                            color: "#fff",
+                            paddingRight: "0px",
+                            position: "static",
+                            "& .MuiSvgIcon-root": {
+                              color: "white",
+                            },
+                            "& .MuiSelect-select": {
+                              paddingRight: "0px",
+                            },
+                            "& .MuiOutlinedInput-root": {
+                              position: "static",
+                            },
+                            "& .Mui-focused": {
+                              position: "static",
+                            },
+                          }}
+                          {...field}
+                        >
+                          <MenuItem value="first">
+                            <BsFlag color="yellow" />
+                          </MenuItem>
+                          <MenuItem value="second">
+                            <BsFlag color="green" />
+                          </MenuItem>
+                          <MenuItem value="thired">
+                            <BsFlag color="red" />
+                          </MenuItem>
+                          <MenuItem value="four">
+                            <BsFlag color="black" />
+                          </MenuItem>
+                        </Select>
+                      )}
+                    />
+                  </Box>
+                </Tooltip>
               </Box>
 
               {/* select a image  */}
@@ -353,6 +375,7 @@ const AddTaskModal = () => {
                     Upload Image
                     <input
                       {...register("image")}
+                      multiple
                       hidden
                       accept="image/*"
                       type="file"

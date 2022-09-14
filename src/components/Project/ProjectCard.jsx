@@ -6,14 +6,18 @@ import styles from "./project.module.css";
 import ProjectcardTask from "./ProjectcardTask";
 import ProjectStatusHeader from "./ProjectStatusHeader";
 
-const ProjectCard = ({data}) => {
+const ProjectCard = ({ data }) => {
 
-  const { setOpenAddTask } = useNavbarContextHooks();
+  const {id , projectId} = data;
+  const { setOpenAddTask , setProjectId, setStatusId } =
+    useNavbarContextHooks();
 
   const handleAddTaskButton = () => {
-      setOpenAddTask( (prevState) => !prevState );
-  }
-    
+    setOpenAddTask((prevState) => !prevState);
+    setProjectId(projectId);
+    setStatusId(id);
+  };
+
   return (
     <>
       <Box

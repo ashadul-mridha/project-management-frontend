@@ -9,7 +9,6 @@ import styles from "./project.module.css";
 import ProjectCard from "./ProjectCard";
 
 const ProjectDetails = () => {
-
   const { getToken } = useAuthHooks();
 
   const { callTask } = useNavbarContextHooks();
@@ -17,7 +16,7 @@ const ProjectDetails = () => {
   const token = getToken();
 
   let { id } = useParams();
-  const [projectDetailsData , setProjectDetailsData] = useState([]);
+  const [projectDetailsData, setProjectDetailsData] = useState([]);
   // get all project
   useEffect(() => {
     const fetchData = async () => {
@@ -29,13 +28,12 @@ const ProjectDetails = () => {
           },
         }
       );
-      
+
       setProjectDetailsData(res.data.data);
     };
     fetchData();
   }, [id, token, callTask]);
 
-  
   return (
     <Box>
       <ViewHeader data={projectDetailsData} />
