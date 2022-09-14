@@ -15,12 +15,13 @@ import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 // react hook form
 import { Controller, useForm } from "react-hook-form";
-import { getData } from "../../api/axios";
 import UserSelect from "../Form/UserSelect";
 
 // date time picker
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import {insertFormData} from "../../api/axios"
+import axios from "axios";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 // import {
 
@@ -48,6 +49,8 @@ const AddTaskModal = () => {
     setShowNotification,
   } = useNavbarContextHooks();
 
+  const { getToken  } = useAuthHooks();
+
 
   // hook form control
   const {
@@ -64,17 +67,21 @@ const AddTaskModal = () => {
 
   // get all user
   const userUrl = "http://localhost:5000/api/user";
+  const token = getToken();
 
   //calling api via useEffect
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getData(userUrl);
-      console.log(res.data);
+      const res = await axios.get(userUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUsers(res.data.data);
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   // close task model
   const handleClose = () => {

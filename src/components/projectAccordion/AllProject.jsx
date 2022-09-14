@@ -8,31 +8,45 @@ import { MdDeleteOutline } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import { getData } from "../../api/axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import axios from "axios";
 
-
-const AllProject = () => {
-
-  const {callProject} = useNavbarContextHooks();
-  const {getUser} = useAuthHooks();
-
-  const [data , setData] = useState();
-
-  //active class style
+//active class style
   let activeStyle = {
     backgroundColor: "#EEEEEE"
   };
 
+
+const AllProject = () => {
+
+
+  const [data, setData] = useState();
+  const {callProject} = useNavbarContextHooks();
+  const { getUser, getToken } = useAuthHooks();
+
+  // get login user role
+  const { userRole } = getUser();
+  const token = getToken();
+
+  const url =
+    userRole === "admin"
+      ? `${process.env.REACT_APP_API_KEY}/project`
+      : `${process.env.REACT_APP_API_KEY}/user/project`;
+
   // get all project
   useEffect(() => {
     const fetchData = async () => {
-      const {userid} = getUser();
       // console.log('user', userid);
-      const res = await getData(
-        `${process.env.REACT_APP_API_KEY}/user/${userid}`
-      );
-      setData(res.data.data.projects);
+      const res = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (userRole === "admin") {
+        setData(res.data.data);
+      } else {
+        setData(res.data.data.projects);
+      }
     };
     fetchData();
   }, [callProject]);

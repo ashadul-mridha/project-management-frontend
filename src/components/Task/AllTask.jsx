@@ -13,8 +13,7 @@ const AllTask = () => {
   const {callTask} = useNavbarContextHooks();
   
   const token = getToken();
-  const {userid, userRole} = getUser();
-  console.log("user", userid, userRole , token);
+  const {userRole} = getUser();
 
   const url = userRole === 'admin' ? `${process.env.REACT_APP_API_KEY}/task` : `${process.env.REACT_APP_API_KEY}/user/task`;
 

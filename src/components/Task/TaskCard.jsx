@@ -35,8 +35,6 @@ const TaskCard = ({data}) => {
 
      const compoId = "account-menu";
 
-     console.log('image',data.users);
-
     return (
       <>
         <Box
