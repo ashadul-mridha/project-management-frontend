@@ -35,6 +35,8 @@ const TaskCard = ({data}) => {
 
      const compoId = "account-menu";
 
+     console.log('image',data.users);
+
     return (
       <>
         <Box
@@ -84,7 +86,8 @@ const TaskCard = ({data}) => {
                     fontWeight: "400",
                   }}
                 >
-                  {data.remain.substring(0, 10)}
+                  {new Date(data.remain).toUTCString().substring(0, 16)}
+                  {/* {data.remain.substring(0, 10)} */}
                 </Typography>
 
                 <Typography
@@ -92,14 +95,13 @@ const TaskCard = ({data}) => {
                   variant="subtitle2"
                   component="div"
                 >
-                  {data.time}
+                  {/* {new Date(data.remain).toUTCString().substring(0, 16)} */}
                 </Typography>
               </Box>
             </Box>
             <Box>
-              <UsersList avatarSize={25} />
+              <UsersList data={data.users} avatarSize={25} />
             </Box>
-
           </Box>
           <Tooltip title="Edit Task">
             <IconButton

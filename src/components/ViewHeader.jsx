@@ -39,7 +39,7 @@ const ViewHeader = ({data}) => {
             }}
             color="grey"
           >
-            {data?.name}
+            {/* {data?.name} */}
           </Typography>
         </Box>
       </>
