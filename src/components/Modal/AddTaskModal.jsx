@@ -11,7 +11,6 @@ import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
 import { BsFlag } from "react-icons/bs";
-import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 // react hook form
@@ -21,7 +20,6 @@ import UserSelect from "../Form/UserSelect";
 
 // date time picker
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import axios from "axios";
 import {insertFormData} from "../../api/axios"
 
 // import {
@@ -44,18 +42,12 @@ const AddTaskModal = () => {
     openAddTask,
     setOpenAddTask,
     projectId,
-    setProjectId,
     statusId,
-    setStatusId,
-    getStatusId,
     setCallTask,
-    callProject,
     showNotification,
     setShowNotification,
   } = useNavbarContextHooks();
 
-  const { getToken } = useAuthHooks();
-  const token = getToken();
 
   // hook form control
   const {
@@ -91,64 +83,6 @@ const AddTaskModal = () => {
     setOpenAddTask(false);
   };
 
-  // add task click
-  // const addTask = async () => {
-  //   const statusId = await getStatusId(projectEL);
-  //   const data = {
-  //     name: nameEL.current.value,
-  //     desc,
-  //     projectId: projectEL,
-  //     statusId: statusId,
-  //     priority,
-  //     remain: "2023-04-21",
-  //   };
-  //   // task request
-  //   const res = await axios.post(`${process.env.REACT_APP_API_KEY}/task`, data);
-
-  //   const taskId = res.data.data.id;
-
-  //   if (res.data.status && fileEl.current.files.length > 0) {
-  //     // apeend form data
-  //     const formData = new FormData();
-  //     formData.append("taskId", taskId);
-  //     const TaskImg = fileEl.current.files;
-  //     Array.from(TaskImg).forEach((image) => {
-  //       formData.append("image", image);
-  //     });
-
-  //     const taskRes = await axios({
-  //       method: "post",
-  //       url: `${process.env.REACT_APP_API_KEY}/task/image`,
-  //       data: formData,
-  //       headers: {
-  //         "Content-Type": `multipart/form-data`,
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     console.log(taskRes.data);
-
-  //     if (taskRes.data.status) {
-  //       setShowNotification({
-  //         ...showNotification,
-  //         status: true,
-  //         message: "Task Create Successfull",
-  //       });
-  //       handleClose();
-  //       setCallTask((prevState) => !prevState);
-  //     } else {
-  //       console.log("image not upload");
-  //     }
-  //   } else {
-  //     setShowNotification({
-  //       ...showNotification,
-  //       status: true,
-  //       message: "Task Create Successfull",
-  //     });
-  //     handleClose();
-  //     setCallTask((prevState) => !prevState);
-  //   }
-  // };
-
   // react quill modules
   const modules = {
     toolbar: [
@@ -174,16 +108,32 @@ const AddTaskModal = () => {
       formData.append("priority", data.priority);
       formData.append("remain", data.remain);
       formData.append("assignUser", JSON.stringify(personName));
+      Array.from(data.image).forEach((image) => {
+        formData.append("image", image);
+      });
 
-      // const res = await axios.post(
-      //   `${process.env.REACT_APP_API_KEY}/task/imageUser`,
-      //   formData
-      // );
-
+      // inset task all data
       const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
-      // const data = formData;
-      const res = await insertFormData(url, formData)
-      console.log(res.data);
+      const res = await insertFormData(url, formData);
+
+      if (res.data.status) {
+        setShowNotification({
+          ...showNotification,
+          status: true,
+          message: "Task Create Successfull",
+        });
+        handleClose();
+        setCallTask((prevState) => !prevState);
+      } else {
+        setShowNotification({
+          ...showNotification,
+          status: true,
+          message: res.data.message,
+        });
+        handleClose();
+        setCallTask((prevState) => !prevState);
+      }
+
     }
   };
 
