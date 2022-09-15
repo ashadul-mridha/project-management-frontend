@@ -6,6 +6,8 @@ import PrivateRoute from '../utils/PrivateRoute/PrivateRoute';
 import ProjectDetails from '../components/Project/ProjectDetails';
 import AllTask from '../components/Task/AllTask';
 import SignUp from '../components/auth/SignUp';
+import TodayTask from '../components/Task/TodayTask';
+import UpcommingTask from '../components/Task/UpcommingTask';
 
 const AppRouter = () => {
     return (
@@ -18,6 +20,8 @@ const AppRouter = () => {
                         }
                     >
                     <Route path="/" element={<AllTask />} />
+                    <Route path="/today" element={<TodayTask />} />
+                    <Route path="/upcomming" element={<UpcommingTask />} />
                     <Route path="/project/:id" element={<ProjectDetails />} /> 
                 </Route>
                 <Route path="/login" element={<Login />} />
