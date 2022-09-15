@@ -2,7 +2,6 @@ import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import axios from 'axios';
@@ -86,7 +85,7 @@ const Login = () => {
                 </Box>
               </form>
 
-              <Typography
+              {/* <Typography
                 sx={{ fontSize: "14px", fontWeight: "400" }}
                 variant="p"
                 color="#222222"
@@ -98,7 +97,7 @@ const Login = () => {
                 >
                   Forget Password
                 </Link>
-              </Typography>
+              </Typography> */}
             </Box>
           </Grid>
           <Grid item lg={6}>
