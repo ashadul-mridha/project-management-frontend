@@ -10,6 +10,7 @@ import TodayTask from '../components/Task/TodayTask';
 import UpcommingTask from '../components/Task/UpcommingTask';
 import AddUser from '../components/user/Adduser';
 import ProfilePage from '../components/user/ProfilePage';
+import Alluser from '../components/user/Alluser';
 
 const AppRouter = () => {
     return (
@@ -25,6 +26,7 @@ const AppRouter = () => {
                     <Route path="/today" element={<TodayTask />} />
                     <Route path="/upcomming" element={<UpcommingTask />} />
                     <Route path="/adduser" element={<AddUser />} />
+                    <Route path="/alluser" element={<Alluser />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/project/:id" element={<ProjectDetails />} /> 
                 </Route>

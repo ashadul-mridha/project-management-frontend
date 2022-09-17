@@ -140,7 +140,9 @@ export default function PrimarySearchAppBar() {
       <MenuItem>
         <Link to="/adduser">Add User</Link>
       </MenuItem>
-      <MenuItem>Userlist</MenuItem>
+      <MenuItem>
+        <Link to="/alluser">All User</Link>
+      </MenuItem>
       <MenuItem onClick={() => logout()}>Log Out</MenuItem>
     </Menu>
   );
