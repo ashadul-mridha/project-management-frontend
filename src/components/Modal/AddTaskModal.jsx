@@ -19,7 +19,6 @@ import UserSelect from "../Form/UserSelect";
 
 // date time picker
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import {insertFormData} from "../../api/axios"
 import axios from "axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
 
@@ -121,7 +120,15 @@ const AddTaskModal = () => {
 
       // inset task all data
       const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
-      const res = await insertFormData(url, formData);
+      const res = await axios({
+        method: "post",
+        url: url,
+        data: formData,
+        headers: {
+          "Content-Type": `multipart/form-data`,
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (res.data.status) {
         setShowNotification({
