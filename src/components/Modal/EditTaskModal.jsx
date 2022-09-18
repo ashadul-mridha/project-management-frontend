@@ -1,42 +1,43 @@
-import axios from "axios";
-import "../../../src/App.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ReactQuill from "react-quill";
+import "../../../src/App.css";
 
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import Menu from "@mui/material/Menu";
+import { Select, Stack, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
-import { useRef } from "react";
-import { BsAlarm, BsFlag } from "react-icons/bs";
+import { BsFlag } from "react-icons/bs";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import styles from "./Taskmodal.module.css";
+
+// react hook form
+import { Controller, useForm } from "react-hook-form";
+import UserSelect from "../Form/UserSelect";
+
+// date time picker
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import axios from "axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
-import { Stack } from "@mui/material";
-import TaskImage from "../Task/TaskImage";
-// import { insertFormData } from "../../api/axios";
+
+// import {
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 800,
-  height: 'auto',
-  maxHeight: '100vh',
-  overflowY: 'scroll',
-  margin: '10px 0px',
-  bgcolor: "background.paper",
-  p: 4,
+  transform: "translate( -50%, -50%)",
+  width: 600,
+  bgcolor: "#ffffff",
+  boxShadow: 50,
+  outline: "none",
+  borderRadius: "8px",
+  // padding: "15px 15px",
 };
 
 const EditTaskModal = () => {
-
   const {
     openEditTask,
     setOpenEditTask,
@@ -47,21 +48,23 @@ const EditTaskModal = () => {
     setShowNotification,
   } = useNavbarContextHooks();
 
-  const handleClose = () => {
-    setOpenEditTask(false);
-  };
-
-  // get token
   const { getToken } = useAuthHooks();
   const token = getToken();
 
-  // state of components
-  const [taskImage, setTaskImage] = useState([])
-  const [prorityEL, setprorityEL] = React.useState(null);
-  const [desc, setDesc] = useState("");
-  const nameEL = useRef();
-  const fileEl = useRef();
-  const [priority, setPriority] = useState(4);
+  // hook form control
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({ defaultValues: { priority: "four" } });
+
+  // state of api calling data
+  const [personName, setPersonName] = React.useState([]);
+  // const [users, setUsers] = React.useState([]);
+
+
 
   // get task current data
   useEffect(() => {
@@ -74,113 +77,31 @@ const EditTaskModal = () => {
           },
         }
       );
-      setDesc(res.data.data.desc);
-      nameEL.current.value = res.data.data.name;
-      setPriority(res.data.data.priority);
-      setTaskImage(res.data.data?.taskImages);
+      reset({
+        name: res.data.data.name,
+        desc: res.data.data.desc,
+        priority: res.data.data.priority,
+        remain: res.data.data.remain,
+      });
+      // setPersonName([...res.data.data.users]);
+
+      // const userRes = await axios.get("http://localhost:5000/api/user", {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
+      // setUsers(userRes.data.data);
+
+      // setTaskImage(res.data.data?.taskImages);
     };
     fetchData();
-  }, [taskId, token, callTask]);
+  }, [taskId, token, callTask, reset]);
 
 
-  // close priority
-  const open = Boolean(prorityEL);
-  const handlePriority = (event) => {
-    setprorityEL(event.currentTarget);
+  // close task model
+  const handleClose = () => {
+    setOpenEditTask(false);
   };
-  const closePriority = () => {
-    setprorityEL(null);
-  };
-
-  // edit task click
-  const addTask = async () => {
-
-    const data = {
-      name: nameEL.current.value,
-      desc,
-      remain: "2023-04-21",
-      priority,
-    };
-    // task update Request
-    const res = await axios.put(
-      `${process.env.REACT_APP_API_KEY}/task/${taskId}`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if(res.data.status){
-      // handleClose();
-      setShowNotification({
-        ...showNotification,
-        status: true,
-        message: "Task Edit Successfull",
-      });
-      setCallTask((prevState) => !prevState);
-    }
-
-  };
-
-  // upload image
-  const uploadImage = async () => {
-
-      // apeend form data
-      const formData = new FormData();
-      formData.append("taskId", taskId);
-      const TaskImg = fileEl.current.files;
-      Array.from(TaskImg).forEach((image) => {
-        formData.append("image", image);
-      });
-
-      const url = `${process.env.REACT_APP_API_KEY}/task/image`;
-
-
-      const ImgRes = await axios({
-        method: "post",
-        url: url,
-        data: formData,
-        headers: {
-          "Content-Type": `multipart/form-data`,
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // task update Request
-      // const ImgRes = await axios.post(
-      //   `${process.env.REACT_APP_API_KEY}/task/image`,
-      //   formData,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-
-      // const url = `${process.env.REACT_APP_API_KEY}/task/image`;
-
-      // const ImgRes = await insertFormData(url, formData);
-      // console.log("imageres",ImgRes.data);
-
-      if (ImgRes.data.status) {
-        // handleClose();
-        
-      
-        setShowNotification({
-          ...showNotification,
-          status: true,
-          message: "Attacement Upload Successfull",
-        });  
-
-        setCallTask((prevState) => !prevState);
-      } else {
-        console.log("image not upload");
-      }
-   
-
-  }
 
   // react quill modules
   const modules = {
@@ -193,6 +114,74 @@ const EditTaskModal = () => {
     ],
   };
 
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    // task update Request
+    const res = await axios.put(
+      `${process.env.REACT_APP_API_KEY}/task/${taskId}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.data.status) {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: "Task Edit Successfull",
+      });
+      setCallTask((prevState) => !prevState);
+    }
+
+    // check task user added or not
+    // if (personName.length > 0) {
+    //   // create form data
+    //   const formData = new FormData();
+    //   formData.append("name", data.name);
+    //   formData.append("desc", data.name);
+    //   formData.append("priority", data.priority);
+    //   formData.append("remain", data.remain);
+    //   formData.append("assignUser", JSON.stringify(personName));
+    //   Array.from(data.image).forEach((image) => {
+    //     formData.append("image", image);
+    //   });
+
+    //   // inset task all data
+    //   const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
+    //   const res = await axios({
+    //     method: "post",
+    //     url: url,
+    //     data: formData,
+    //     headers: {
+    //       "Content-Type": `multipart/form-data`,
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+
+    //   if (res.data.status) {
+    //     setShowNotification({
+    //       ...showNotification,
+    //       status: true,
+    //       message: "Task Create Successfull",
+    //     });
+    //     handleClose();
+    //     setCallTask((prevState) => !prevState);
+    //   } else {
+    //     setShowNotification({
+    //       ...showNotification,
+    //       status: true,
+    //       message: res.data.message,
+    //     });
+    //     handleClose();
+    //     setCallTask((prevState) => !prevState);
+    //   }
+    // }
+  };
+
   return (
     <>
       <Modal
@@ -202,175 +191,201 @@ const EditTaskModal = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box className={styles.name}>
-            <input
-              ref={nameEL}
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Task Name"
-            />
-          </Box>
-          <Box className={styles.desc}>
-            <ReactQuill
-              placeholder={"Write Description"}
-              theme="snow"
-              modules={modules}
-              value={desc}
-              onChange={setDesc}
-            />
-          </Box>
-          <Box className={styles.iconBox}>
-            {/* <Box className={styles.rightSide}></Box> */}
-            <Box className={styles.leftSide}>
-              <Tooltip
-                className={styles.tooltipCustomClass}
-                title="set priority"
-                placement="bottom-start"
-                arrow
-              >
-                <Box
-                  onClick={handlePriority}
-                  className={styles.leftSide__flagIcon}
-                >
-                  {priority === "first" && <BsFlag color="yellow" />}
-                  {priority === "second" && <BsFlag color="green" />}
-                  {priority === "thired" && <BsFlag color="red" />}
-                  {priority === "four" && <BsFlag />}
-                </Box>
-              </Tooltip>
-              <Menu
-                anchorEl={prorityEL}
-                id="priority-level"
-                open={open}
-                onClose={closePriority}
-                onClick={closePriority}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    "&:before": {
-                      content: '""',
-                      display: "block",
-                      position: "absolute",
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <MenuItem onClick={() => setPriority("first")}>
-                  <ListItemIcon>
-                    <BsFlag color="yellow" />
-                  </ListItemIcon>
-                  Prority 1
-                </MenuItem>
-                <MenuItem onClick={() => setPriority("second")}>
-                  <ListItemIcon>
-                    <BsFlag color="green" />
-                  </ListItemIcon>
-                  Prority 2
-                </MenuItem>
-                <MenuItem onClick={() => setPriority("thired")}>
-                  <ListItemIcon>
-                    <BsFlag color="red" />
-                  </ListItemIcon>
-                  Prority 3
-                </MenuItem>
-                <MenuItem onClick={() => setPriority("four")}>
-                  <ListItemIcon>
-                    <BsFlag />
-                  </ListItemIcon>
-                  Prority 4
-                </MenuItem>
-              </Menu>
-              <Tooltip
-                className={styles.tooltipCustomClass}
-                title="Goto Pro"
-                placement="bottom-start"
-                arrow
-              >
-                <Box className={styles.leftSide__alarmIcon}>
-                  <BsAlarm />
-                </Box>
-              </Tooltip>
-            </Box>
-          </Box>
-          <Box className={styles.actionBtn}>
-            <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancel
-            </Button>
-            <Button
-              onClick={addTask}
-              sx={{ marginLeft: "10px" }}
-              variant="contained"
-              color="primary"
-            >
-              Update Task
-            </Button>
-          </Box>
-          <Box sx={{ margin: "20px 0px" }}>
+          <Box
+            sx={{
+              backgroundColor: (theme) => theme.palette.secondary.main,
+              p: 2,
+              borderBottom: "1px solid gray",
+              borderRadius: "10px 10px 0px 0px",
+            }}
+          >
             <Typography
-              sx={{ fontSize: "14px", fontWeight: 400 }}
-              variant="h1"
-              color="initial"
+              sx={{ fontSize: "16px", fontWeight: 700 }}
+              id="modal-modal-title"
+              variant="h6"
+              component="h2"
             >
-              Attacment
+              Edit Task
             </Typography>
-            <Box className={styles.AttacmentImageContainer}>
-              {taskImage?.map((image) => (
-                <TaskImage key={image.id} data={image} />
-              ))}
-            </Box>
           </Box>
-          <Box sx={{ margin: "10px 0px" }}>
-            <Stack direction="row" alignItems="center" sx={{ mt: 2 }}>
-              <Button
-                sx={{ pt: 1, pb: 1 }}
-                fullWidth
-                variant="contained"
-                component="label"
-              >
-                Select Image
-                <input
-                  multiple
-                  hidden
-                  accept="image/*"
-                  type="file"
-                  ref={fileEl}
+
+          <Box
+            sx={{
+              margin: "6px 0px",
+              py: 2,
+              px: 1.5,
+              maxHeight: "60vh",
+              overflowY: "scroll",
+            }}
+          >
+
+            {/* edit task  */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                {/* task name  */}
+                <Box sx={{ margin: "10px 0px 10px" }}>
+                  <Controller
+                    name="name"
+                    control={control}
+                    rules={{
+                      required: "Please add task name",
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        InputLabelProps={{ shrink: true }}
+                        label="Task Name"
+                        size="small"
+                      />
+                    )}
+                  />
+                  {errors.name && (
+                    <Typography
+                      sx={{ fontSize: "12px", fontWeight: "400" }}
+                      variant="overline"
+                      display="block"
+                      gutterBottom
+                      color={"primary"}
+                    >
+                      {errors.name.message}
+                    </Typography>
+                  )}
+                </Box>
+
+                {/* task desc  */}
+                <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                  <Controller
+                    name="desc"
+                    control={control}
+                    theme="snow"
+                    modules={modules}
+                    render={({ field }) => (
+                      <ReactQuill
+                        {...field}
+                        placeholder={"Write Description"}
+                        onChange={(text) => {
+                          field.onChange(text);
+                        }}
+                      />
+                    )}
+                  />
+                </Box>
+
+                {/* task users  */}
+                {/* <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                <UserSelect
+                  personName={personName}
+                  setPersonName={setPersonName}
+                  alluser={users}
                 />
-                <FileUploadIcon />
-              </Button>
-            </Stack>
+              </Box> */}
+
+                {/* task remain  */}
+                <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                  <Controller
+                    name="remain"
+                    control={control}
+                    rules={{
+                      required: "Please add remain time",
+                    }}
+                    render={({ field }) => (
+                      <DateTimePicker
+                        label="Remain Date"
+                        disablePast
+                        renderInput={(params) => (
+                          <TextField fullWidth {...params} />
+                        )}
+                        {...field}
+                      />
+                    )}
+                  />
+                  {errors.remain && (
+                    <Typography
+                      sx={{ fontSize: "12px", fontWeight: "400" }}
+                      variant="overline"
+                      display="block"
+                      gutterBottom
+                      color={"primary"}
+                    >
+                      {errors.remain.message}
+                    </Typography>
+                  )}
+                </Box>
+
+                {/* task prioroty  */}
+                <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                  <Tooltip title="set priority" placement="top-start" arrow>
+                    <Box>
+                      <Controller
+                        name="priority"
+                        autoWidth
+                        size="small"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            sx={{
+                              color: "#fff",
+                              paddingRight: "0px",
+                              position: "static",
+                              "& .MuiSvgIcon-root": {
+                                color: "white",
+                              },
+                              "& .MuiSelect-select": {
+                                paddingRight: "0px",
+                              },
+                              "& .MuiOutlinedInput-root": {
+                                position: "static",
+                              },
+                              "& .Mui-focused": {
+                                position: "static",
+                              },
+                            }}
+                            {...field}
+                          >
+                            <MenuItem value="first">
+                              <BsFlag color="yellow" />
+                            </MenuItem>
+                            <MenuItem value="second">
+                              <BsFlag color="green" />
+                            </MenuItem>
+                            <MenuItem value="thired">
+                              <BsFlag color="red" />
+                            </MenuItem>
+                            <MenuItem value="four">
+                              <BsFlag color="black" />
+                            </MenuItem>
+                          </Select>
+                        )}
+                      />
+                    </Box>
+                  </Tooltip>
+                </Box>
+                {/* popup footer  */}
+                <Box
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <Button
+                    onClick={handleClose}
+                    sx={{ marginRight: "10px" }}
+                    variant="contained"
+                    color="secondary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="contained" color="primary">
+                    Edit Task
+                  </Button>
+                </Box>
+            </form>
+
+
+
           </Box>
-          <Box className={styles.actionBtn}>
-            <Button onClick={handleClose} variant="contained" color="secondary">
-              Cancel
-            </Button>
-            <Button
-              onClick={uploadImage}
-              sx={{ marginLeft: "10px" }}
-              variant="contained"
-              color="primary"
-            >
-              Upload Image
-            </Button>
-          </Box>
+
         </Box>
       </Modal>
     </>

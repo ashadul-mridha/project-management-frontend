@@ -20,7 +20,6 @@ import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import Typography from '@mui/material/Typography'
 
 
 
@@ -145,7 +144,7 @@ export default function PrimarySearchAppBar() {
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       {userRole === "admin" ? (
-        <>
+        <Box>
           <MenuItem>
             <Link style={navigateLinkStyle} to="/profile">
               Profile
@@ -161,25 +160,21 @@ export default function PrimarySearchAppBar() {
               All User
             </Link>
           </MenuItem>
-          <MenuItem onClick={() => logout()}>
-            <Typography variant="caption" sx={navigateLinkStyle}>
-              Logout
-            </Typography>
+          <MenuItem sx={navigateLinkStyle} onClick={() => logout()}>
+            Logout
           </MenuItem>
-        </>
+        </Box>
       ) : (
-        <>
+        <Box>
           <MenuItem>
             <Link style={navigateLinkStyle} to="/profile">
               Profile
             </Link>
           </MenuItem>
-          <MenuItem onClick={() => logout()}>
-            <Typography variant="caption" sx={navigateLinkStyle}>
-              Logout
-            </Typography>
+          <MenuItem sx={navigateLinkStyle} onClick={() => logout()}>
+            Logout
           </MenuItem>
-        </>
+        </Box>
       )}
     </Menu>
   );
