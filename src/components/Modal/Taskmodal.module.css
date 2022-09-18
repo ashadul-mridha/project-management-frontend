@@ -69,18 +69,10 @@
     cursor: pointer;
 }
 
-/* action button section  */
-
-.actionBtn{
-    display: flex;
-    justify-content: flex-end;
-    margin: 5px 0px;
-}
-
-
-/* attacment image container  */
-.AttacmentImageContainer{
-    display: grid;
-    grid-template-columns: repeat(5 , 1fr) ;
-    grid-gap: 10px;
+/* close button  */
+.closeBtn{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #DB4C3F;
 }
