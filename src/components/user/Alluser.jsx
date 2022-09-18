@@ -1,4 +1,4 @@
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Box, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import { format } from "date-fns";
@@ -21,7 +21,10 @@ export default function Alluser() {
     {
       field: "image",
       headerName: "Avatar",
+      headerAlign: "center",
+      align: "center",
       width: 80,
+      headerClassName: "super-app-theme--header",
       renderCell: (params) => (
         <Avatar
           src={`${process.env.REACT_APP_URL}/images/uploads/user/${params.row.image}`}
@@ -30,12 +33,29 @@ export default function Alluser() {
       sortable: false,
       filterable: false,
     },
-    { field: "name", headerName: "Name", width: 150 },
-    { field: "email", headerName: "Email", width: 170 },
+    {
+      field: "name",
+      headerName: "Name",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      align: "center",
+      width: 150,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      align: "center",
+      width: 170,
+    },
     {
       field: "userRole",
       headerName: "Role",
       width: 100,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
       type: "singleSelect",
       valueOptions: ["user", "admin"],
       editable: true,
@@ -44,13 +64,19 @@ export default function Alluser() {
       field: "createdAt",
       headerName: "Created At",
       width: 150,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
       renderCell: (params) =>
         format(new Date(params.row.createdAt), "dd/MM/yyyy"),
     },
     {
       field: "active",
       headerName: "Active",
+      headerClassName: "super-app-theme--header",
       width: 70,
+      headerAlign: "center",
+      align: "center",
       type: "boolean",
     },
   ];
@@ -82,7 +108,11 @@ export default function Alluser() {
       >
         All User
       </Typography>
-      <div style={{ width: "100%" }}>
+      <Box
+        sx={{
+          width: "100%",
+        }}
+      >
         <DataGrid
           autoHeight
           rows={users}
@@ -91,7 +121,7 @@ export default function Alluser() {
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         />
-      </div>
+      </Box>
     </>
   );
 }

@@ -1,25 +1,26 @@
-import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import AppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { alpha, styled } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import * as React from "react";
 // import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import HomeIcon from "@mui/icons-material/Home";
-import useNavbarContextHooks from "../../utils/hooks/useNavbarContext"
-import useAuthHooks from "../../utils/hooks/useAuth";
-import Button from '@mui/material/Button'
+import MoreIcon from "@mui/icons-material/MoreVert";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
+import useAuthHooks from "../../utils/hooks/useAuth";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+import Typography from '@mui/material/Typography'
 
 
 
@@ -63,12 +64,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
+ 
 export default function PrimarySearchAppBar() {
+
   
   const { showSideBar, setShowSideBar, setOpenAddProject } =
     useNavbarContextHooks();
-  const { logout } = useAuthHooks();
+  const { logout, getUser } = useAuthHooks();
+
+  const { userRole } = getUser();
   
   const useClick = () => {
     setShowSideBar(!showSideBar);
@@ -95,6 +99,12 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const navigateLinkStyle = {
+    fontSize: 16,
+    fontWeight: 400,
+    color: "#DB4C3F",
   };
 
   const menuId = "primary-search-account-menu";
@@ -134,16 +144,43 @@ export default function PrimarySearchAppBar() {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <MenuItem>
-        <Link to="/profile">Profile</Link>
-      </MenuItem>
-      <MenuItem>
-        <Link to="/adduser">Add User</Link>
-      </MenuItem>
-      <MenuItem>
-        <Link to="/alluser">All User</Link>
-      </MenuItem>
-      <MenuItem onClick={() => logout()}>Log Out</MenuItem>
+      {userRole === "admin" ? (
+        <>
+          <MenuItem>
+            <Link style={navigateLinkStyle} to="/profile">
+              Profile
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link style={navigateLinkStyle} to="/adduser">
+              Add User
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link style={navigateLinkStyle} to="/alluser">
+              All User
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={() => logout()}>
+            <Typography variant="caption" sx={navigateLinkStyle}>
+              Logout
+            </Typography>
+          </MenuItem>
+        </>
+      ) : (
+        <>
+          <MenuItem>
+            <Link style={navigateLinkStyle} to="/profile">
+              Profile
+            </Link>
+          </MenuItem>
+          <MenuItem onClick={() => logout()}>
+            <Typography variant="caption" sx={navigateLinkStyle}>
+              Logout
+            </Typography>
+          </MenuItem>
+        </>
+      )}
     </Menu>
   );
 
@@ -164,16 +201,19 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton
-          onClick={() => setOpenAddProject(true)}
-          size="large"
-          color="inherit"
-        >
-          <AddIcon />
-        </IconButton>
-        <p>Add Project</p>
-      </MenuItem>
+      {userRole === "admin" && (
+        <MenuItem>
+          <IconButton
+            onClick={() => setOpenAddProject(true)}
+            size="large"
+            color="inherit"
+          >
+            <AddIcon />
+          </IconButton>
+          <p>Add Project</p>
+        </MenuItem>
+      )}
+
       {/* <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
@@ -263,9 +303,16 @@ export default function PrimarySearchAppBar() {
             >
               <AddIcon />
             </IconButton> */}
-            <Button onClick={() => setOpenAddProject(true)} variant="text" color="secondary">
-              Add Project
-            </Button>
+            {userRole === "admin" && (
+              <Button
+                onClick={() => setOpenAddProject(true)}
+                variant="text"
+                color="secondary"
+              >
+                Add Project
+              </Button>
+            )}
+
             {/* <IconButton
               size="large"
               aria-label="show 4 new mails"
