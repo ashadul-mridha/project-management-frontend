@@ -28,3 +28,16 @@
 .taskImageContainer:hover > .taskImageAction{
     visibility: visible;
 }
+
+/* task attacment image container  */
+.AttacmentImageContainer{
+    display: grid;
+    grid-template-columns: repeat(3 , 1fr) ;
+    grid-gap: 10px;
+}
+
+.actionBtn{
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px 0px;
+}

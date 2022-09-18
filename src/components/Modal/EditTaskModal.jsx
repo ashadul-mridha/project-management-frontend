@@ -10,6 +10,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import Tooltip from "@mui/material/Tooltip";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { BsFlag } from "react-icons/bs";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
@@ -21,6 +25,9 @@ import UserSelect from "../Form/UserSelect";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import axios from "axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import EditTaskDetailsForm from "../Task/EditTaskDetailsForm";
+import TaskAccordion from "../MuiCustomComponent/TaskAccordion";
+import TaskAttacment from "../Task/TaskAttacment";
 
 // import {
 
@@ -59,9 +66,11 @@ const EditTaskModal = () => {
     reset,
     formState: { errors },
   } = useForm({ defaultValues: { priority: "four" } });
+  // accordion of task
+  const [expanded, setExpanded] = React.useState('panel1');
 
   // state of api calling data
-  const [personName, setPersonName] = React.useState([]);
+  // const [personName, setPersonName] = React.useState([]);
   // const [users, setUsers] = React.useState([]);
 
 
@@ -83,16 +92,6 @@ const EditTaskModal = () => {
         priority: res.data.data.priority,
         remain: res.data.data.remain,
       });
-      // setPersonName([...res.data.data.users]);
-
-      // const userRes = await axios.get("http://localhost:5000/api/user", {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-      // setUsers(userRes.data.data);
-
-      // setTaskImage(res.data.data?.taskImages);
     };
     fetchData();
   }, [taskId, token, callTask, reset]);
@@ -101,6 +100,11 @@ const EditTaskModal = () => {
   // close task model
   const handleClose = () => {
     setOpenEditTask(false);
+  };
+
+  // accordion click
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
   // react quill modules
@@ -136,50 +140,6 @@ const EditTaskModal = () => {
       });
       setCallTask((prevState) => !prevState);
     }
-
-    // check task user added or not
-    // if (personName.length > 0) {
-    //   // create form data
-    //   const formData = new FormData();
-    //   formData.append("name", data.name);
-    //   formData.append("desc", data.name);
-    //   formData.append("priority", data.priority);
-    //   formData.append("remain", data.remain);
-    //   formData.append("assignUser", JSON.stringify(personName));
-    //   Array.from(data.image).forEach((image) => {
-    //     formData.append("image", image);
-    //   });
-
-    //   // inset task all data
-    //   const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
-    //   const res = await axios({
-    //     method: "post",
-    //     url: url,
-    //     data: formData,
-    //     headers: {
-    //       "Content-Type": `multipart/form-data`,
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-
-    //   if (res.data.status) {
-    //     setShowNotification({
-    //       ...showNotification,
-    //       status: true,
-    //       message: "Task Create Successfull",
-    //     });
-    //     handleClose();
-    //     setCallTask((prevState) => !prevState);
-    //   } else {
-    //     setShowNotification({
-    //       ...showNotification,
-    //       status: true,
-    //       message: res.data.message,
-    //     });
-    //     handleClose();
-    //     setCallTask((prevState) => !prevState);
-    //   }
-    // }
   };
 
   return (
@@ -219,173 +179,78 @@ const EditTaskModal = () => {
             }}
           >
 
-            {/* edit task  */}
-            <form onSubmit={handleSubmit(onSubmit)}>
-                {/* task name  */}
-                <Box sx={{ margin: "10px 0px 10px" }}>
-                  <Controller
-                    name="name"
-                    control={control}
-                    rules={{
-                      required: "Please add task name",
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        fullWidth
-                        InputLabelProps={{ shrink: true }}
-                        label="Task Name"
-                        size="small"
-                      />
-                    )}
-                  />
-                  {errors.name && (
-                    <Typography
-                      sx={{ fontSize: "12px", fontWeight: "400" }}
-                      variant="overline"
-                      display="block"
-                      gutterBottom
-                      color={"primary"}
-                    >
-                      {errors.name.message}
-                    </Typography>
-                  )}
-                </Box>
+            <Accordion
+              expanded={expanded === "panel1"}
+              onChange={handleChange("panel1")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1bh-content"
+                id="panel1bh-header"
+              >
+                <Typography>Task</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <EditTaskDetailsForm />
+              </AccordionDetails>
+            </Accordion>
 
-                {/* task desc  */}
-                <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                  <Controller
-                    name="desc"
-                    control={control}
-                    theme="snow"
-                    modules={modules}
-                    render={({ field }) => (
-                      <ReactQuill
-                        {...field}
-                        placeholder={"Write Description"}
-                        onChange={(text) => {
-                          field.onChange(text);
-                        }}
-                      />
-                    )}
-                  />
-                </Box>
+            <Accordion
+              expanded={expanded === "panel2"}
+              onChange={handleChange("panel2")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2bh-content"
+                id="panel2bh-header"
+              >
+                <Typography>Attacment</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <TaskAttacment />
+              </AccordionDetails>
+            </Accordion>
 
-                {/* task users  */}
-                {/* <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                <UserSelect
-                  personName={personName}
-                  setPersonName={setPersonName}
-                  alluser={users}
-                />
-              </Box> */}
+            <Accordion
+              expanded={expanded === "panel3"}
+              onChange={handleChange("panel3")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel4bh-content"
+                id="panel4bh-header"
+              >
+                <Typography>Add User</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                  Integer sit amet egestas eros, vitae egestas augue. Duis vel
+                  est augue.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
 
-                {/* task remain  */}
-                <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                  <Controller
-                    name="remain"
-                    control={control}
-                    rules={{
-                      required: "Please add remain time",
-                    }}
-                    render={({ field }) => (
-                      <DateTimePicker
-                        label="Remain Date"
-                        disablePast
-                        renderInput={(params) => (
-                          <TextField fullWidth {...params} />
-                        )}
-                        {...field}
-                      />
-                    )}
-                  />
-                  {errors.remain && (
-                    <Typography
-                      sx={{ fontSize: "12px", fontWeight: "400" }}
-                      variant="overline"
-                      display="block"
-                      gutterBottom
-                      color={"primary"}
-                    >
-                      {errors.remain.message}
-                    </Typography>
-                  )}
-                </Box>
-
-                {/* task prioroty  */}
-                <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                  <Tooltip title="set priority" placement="top-start" arrow>
-                    <Box>
-                      <Controller
-                        name="priority"
-                        autoWidth
-                        size="small"
-                        control={control}
-                        render={({ field }) => (
-                          <Select
-                            sx={{
-                              color: "#fff",
-                              paddingRight: "0px",
-                              position: "static",
-                              "& .MuiSvgIcon-root": {
-                                color: "white",
-                              },
-                              "& .MuiSelect-select": {
-                                paddingRight: "0px",
-                              },
-                              "& .MuiOutlinedInput-root": {
-                                position: "static",
-                              },
-                              "& .Mui-focused": {
-                                position: "static",
-                              },
-                            }}
-                            {...field}
-                          >
-                            <MenuItem value="first">
-                              <BsFlag color="yellow" />
-                            </MenuItem>
-                            <MenuItem value="second">
-                              <BsFlag color="green" />
-                            </MenuItem>
-                            <MenuItem value="thired">
-                              <BsFlag color="red" />
-                            </MenuItem>
-                            <MenuItem value="four">
-                              <BsFlag color="black" />
-                            </MenuItem>
-                          </Select>
-                        )}
-                      />
-                    </Box>
-                  </Tooltip>
-                </Box>
-                {/* popup footer  */}
-                <Box
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <Button
-                    onClick={handleClose}
-                    sx={{ marginRight: "10px" }}
-                    variant="contained"
-                    color="secondary"
-                  >
-                    Cancel
-                  </Button>
-                  <Button type="submit" variant="contained" color="primary">
-                    Edit Task
-                  </Button>
-                </Box>
-            </form>
-
-
-
+            <Accordion
+              expanded={expanded === "panel4"}
+              onChange={handleChange("panel4")}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel3bh-content"
+                id="panel3bh-header"
+              >
+                <Typography>Comment</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                  Integer sit amet egestas eros, vitae egestas augue. Duis vel
+                  est augue.
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
           </Box>
-
         </Box>
       </Modal>
     </>

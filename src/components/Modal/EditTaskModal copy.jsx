@@ -147,26 +147,8 @@ const EditTaskModal = () => {
         },
       });
 
-      // task update Request
-      // const ImgRes = await axios.post(
-      //   `${process.env.REACT_APP_API_KEY}/task/image`,
-      //   formData,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // );
-
-      // const url = `${process.env.REACT_APP_API_KEY}/task/image`;
-
-      // const ImgRes = await insertFormData(url, formData);
-      // console.log("imageres",ImgRes.data);
 
       if (ImgRes.data.status) {
-        // handleClose();
-        
-      
         setShowNotification({
           ...showNotification,
           status: true,
