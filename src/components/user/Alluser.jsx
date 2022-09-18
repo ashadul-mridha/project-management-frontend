@@ -1,49 +1,97 @@
+import { Avatar, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import * as React from "react";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+import axios from "axios";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 export default function Alluser() {
+  const { getToken } = useAuthHooks();
+
+  // get all user
+  const userUrl = "http://localhost:5000/api/user";
+  const token = getToken();
+
+  //states
+  const [users, setUsers] = useState([]);
+  const [pageSize, setPageSize] = useState(5);
+
+  //table colume
+  const columns = [
+    {
+      field: "image",
+      headerName: "Avatar",
+      width: 80,
+      renderCell: (params) => (
+        <Avatar
+          src={`${process.env.REACT_APP_URL}/images/uploads/user/${params.row.image}`}
+        />
+      ),
+      sortable: false,
+      filterable: false,
+    },
+    { field: "name", headerName: "Name", width: 150 },
+    { field: "email", headerName: "Email", width: 170 },
+    {
+      field: "userRole",
+      headerName: "Role",
+      width: 100,
+      type: "singleSelect",
+      valueOptions: ["user", "admin"],
+      editable: true,
+    },
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 150,
+      renderCell: (params) =>
+        format(new Date(params.row.createdAt), "dd/MM/yyyy"),
+    },
+    {
+      field: "active",
+      headerName: "Active",
+      width: 70,
+      type: "boolean",
+    },
+  ];
+
+  //get all users
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(userUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUsers(res.data.data);
+    };
+
+    fetchData();
+  }, [token]);
+
   return (
-    <div style={{ height: 400, width: "100%" }}>
-      <DataGrid
-        autoHeight
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
-    </div>
+    <>
+      <Typography
+        sx={{
+          margin: "5px 0px 20px 0px",
+          fontSize: "20px",
+          fontWeight: "500",
+        }}
+        variant="h2"
+        color="primary"
+      >
+        All User
+      </Typography>
+      <div style={{ width: "100%" }}>
+        <DataGrid
+          autoHeight
+          rows={users}
+          columns={columns}
+          rowsPerPageOptions={[5, 10, 20]}
+          pageSize={pageSize}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+        />
+      </div>
+    </>
   );
 }
