@@ -1,14 +1,13 @@
 import React from "react";
 import { Typography, Box, IconButton, Tooltip, Avatar } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-// import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import CustomMenu from "../MuiCustomComponent/CustomMenu";
 // import UsersList from "../MuiCustomComponent/UsersList";
 
 const CommentCard = ({ data }) => {
+  
   const { setOpenEditTask, setEditTaskId } = useNavbarContextHooks();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -25,7 +24,7 @@ const CommentCard = ({ data }) => {
 
   const menuItemData = [
     { icon: <DeleteOutlineIcon />, name: "Delete Comment" },
-    { icon: <ModeEditOutlineIcon />, name: "Edit Comment" },
+    // { icon: <ModeEditOutlineIcon />, name: "Edit Comment" },
   ];
 
   const compoId = "comment-menu";
@@ -61,8 +60,9 @@ const CommentCard = ({ data }) => {
               sx={{ p: 0, margin: "0px 5px 0px 0px" }}
               aria-label="check"
             >
-                <Avatar src={'lksfjlk'} />
-              {/* <MdCheckBoxOutlineBlank color="#eb8909" /> */}
+              <Avatar
+                src={`${process.env.REACT_APP_URL}/images/uploads/user/${data?.user.image}`}
+              />
             </IconButton>
             <Box>
               <Typography
@@ -70,7 +70,7 @@ const CommentCard = ({ data }) => {
                 variant="h6"
                 component="div"
               >
-                Ashadul Islam
+                {data?.user.name}
               </Typography>
 
               <Typography
@@ -80,9 +80,7 @@ const CommentCard = ({ data }) => {
                   fontWeight: "400",
                 }}
               >
-                12 Aug 2022
-                {/* {new Date(data.remain).toUTCString().substring(0, 16)} */}
-                {/* {data.remain.substring(0, 10)} */}
+                {new Date(data?.createdAt).toUTCString().substring(0, 16)}
               </Typography>
 
               <Typography
@@ -90,14 +88,11 @@ const CommentCard = ({ data }) => {
                 variant="subtitle2"
                 component="div"
               >
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo, voluptas?
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, repellat eaque. Voluptatibus dicta odit excepturi expedita praesentium eveniet debitis sequi!
+                {data?.text}
               </Typography>
             </Box>
           </Box>
-          <Box>
-            {/* <UsersList data={data.users} avatarSize={25} /> */}
-          </Box>
+          <Box>{/* <UsersList data={data.users} avatarSize={25} /> */}</Box>
         </Box>
         <Tooltip title="Edit Task">
           <IconButton

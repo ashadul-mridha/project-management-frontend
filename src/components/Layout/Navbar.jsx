@@ -1,4 +1,3 @@
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,6 +15,7 @@ import * as React from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { Avatar } from "@mui/material";
 import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import useAuthHooks from "../../utils/hooks/useAuth";
@@ -71,7 +71,7 @@ export default function PrimarySearchAppBar() {
     useNavbarContextHooks();
   const { logout, getUser } = useAuthHooks();
 
-  const { userRole } = getUser();
+  const { userRole , image } = getUser();
   
   const useClick = () => {
     setShowSideBar(!showSideBar);
@@ -237,7 +237,10 @@ export default function PrimarySearchAppBar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar
+            sx={{ width: 33, height: 33 }}
+            src={`${process.env.REACT_APP_URL}/images/uploads/user/${image}`}
+          />
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -335,7 +338,10 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <Avatar
+                sx={{ width: 33, height: 33 }}
+                src={`${process.env.REACT_APP_URL}/images/uploads/user/${image}`}
+              />
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

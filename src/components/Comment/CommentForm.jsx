@@ -10,7 +10,7 @@ const CommentForm = () => {
     setShowCommentForm((prevState) => !prevState);
   };
 
-  console.log(showCommentForm);
+  // console.log(showCommentForm);
   return (
     <>
       {!showCommentForm ? (
