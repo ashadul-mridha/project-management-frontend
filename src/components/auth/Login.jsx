@@ -11,9 +11,11 @@ import logoImage from "../../assets/image/login.png";
 // react hooks form
 import { Controller, useForm } from "react-hook-form";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 const Login = () => {
 
+  const {showNotification, setShowNotification} = useNavbarContextHooks();
   const { setUserToBrowser } = useAuthHooks();
   let navigate = useNavigate();
 
@@ -30,6 +32,13 @@ const Login = () => {
         setUserToBrowser(userData);
         navigate(`/`);
 
+    } else {
+
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: res.data.message,
+      });
     }
 
 

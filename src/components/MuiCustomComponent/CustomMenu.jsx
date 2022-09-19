@@ -46,7 +46,7 @@ const CustomMenu = ({ anchorEl, setAnchorEl, open, menuItemData, compoId }) => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {menuItemData.map((item) => (
-          <MenuItem key={item.name}>
+          <MenuItem onClick={item?.action} key={item.name}>
             {item.icon && item.icon}
             {item.name && item.name}
           </MenuItem>

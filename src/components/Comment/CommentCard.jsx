@@ -1,14 +1,20 @@
-import React from "react";
-import { Typography, Box, IconButton, Tooltip, Avatar } from "@mui/material";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { Avatar, Box, IconButton, Typography } from "@mui/material";
+import axios from "axios";
+import React from "react";
+import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import CustomMenu from "../MuiCustomComponent/CustomMenu";
 // import UsersList from "../MuiCustomComponent/UsersList";
 
 const CommentCard = ({ data }) => {
   
-  const { setOpenEditTask, setEditTaskId } = useNavbarContextHooks();
+  const { setOpenEditTask, setEditTaskId, setCallTask } =
+    useNavbarContextHooks();
+  const { getToken, getUser } = useAuthHooks();
+  const token = getToken();
+  const { userRole , userid } = getUser();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -22,8 +28,20 @@ const CommentCard = ({ data }) => {
     setEditTaskId(data.id);
   };
 
+  const handleDeleteComment = async () => {
+    const url = `${process.env.REACT_APP_API_KEY}/comment/${data?.id}`;
+    const res = await axios.delete(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.data.status) {
+      setCallTask((prevState) => !prevState);
+    }
+  }
+
   const menuItemData = [
-    { icon: <DeleteOutlineIcon />, name: "Delete Comment" },
+    { icon: <DeleteOutlineIcon />, name: "Delete Comment", action : handleDeleteComment },
     // { icon: <ModeEditOutlineIcon />, name: "Edit Comment" },
   ];
 
@@ -94,7 +112,7 @@ const CommentCard = ({ data }) => {
           </Box>
           <Box>{/* <UsersList data={data.users} avatarSize={25} /> */}</Box>
         </Box>
-        <Tooltip title="Edit Task">
+        {userRole === "admin" ? (
           <IconButton
             onClick={handleClick}
             size="small"
@@ -105,7 +123,20 @@ const CommentCard = ({ data }) => {
           >
             <MoreHorizIcon />
           </IconButton>
-        </Tooltip>
+        ) : (
+          data?.user.id === userid && (
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? compoId : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+            >
+              <MoreHorizIcon />
+            </IconButton>
+          )
+        )}
       </Box>
       <CustomMenu
         anchorEl={anchorEl}

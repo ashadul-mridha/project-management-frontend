@@ -10,9 +10,9 @@ const TaskImage = ({data}) => {
     const { setCallTask } = useNavbarContextHooks();
 
     const handleImageDelete = async (id) => {
-        const url = `http://localhost:5000/api/task/image/${id}`;
+        const url = `${process.env.REACT_APP_API_KEY}/task/image/${id}`;
         const res = await deleteById(url);
-        console.log(res);
+        // console.log(res);
         if (res.data.status) {
             setCallTask( (prevState) => !prevState)
         }
