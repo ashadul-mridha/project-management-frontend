@@ -6,7 +6,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import CustomMenu from "../MuiCustomComponent/CustomMenu";
-import UsersList from "../MuiCustomComponent/UsersList";
+// import UsersList from "../MuiCustomComponent/UsersList";
 
 const CommentCard = ({ data }) => {
   const { setOpenEditTask, setEditTaskId } = useNavbarContextHooks();
@@ -91,6 +91,7 @@ const CommentCard = ({ data }) => {
                 component="div"
               >
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo, voluptas?
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, repellat eaque. Voluptatibus dicta odit excepturi expedita praesentium eveniet debitis sequi!
               </Typography>
             </Box>
           </Box>

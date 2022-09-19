@@ -10,7 +10,7 @@ import TaskAttacment from "../Task/TaskAttacment";
 import { useState } from "react";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import EditTaskDetailsForm from "../Task/EditTaskDetailsForm";
-import CommentCard from "../Comment/CommentCard";
+import Comment from "../Comment/Comment";
  
 const style = {
   position: "absolute",
@@ -155,7 +155,7 @@ const EditTaskModal = () => {
                 <Typography>Comment</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <CommentCard />
+                <Comment />
               </AccordionDetails>
             </Accordion>
           </Box>
