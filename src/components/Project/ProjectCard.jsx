@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { Box, Button } from "@mui/material";
 import React from "react";
+import { useDrop } from "react-dnd";
 import { MdAdd } from "react-icons/md";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import styles from "./project.module.css";
@@ -8,15 +10,31 @@ import ProjectStatusHeader from "./ProjectStatusHeader";
 
 const ProjectCard = ({ data }) => {
 
+
   const {id , projectId} = data;
-  const { setOpenAddTask , setProjectId, setStatusId } =
+  const { setOpenAddTask, setProjectId, setStatusId, taskStatusChange } =
     useNavbarContextHooks();
+
+    
+  const [{ isOver }, drop] = useDrop({
+    accept: "card",
+    drop: (item, monitor) => {
+      taskStatusChange(item.id , id);
+    },
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  });
+
+  // console.log(isOver);
 
   const handleAddTaskButton = () => {
     setOpenAddTask((prevState) => !prevState);
     setProjectId(projectId);
     setStatusId(id);
   };
+  
+  // console.log("taskDetails", data);
 
   return (
     <>
@@ -29,10 +47,12 @@ const ProjectCard = ({ data }) => {
         }}
       >
         <ProjectStatusHeader header={data?.name} />
-        <Box className={styles.ProjectCardTaskWrapper}>
+
+        <Box ref={drop} className={styles.ProjectCardTaskWrapper}>
           {data?.tasks.map((data, index) => (
-            <ProjectcardTask key={index} data={data} />
+            <ProjectcardTask key={data.id} data={data} />
           ))}
+
         </Box>
         <Button
           sx={{ marginTop: "10px" }}

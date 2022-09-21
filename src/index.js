@@ -9,19 +9,24 @@ import NavbarContextProvider from './utils/providers/NavbarContextProvider';
 //date pickers
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// react dnd
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <>
     <BrowserRouter>
       <AppThemeProvider>
-        <NavbarContextProvider>
           <AuthContextProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <App />
-            </LocalizationProvider>
+            <NavbarContextProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DndProvider backend={HTML5Backend}>
+                  <App />
+                </DndProvider>
+              </LocalizationProvider>
+            </NavbarContextProvider>
           </AuthContextProvider>
-        </NavbarContextProvider>
       </AppThemeProvider>
     </BrowserRouter>
   </>
