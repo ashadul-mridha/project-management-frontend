@@ -65,7 +65,7 @@ const AddTaskModal = () => {
   const [users, setUsers] = React.useState(false);
 
   // get all user
-  const userUrl = "http://localhost:5000/api/user";
+  const userUrl = `${process.env.REACT_APP_API_KEY}/project/user/${projectId}`;
   const token = getToken();
 
   //calling api via useEffect
@@ -76,11 +76,14 @@ const AddTaskModal = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUsers(res.data.data);
+      setUsers(res.data);
     };
 
     fetchData();
-  }, [token]);
+  }, [token, userUrl]);
+
+  const projectUsers = users?.data?.map((singleUser) => singleUser.user);
+  // console.log(projectUsers);
 
   // close task model
   const handleClose = () => {
@@ -242,7 +245,7 @@ const AddTaskModal = () => {
                 <UserSelect
                   personName={personName}
                   setPersonName={setPersonName}
-                  alluser={users}
+                  alluser={projectUsers}
                 />
               </Box>
 
