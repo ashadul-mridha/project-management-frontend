@@ -53,8 +53,7 @@
     border: 1px solid rgba(31,96,194,.4);
 }
 .ProjectCardTaskWrapper{
-    /* height: auto; */
-    min-height: 150px;
+    height:  calc(100vh - 270px);
     max-height: calc(100vh - 270px);
     overflow-y: scroll;
 }

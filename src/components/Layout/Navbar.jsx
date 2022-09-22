@@ -262,15 +262,17 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ ml: 0 }}
-          >
-            <HomeIcon />
-          </IconButton>
+          <Link className="homeicon" to={"/"}>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ ml: 0 }}
+            >
+              <HomeIcon />
+            </IconButton>
+          </Link>
           {/* <Typography
             variant="h6"
             noWrap

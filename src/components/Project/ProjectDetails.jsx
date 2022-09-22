@@ -34,6 +34,8 @@ const ProjectDetails = () => {
     fetchData();
   }, [id, token, callTask]);
 
+  console.log('slug', projectDetailsData?.projectStatuses);
+
   return (
     <Box>
       <ViewHeader data={projectDetailsData} />

@@ -44,10 +44,21 @@ const ProjectcardTask = ({ data }) => {
             {data?.name}
           </Typography>
 
-          <div
+          <Typography
+            sx={{
+              color: "#808080",
+              fontSize: "12px",
+              fontWeight: "400",
+            }}
+          >
+            {new Date(data.remain).toUTCString().substring(0, 16)}
+          </Typography>
+
+          {/* <div
             style={{ fontSize: "12px" }}
-            dangerouslySetInnerHTML={{ __html: data.desc }}
-          ></div>
+            {new Date(data?.remain).toUTCString().substring(0, 16)}
+            // dangerouslySetInnerHTML={{ __html: data.desc }}
+          ></div> */}
         </Box>
       </Box>
     </>

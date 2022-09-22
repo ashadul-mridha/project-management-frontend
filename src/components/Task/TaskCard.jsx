@@ -1,11 +1,11 @@
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+// import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+// import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import CustomMenu from "../MuiCustomComponent/CustomMenu";
+// import CustomMenu from "../MuiCustomComponent/CustomMenu";
 import UsersList from "../MuiCustomComponent/UsersList";
 // react dnd
 import { useDrag } from "react-dnd";
@@ -33,10 +33,11 @@ const TaskCard = ({ data }) => {
     setEditTaskId(data.id);
   };
 
-  const menuItemData = [
-    { icon: <DeleteOutlineIcon />, name: "Delete Task" },
-    { icon: <ModeEditOutlineIcon />, name: "Edit Task" },
-  ];
+  // custom menu call to action 
+  // const menuItemData = [
+  //   { icon: <DeleteOutlineIcon />, name: "Delete Task" },
+  //   { icon: <ModeEditOutlineIcon />, name: "Edit Task" },
+  // ];
 
   const compoId = "account-menu";
 
@@ -115,7 +116,7 @@ const TaskCard = ({ data }) => {
             <UsersList data={data.users} avatarSize={25} />
           </Box>
         </Box>
-        <Tooltip title="Edit Task">
+        <Tooltip title="Task Action">
           <IconButton
             onClick={handleClick}
             size="small"
@@ -128,13 +129,13 @@ const TaskCard = ({ data }) => {
           </IconButton>
         </Tooltip>
       </Box>
-      <CustomMenu
+      {/* <CustomMenu
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         open={open}
         menuItemData={menuItemData}
         compoId={compoId}
-      />
+      /> */}
     </>
   );
 };
