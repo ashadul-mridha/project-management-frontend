@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import MainFilter from '../MainFilter/MainFilter';
 import useNavbarContextHooks from '../../utils/hooks/useNavbarContext';
 import ProjectAccordion from '../projectAccordion/ProjectAccordion';
+import LeftbarModule from './LeftbarModule';
 
 
 const LeftBar = () => {
@@ -41,7 +42,8 @@ const LeftBar = () => {
           }
         >
           <MainFilter />
-          <ProjectAccordion />
+          {/* <ProjectAccordion /> */}
+          <LeftbarModule />
         </Box>
       </>
     );

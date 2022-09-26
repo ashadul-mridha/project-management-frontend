@@ -51,7 +51,7 @@ const AllProject = () => {
     fetchData();
   }, [callProject]);
 
-  // console.log('project',data)
+  console.log('projectData',data)
   
   return (
     <>
