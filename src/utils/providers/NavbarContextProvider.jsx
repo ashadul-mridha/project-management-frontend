@@ -5,10 +5,9 @@ import useAuthHooks from "../hooks/useAuth";
 export const NavContext = createContext();
 
 const NavbarContextProvider = ({ children }) => {
-
-  const { getToken} = useAuthHooks();
+  const { getToken } = useAuthHooks();
   const token = getToken();
-  
+
   const [showSideBar, setShowSideBar] = useState(true);
   const [showProject, setShowProject] = useState(true);
 
@@ -18,13 +17,19 @@ const NavbarContextProvider = ({ children }) => {
   const [openAddTask, setOpenAddTask] = React.useState(false);
   //add task modal
   const [openEditTask, setOpenEditTask] = React.useState(false);
+  //add meeting modal
+  const [openAddMeeting, setOpenAddMeeting] = React.useState(false);
+
   const [projectId, setProjectId] = React.useState();
   const [statusId, setStatusId] = React.useState();
   // edit task id
   const [taskId, setEditTaskId] = useState();
 
   // notification show
-  const [showNotification, setShowNotification] = React.useState({ status : false , message: ''});
+  const [showNotification, setShowNotification] = React.useState({
+    status: false,
+    message: "",
+  });
 
   //api call again
   const [callProject, setCallProject] = useState(false);
@@ -37,7 +42,6 @@ const NavbarContextProvider = ({ children }) => {
   };
 
   const taskStatusChange = async (taskId, statusId) => {
-    
     const data = { statusId: statusId };
 
     const res = await axios.put(
@@ -50,15 +54,17 @@ const NavbarContextProvider = ({ children }) => {
       }
     );
 
-      console.log(res.data);
+    // console.log(res.data);
 
-    if(res.data.status){
+    if (res.data.status) {
       console.log(res.data);
       setCallProject((prevState) => !prevState);
       setCallTask((prevState) => !prevState);
     }
     console.log(taskId, statusId);
   };
+
+  console.log("meeting", openAddMeeting);
 
   return (
     <NavContext.Provider
@@ -87,6 +93,8 @@ const NavbarContextProvider = ({ children }) => {
         statusId,
         setStatusId,
         taskStatusChange,
+        openAddMeeting,
+        setOpenAddMeeting,
       }}
     >
       {children}

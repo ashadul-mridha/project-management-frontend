@@ -8,6 +8,7 @@ import useAuthHooks from './utils/hooks/useAuth';
 import { useEffect } from 'react';
 import EditTaskModal from './components/Modal/EditTaskModal';
 import Notification from './components/Notification/Notification';
+import AddMeetingModal from './components/Modal/AddMeetingModal';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
       <AddProjectModal />
       <AddTaskModal />
       <EditTaskModal />
+      <AddMeetingModal />
       <Notification />
     </>
   );

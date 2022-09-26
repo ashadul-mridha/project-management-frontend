@@ -1,0 +1,60 @@
+
+.allProject{
+    margin-right: -5px;
+    margin-top: 5px;
+}
+.allMeeting> a{
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.allMeeting> a > p{
+    margin: 0px;
+}
+.allMeeting > a:hover{
+    background-color: #EEEEEE;
+}
+
+.allMeeting> a > .allMeeting__imgWithTitle{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.allMeeting__imgWithTitle__img{
+    /* height: 30px; */
+    width: 30px;
+}
+.allMeeting__imgWithTitle__img > img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.allMeeting> a > .allMeeting__imgWithTitle > p{
+    font-size: 14px;
+    margin: 0px 0px 0px 8px;
+    color: #000000;
+}
+
+.allMeeting> a > .allMeeting__notification{
+    font-size: 14px;
+    color: #aaaaaa;
+}
+.allMeeting> a >  .allMeeting__notification__delete{
+    display: none;
+}
+.allMeeting:hover{
+    cursor: pointer;
+}
+.allMeeting:hover > a > .allMeeting__notification{
+    display: none;
+}
+.allMeeting:hover > a >  .allMeeting__notification__delete{
+    display: block;
+}
