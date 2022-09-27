@@ -113,7 +113,7 @@ const AddMeetingModal = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log("data", data, personName );
+    console.log("data", data, personName);
     // check task user added or not
     // if (personName.length > 0) {
     //   // create form data
@@ -366,14 +366,8 @@ const AddMeetingModal = () => {
                       <Controller
                         name="project"
                         control={control}
-                        rules={{
-                          required: "Please select project",
-                        }}
                         render={({ field }) => (
                           <Select {...field} fullWidth size="small">
-                            {/* <MenuItem value={"selectproject"}>
-                              Select Project
-                            </MenuItem> */}
                             {projects?.map((project) => (
                               <MenuItem key={project.id} value={project.id}>
                                 {project.name}
@@ -447,7 +441,7 @@ const AddMeetingModal = () => {
                 Cancel
               </Button>
               <Button type="submit" variant="contained" color="primary">
-                Add Task
+                Add Meeting
               </Button>
             </Box>
           </form>
