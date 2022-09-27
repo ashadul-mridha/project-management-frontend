@@ -1,26 +1,22 @@
+import { Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
 import React, { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "../../../src/App.css";
-
-import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { Select, Stack, Typography } from "@mui/material";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import { BsFlag } from "react-icons/bs";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 // react hook form
 import { Controller, useForm } from "react-hook-form";
-import UserSelect from "../Form/UserSelect";
 
 // date time picker
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import axios from "axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
+// import SelectProject from "../Form/SelectProject";
+import UserSelect from "../Form/UserSelect";
 
 // import {
 
@@ -34,39 +30,37 @@ const style = {
   boxShadow: 50,
   outline: "none",
   borderRadius: "8px",
-  // padding: "15px 15px",
+  // padding: "10px 10px",
 };
 
 const AddMeetingModal = () => {
   const {
     openAddMeeting,
     setOpenAddMeeting,
-    projectId,
-    statusId,
-    setCallTask,
-    showNotification,
-    setShowNotification,
+    // projectId,
+    // statusId,
+    // setCallTask,
+    // showNotification,
+    // setShowNotification,
   } = useNavbarContextHooks();
-
-  console.log('meeting',openAddMeeting);
 
   const { getToken } = useAuthHooks();
 
   // hook form control
   const {
-    register,
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: { priority: "four" } });
+  } = useForm({ defaultValues: { } });
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
   const [users, setUsers] = React.useState(false);
+  const [projects, setProjects] = React.useState(false);
 
   // get all user
-  const userUrl = `${process.env.REACT_APP_API_KEY}/project/user/${projectId}`;
+  const userUrl = `${process.env.REACT_APP_API_KEY}/user`;
   const token = getToken();
 
   //calling api via useEffect
@@ -77,18 +71,32 @@ const AddMeetingModal = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUsers(res.data);
+      setUsers(res.data.data);
     };
 
     fetchData();
   }, [token, userUrl]);
 
-  const projectUsers = users?.data?.map((singleUser) => singleUser.user);
-  // console.log(projectUsers);
+  // get all project
+  const projectUrl = `${process.env.REACT_APP_API_KEY}/project`;
+
+  //calling api via useEffect
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(projectUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setProjects(res.data.data);
+    };
+
+    fetchData();
+  }, [projectUrl, token]);
 
   // close task model
   const handleClose = () => {
-    reset({ priority: "four" });
+    reset();
     setPersonName([]);
     setOpenAddMeeting(false);
   };
@@ -105,51 +113,52 @@ const AddMeetingModal = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log("data", data, personName );
     // check task user added or not
-    if (personName.length > 0) {
-      // create form data
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("desc", data.name);
-      formData.append("projectId", projectId);
-      formData.append("statusId", statusId);
-      formData.append("priority", data.priority);
-      formData.append("remain", data.remain);
-      formData.append("assignUser", JSON.stringify(personName));
-      Array.from(data.image).forEach((image) => {
-        formData.append("image", image);
-      });
+    // if (personName.length > 0) {
+    //   // create form data
+    //   const formData = new FormData();
+    //   formData.append("name", data.name);
+    //   formData.append("desc", data.name);
+    //   formData.append("projectId", projectId);
+    //   formData.append("statusId", statusId);
+    //   formData.append("priority", data.priority);
+    //   formData.append("remain", data.remain);
+    //   formData.append("assignUser", JSON.stringify(personName));
+    //   Array.from(data.image).forEach((image) => {
+    //     formData.append("image", image);
+    //   });
 
-      // inset task all data
-      const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
-      const res = await axios({
-        method: "post",
-        url: url,
-        data: formData,
-        headers: {
-          "Content-Type": `multipart/form-data`,
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    //   // inset task all data
+    //   const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
+    //   const res = await axios({
+    //     method: "post",
+    //     url: url,
+    //     data: formData,
+    //     headers: {
+    //       "Content-Type": `multipart/form-data`,
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
 
-      if (res.data.status) {
-        setShowNotification({
-          ...showNotification,
-          status: true,
-          message: "Task Create Successfull",
-        });
-        handleClose();
-        setCallTask((prevState) => !prevState);
-      } else {
-        setShowNotification({
-          ...showNotification,
-          status: true,
-          message: res.data.message,
-        });
-        handleClose();
-        setCallTask((prevState) => !prevState);
-      }
-    }
+    //   if (res.data.status) {
+    //     setShowNotification({
+    //       ...showNotification,
+    //       status: true,
+    //       message: "Task Create Successfull",
+    //     });
+    //     handleClose();
+    //     setCallTask((prevState) => !prevState);
+    //   } else {
+    //     setShowNotification({
+    //       ...showNotification,
+    //       status: true,
+    //       message: res.data.message,
+    //     });
+    //     handleClose();
+    //     setCallTask((prevState) => !prevState);
+    //   }
+    // }
   };
 
   return (
@@ -189,19 +198,19 @@ const AddMeetingModal = () => {
                 overflowY: "scroll",
               }}
             >
-              {/* task name  */}
+              {/* meeting name  */}
               <Box sx={{ margin: "10px 0px 10px" }}>
                 <Controller
                   name="name"
                   control={control}
                   rules={{
-                    required: "Please add task name",
+                    required: "Please add meeting name",
                   }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
-                      label="Task Name"
+                      label="Meeting Name"
                       size="small"
                     />
                   )}
@@ -217,6 +226,186 @@ const AddMeetingModal = () => {
                     {errors.name.message}
                   </Typography>
                 )}
+              </Box>
+
+              {/* meeting link  */}
+              <Box sx={{ margin: "10px 0px 10px" }}>
+                <Controller
+                  name="link"
+                  control={control}
+                  rules={{
+                    required: "Please add meeting link",
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Meeting Link"
+                      size="small"
+                    />
+                  )}
+                />
+                {errors.link && (
+                  <Typography
+                    sx={{ fontSize: "12px", fontWeight: "400" }}
+                    variant="overline"
+                    display="block"
+                    gutterBottom
+                    color={"primary"}
+                  >
+                    {errors.link.message}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* meeting password  */}
+              <Box sx={{ margin: "10px 0px 10px" }}>
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      label="Meeting Password"
+                      size="small"
+                    />
+                  )}
+                />
+                {errors.password && (
+                  <Typography
+                    sx={{ fontSize: "12px", fontWeight: "400" }}
+                    variant="overline"
+                    display="block"
+                    gutterBottom
+                    color={"primary"}
+                  >
+                    {errors.password.message}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* meeting schedule  */}
+              <Box sx={{ margin: "15px 0px 10px 0px" }}>
+                <Grid container spacing={2}>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="startTime"
+                        control={control}
+                        rules={{
+                          required: "Please add when start meeting",
+                        }}
+                        render={({ field }) => (
+                          <DateTimePicker
+                            label="Start Time"
+                            disablePast
+                            renderInput={(params) => (
+                              <TextField size="small" fullWidth {...params} />
+                            )}
+                            {...field}
+                          />
+                        )}
+                      />
+                      {errors.startTime && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.startTime.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="endTime"
+                        control={control}
+                        rules={{
+                          required: "Please add when end meeting",
+                        }}
+                        render={({ field }) => (
+                          <DateTimePicker
+                            label="End Time"
+                            disablePast
+                            renderInput={(params) => (
+                              <TextField size="small" fullWidth {...params} />
+                            )}
+                            {...field}
+                          />
+                        )}
+                      />
+                      {errors.endTime && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.endTime.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              {/* meeting users  */}
+              <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                <Grid container spacing={2}>
+                  <Grid item lg={12}>
+                    <Box>
+                      <InputLabel id="demo-simple-select-standard-label">
+                        Select Project
+                      </InputLabel>
+                      <Controller
+                        name="project"
+                        control={control}
+                        rules={{
+                          required: "Please select project",
+                        }}
+                        render={({ field }) => (
+                          <Select {...field} fullWidth size="small">
+                            {/* <MenuItem value={"selectproject"}>
+                              Select Project
+                            </MenuItem> */}
+                            {projects?.map((project) => (
+                              <MenuItem key={project.id} value={project.id}>
+                                {project.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        )}
+                      />
+                      {errors.project && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.project.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={12}>
+                    <Box>
+                      <UserSelect
+                        personName={personName}
+                        setPersonName={setPersonName}
+                        alluser={users}
+                        validation={false}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
               </Box>
 
               {/* task desc  */}
@@ -236,118 +425,6 @@ const AddMeetingModal = () => {
                     />
                   )}
                 />
-              </Box>
-
-              {/* task users  */}
-              <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                <UserSelect
-                  personName={personName}
-                  setPersonName={setPersonName}
-                  alluser={projectUsers}
-                />
-              </Box>
-
-              {/* task remain  */}
-              <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                <Controller
-                  name="remain"
-                  control={control}
-                  rules={{
-                    required: "Please add remain time",
-                  }}
-                  render={({ field }) => (
-                    <DateTimePicker
-                      label="Remain Date"
-                      disablePast
-                      renderInput={(params) => (
-                        <TextField fullWidth {...params} />
-                      )}
-                      {...field}
-                    />
-                  )}
-                />
-                {errors.remain && (
-                  <Typography
-                    sx={{ fontSize: "12px", fontWeight: "400" }}
-                    variant="overline"
-                    display="block"
-                    gutterBottom
-                    color={"primary"}
-                  >
-                    {errors.remain.message}
-                  </Typography>
-                )}
-              </Box>
-
-              {/* task prioroty  */}
-              <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                <Tooltip title="set priority" placement="top-start" arrow>
-                  <Box>
-                    <Controller
-                      name="priority"
-                      autoWidth
-                      size="small"
-                      control={control}
-                      render={({ field }) => (
-                        <Select
-                          sx={{
-                            color: "#fff",
-                            paddingRight: "0px",
-                            position: "static",
-                            "& .MuiSvgIcon-root": {
-                              color: "white",
-                            },
-                            "& .MuiSelect-select": {
-                              paddingRight: "0px",
-                            },
-                            "& .MuiOutlinedInput-root": {
-                              position: "static",
-                            },
-                            "& .Mui-focused": {
-                              position: "static",
-                            },
-                          }}
-                          {...field}
-                        >
-                          <MenuItem value="first">
-                            <BsFlag color="yellow" />
-                          </MenuItem>
-                          <MenuItem value="second">
-                            <BsFlag color="green" />
-                          </MenuItem>
-                          <MenuItem value="thired">
-                            <BsFlag color="red" />
-                          </MenuItem>
-                          <MenuItem value="four">
-                            <BsFlag color="black" />
-                          </MenuItem>
-                        </Select>
-                      )}
-                    />
-                  </Box>
-                </Tooltip>
-              </Box>
-
-              {/* select a image  */}
-              <Box sx={{ margin: "5px 0px 5px 0px" }}>
-                <Stack direction="column" sx={{ mt: 2 }}>
-                  <Button
-                    sx={{ pt: 1, pb: 1 }}
-                    fullWidth
-                    variant="contained"
-                    component="label"
-                  >
-                    Upload Image
-                    <input
-                      {...register("image")}
-                      multiple
-                      hidden
-                      accept="image/*"
-                      type="file"
-                    />
-                    <FileUploadIcon />
-                  </Button>
-                </Stack>
               </Box>
             </Box>
             {/* popup footer  */}

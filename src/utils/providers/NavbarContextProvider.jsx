@@ -61,10 +61,8 @@ const NavbarContextProvider = ({ children }) => {
       setCallProject((prevState) => !prevState);
       setCallTask((prevState) => !prevState);
     }
-    console.log(taskId, statusId);
   };
 
-  console.log("meeting", openAddMeeting);
 
   return (
     <NavContext.Provider

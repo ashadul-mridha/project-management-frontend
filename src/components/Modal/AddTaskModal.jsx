@@ -246,6 +246,7 @@ const AddTaskModal = () => {
                   personName={personName}
                   setPersonName={setPersonName}
                   alluser={projectUsers}
+                  validation={true}
                 />
               </Box>
 

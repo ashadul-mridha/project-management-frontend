@@ -67,7 +67,6 @@ const AddProjectModal = () => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await getData(userUrl);
-      console.log(res.data);
       setUsers(res.data.data);
     }
     
@@ -219,6 +218,7 @@ const AddProjectModal = () => {
                   personName={personName}
                   setPersonName={setPersonName}
                   alluser={users}
+                  validation={true}
                 />
               </Box>
             </Box>

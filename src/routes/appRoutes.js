@@ -11,6 +11,8 @@ import UpcommingTask from '../components/Task/UpcommingTask';
 import AddUser from '../components/user/Adduser';
 import ProfilePage from '../components/user/ProfilePage';
 import Alluser from '../components/user/Alluser';
+import AllMeeting from '../components/meeting/AllMeeting';
+import ViewMeeting from '../components/meeting/ViewMeeting';
 
 const AppRouter = () => {
     return (
@@ -29,6 +31,9 @@ const AppRouter = () => {
                     <Route path="/alluser" element={<Alluser />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/project/:id" element={<ProjectDetails />} /> 
+                    <Route path="/meeting/all" element={<AllMeeting />} />
+                    <Route path="/meeting/view" element={<ViewMeeting />} />
+                    
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
