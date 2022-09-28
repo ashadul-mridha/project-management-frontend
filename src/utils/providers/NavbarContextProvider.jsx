@@ -34,6 +34,7 @@ const NavbarContextProvider = ({ children }) => {
   //api call again
   const [callProject, setCallProject] = useState(false);
   const [callTask, setCallTask] = useState(false);
+  const [callMeeting, setCallMeeting] = useState(false);
 
   const getStatusId = async (id) => {
     const res = await axios.get(`${process.env.REACT_APP_URL}/project/${id}`);
@@ -93,6 +94,8 @@ const NavbarContextProvider = ({ children }) => {
         taskStatusChange,
         openAddMeeting,
         setOpenAddMeeting,
+        callMeeting,
+        setCallMeeting,
       }}
     >
       {children}

@@ -4,9 +4,8 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
 import { MdEventAvailable } from "react-icons/md";
-// import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 // import CustomMenu from "../MuiCustomComponent/CustomMenu";
-// import UsersList from "../MuiCustomComponent/UsersList";
+import UsersList from "../MuiCustomComponent/UsersList";
 
 const MeetingCard = ({ data }) => {
 
@@ -66,8 +65,7 @@ const MeetingCard = ({ data }) => {
                 variant="h6"
                 component="div"
               >
-                {/* {data.name} */}
-                Drik Photography Design
+                {data.name}
               </Typography>
 
               <Typography
@@ -77,9 +75,7 @@ const MeetingCard = ({ data }) => {
                   fontWeight: "400",
                 }}
               >
-                Thu , 22 sep 2022
-                {/* {new Date(data.remain).toUTCString().substring(0, 16)} */}
-                {/* {data.remain.substring(0, 10)} */}
+                {new Date(data.link).toUTCString().substring(0, 16)}
               </Typography>
 
               <Typography
@@ -87,12 +83,12 @@ const MeetingCard = ({ data }) => {
                 variant="subtitle2"
                 component="div"
               >
-                {/* {new Date(data.remain).toUTCString().substring(0, 16)} */}
+                {new Date(data.startDate).toUTCString().substring(0, 16)}
               </Typography>
             </Box>
           </Box>
           <Box>
-            {/* <UsersList data={data.users} avatarSize={25} /> */}
+            <UsersList data={data.users} avatarSize={25} />
           </Box>
         </Box>
         <Tooltip title="Task Action">

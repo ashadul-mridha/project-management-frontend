@@ -56,8 +56,7 @@ const ProjectcardTask = ({ data }) => {
 
           {/* <div
             style={{ fontSize: "12px" }}
-            {new Date(data?.remain).toUTCString().substring(0, 16)}
-            // dangerouslySetInnerHTML={{ __html: data.desc }}
+            dangerouslySetInnerHTML={{ __html: data.desc }}
           ></div> */}
         </Box>
       </Box>

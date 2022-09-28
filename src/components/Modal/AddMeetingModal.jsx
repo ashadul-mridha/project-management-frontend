@@ -37,11 +37,9 @@ const AddMeetingModal = () => {
   const {
     openAddMeeting,
     setOpenAddMeeting,
-    // projectId,
-    // statusId,
-    // setCallTask,
-    // showNotification,
-    // setShowNotification,
+    setCallMeeting,
+    showNotification,
+    setShowNotification,
   } = useNavbarContextHooks();
 
   const { getToken } = useAuthHooks();
@@ -112,54 +110,43 @@ const AddMeetingModal = () => {
     ],
   };
 
-  const onSubmit = async (data) => {
-    console.log("data", data, personName);
-    // check task user added or not
-    // if (personName.length > 0) {
-    //   // create form data
-    //   const formData = new FormData();
-    //   formData.append("name", data.name);
-    //   formData.append("desc", data.name);
-    //   formData.append("projectId", projectId);
-    //   formData.append("statusId", statusId);
-    //   formData.append("priority", data.priority);
-    //   formData.append("remain", data.remain);
-    //   formData.append("assignUser", JSON.stringify(personName));
-    //   Array.from(data.image).forEach((image) => {
-    //     formData.append("image", image);
-    //   });
+    const onSubmit = async (data) => {
+    
+      /* Merging the data object with the personName array. */
+      const allData = {
+        ...data,
+        users : personName
+      }
+    
+      /* Sending a POST request to the server. */
+      const url = `${process.env.REACT_APP_API_KEY}/meeting`;
+      const res = await axios({
+        method: "post",
+        url: url,
+        data: allData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    //   // inset task all data
-    //   const url = `${process.env.REACT_APP_API_KEY}/task/imageUser`;
-    //   const res = await axios({
-    //     method: "post",
-    //     url: url,
-    //     data: formData,
-    //     headers: {
-    //       "Content-Type": `multipart/form-data`,
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-
-    //   if (res.data.status) {
-    //     setShowNotification({
-    //       ...showNotification,
-    //       status: true,
-    //       message: "Task Create Successfull",
-    //     });
-    //     handleClose();
-    //     setCallTask((prevState) => !prevState);
-    //   } else {
-    //     setShowNotification({
-    //       ...showNotification,
-    //       status: true,
-    //       message: res.data.message,
-    //     });
-    //     handleClose();
-    //     setCallTask((prevState) => !prevState);
-    //   }
-    // }
-  };
+      if (res.data.status) {
+        setShowNotification({
+          ...showNotification,
+          status: true,
+          message: "New Meeting Added",
+        });
+        handleClose();
+        setCallMeeting((prevState) => !prevState);
+      } else {
+        setShowNotification({
+          ...showNotification,
+          status: true,
+          message: res.data.message,
+        });
+        handleClose();
+        setCallMeeting((prevState) => !prevState);
+      }
+    }
 
   return (
     <>
@@ -291,7 +278,7 @@ const AddMeetingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="startTime"
+                        name="startDate"
                         control={control}
                         rules={{
                           required: "Please add when start meeting",
@@ -307,7 +294,7 @@ const AddMeetingModal = () => {
                           />
                         )}
                       />
-                      {errors.startTime && (
+                      {errors.startDate && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -315,7 +302,7 @@ const AddMeetingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.startTime.message}
+                          {errors.startDate.message}
                         </Typography>
                       )}
                     </Box>
@@ -323,7 +310,7 @@ const AddMeetingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="endTime"
+                        name="endDate"
                         control={control}
                         rules={{
                           required: "Please add when end meeting",
@@ -339,7 +326,7 @@ const AddMeetingModal = () => {
                           />
                         )}
                       />
-                      {errors.endTime && (
+                      {errors.endDate && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -347,7 +334,7 @@ const AddMeetingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.endTime.message}
+                          {errors.endDate.message}
                         </Typography>
                       )}
                     </Box>
