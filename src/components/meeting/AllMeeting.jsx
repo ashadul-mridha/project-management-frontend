@@ -14,15 +14,19 @@ import MeetingCard from './MeetingCard';
 const AllMeeting = () => {
 
   const [meetings , setMeetings] = useState([]);
-   const { getUser, getToken } = useAuthHooks();
-   const { callMeeting } = useNavbarContextHooks();
+ 
+  const { getUser, getToken } = useAuthHooks();
+  const { callMeeting } = useNavbarContextHooks();
 
-   // get login user role
-   const { userRole } = getUser();
-   const token = getToken();
+  // get login user role
+  const { userRole } = getUser();
+  const token = getToken();
 
-  /* data fetch url. */
-  const url = `${process.env.REACT_APP_API_KEY}/meeting`;
+  /* data fetch url set by user role. */
+  const url =
+    userRole === "admin"
+      ? `${process.env.REACT_APP_API_KEY}/meeting`
+      : `${process.env.REACT_APP_API_KEY}/user/meeting`;
 
   /* Fetching data from the server. */
   React.useEffect(() => {
@@ -32,7 +36,11 @@ const AllMeeting = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setMeetings(res.data.data);
+      if (userRole === "admin") {
+        setMeetings(res.data.data);
+      } else {
+        setMeetings(res.data.data.meetings);
+      }
     };
     fetchData();
   }, [callMeeting, token, url, userRole]);
