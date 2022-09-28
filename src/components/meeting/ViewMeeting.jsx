@@ -12,7 +12,6 @@ import {
   Appointments,
   AppointmentTooltip,
   TodayButton,
-  AllDayPanel,
 } from "@devexpress/dx-react-scheduler-material-ui";
 import { Grid, Typography } from "@mui/material";
 import axios from "axios";
@@ -173,7 +172,6 @@ const ViewMeeting = () => {
             <TodayButton />
             <ViewSwitcher />
             <Appointments appointmentComponent={Appointment} />
-            <AllDayPanel />
             <AppointmentTooltip
               contentComponent={AppointmentTooltipContent}
               showCloseButton

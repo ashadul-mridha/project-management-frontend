@@ -215,19 +215,19 @@ const AddMeetingModal = () => {
                 )}
               </Box>
 
-              {/* meeting link  */}
+              {/* meeting link or address  */}
               <Box sx={{ margin: "10px 0px 10px" }}>
                 <Controller
                   name="link"
                   control={control}
                   rules={{
-                    required: "Please add meeting link",
+                    required: "Please add meeting link or address",
                   }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
-                      label="Meeting Link"
+                      label="Meeting link or address"
                       size="small"
                     />
                   )}
