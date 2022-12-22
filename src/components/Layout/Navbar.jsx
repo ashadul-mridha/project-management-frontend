@@ -1,22 +1,22 @@
 import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
+// import InputBase from "@mui/material/InputBase";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { alpha, styled } from "@mui/material/styles";
+// import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import * as React from "react";
 // import MailIcon from "@mui/icons-material/Mail";
-import HomeIcon from "@mui/icons-material/Home";
+// import HomeIcon from "@mui/icons-material/Home";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Avatar } from "@mui/material";
-import Button from '@mui/material/Button';
+import { Avatar, Typography } from "@mui/material";
+// import Button from '@mui/material/Button';
 import { Link } from "react-router-dom";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
@@ -24,45 +24,45 @@ import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
+// const Search = styled("div")(({ theme }) => ({
+//   position: "relative",
+//   borderRadius: theme.shape.borderRadius,
+//   backgroundColor: alpha(theme.palette.common.white, 0.15),
+//   "&:hover": {
+//     backgroundColor: alpha(theme.palette.common.white, 0.25),
+//   },
+//   marginRight: theme.spacing(2),
+//   marginLeft: 0,
+//   width: "100%",
+//   [theme.breakpoints.up("sm")]: {
+//     marginLeft: theme.spacing(1),
+//     width: "auto",
+//   },
+// }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+// const SearchIconWrapper = styled("div")(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: "100%",
+//   position: "absolute",
+//   pointerEvents: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+// }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: "inherit",
+//   "& .MuiInputBase-input": {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     // vertical padding + font size from searchIcon
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create("width"),
+//     width: "100%",
+//     [theme.breakpoints.up("md")]: {
+//       width: "20ch",
+//     },
+//   },
+// }));
  
 export default function PrimarySearchAppBar() {
 
@@ -262,7 +262,7 @@ export default function PrimarySearchAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Link className="homeicon" to={"/"}>
+          {/* <Link className="homeicon" to={"/"}>
             <IconButton
               size="large"
               edge="start"
@@ -272,7 +272,7 @@ export default function PrimarySearchAppBar() {
             >
               <HomeIcon />
             </IconButton>
-          </Link>
+          </Link> */}
           {/* <Typography
             variant="h6"
             noWrap
@@ -285,7 +285,7 @@ export default function PrimarySearchAppBar() {
           >
             Todoist
           </Typography> */}
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -293,7 +293,7 @@ export default function PrimarySearchAppBar() {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             {/* <IconButton
@@ -304,13 +304,34 @@ export default function PrimarySearchAppBar() {
               <AddIcon />
             </IconButton> */}
             {userRole === "admin" && (
-              <Button
+              // <Button
+              //   onClick={() => setOpenAddProject(true)}
+              //   variant="text"
+              //   color="secondary"
+              // >
+              //   Add Project
+              // </Button>
+              <MenuItem
                 onClick={() => setOpenAddProject(true)}
-                variant="text"
-                color="secondary"
+                sx={{
+                  padding: "0px 10px",
+                  margin: "5px 10px",
+                  border: "1px solid white",
+                }}
               >
-                Add Project
-              </Button>
+                <IconButton
+                  size="large"
+                  color="secondary"
+                  sx={{
+                    padding: "5px 8px",
+                  }}
+                >
+                  <AddIcon />
+                </IconButton>
+                <Typography variant="subtitle2" color="secondary">
+                  Add Project
+                </Typography>
+              </MenuItem>
             )}
 
             {/* <IconButton
@@ -322,7 +343,7 @@ export default function PrimarySearchAppBar() {
                 <MailIcon />
               </Badge>
             </IconButton> */}
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
@@ -330,7 +351,7 @@ export default function PrimarySearchAppBar() {
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               size="large"
               edge="end"
