@@ -16,13 +16,14 @@ import useAuthHooks from "../../utils/hooks/useAuth";
 // react hook form 
 import { Controller, useForm } from "react-hook-form";
 import ProjectStatus from "../Form/ProjectStatus";
+import { AiOutlineCloseSquare } from "react-icons/ai";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 380,
+  width: 550,
   bgcolor: "background.paper",
   boxShadow: 24,
   outline: "none",
@@ -139,6 +140,9 @@ const AddProjectModal = () => {
               p: 2,
               borderBottom: "1px solid gray",
               borderRadius: "10px 10px 0px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             <Typography
@@ -149,6 +153,14 @@ const AddProjectModal = () => {
             >
               Add Project
             </Typography>
+            <Box
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={handleClose}
+            >
+              <AiOutlineCloseSquare size={25} color="#DB4C3F" />
+            </Box>
           </Box>
           {/* modal input field  */}
 
