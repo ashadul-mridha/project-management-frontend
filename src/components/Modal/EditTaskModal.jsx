@@ -100,7 +100,7 @@ const EditTaskModal = () => {
                 aria-controls="panel1bh-content"
                 id="panel1bh-header"
               >
-                <Typography>Task</Typography>
+                <Typography>Task Title</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <EditTaskDetailsForm />
@@ -116,7 +116,7 @@ const EditTaskModal = () => {
                 aria-controls="panel2bh-content"
                 id="panel2bh-header"
               >
-                <Typography>Attacment</Typography>
+                <Typography>File & Document</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <TaskAttacment />
@@ -152,7 +152,7 @@ const EditTaskModal = () => {
                 aria-controls="panel3bh-content"
                 id="panel3bh-header"
               >
-                <Typography>Comment</Typography>
+                <Typography>Discussion</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Comment />
