@@ -1,17 +1,18 @@
 // import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 // import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+// import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import React from "react";
-import { MdCheckBoxOutlineBlank } from "react-icons/md";
+import { MdCheckBoxOutlineBlank, MdDeleteOutline } from "react-icons/md";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 // import CustomMenu from "../MuiCustomComponent/CustomMenu";
 import UsersList from "../MuiCustomComponent/UsersList";
 // react dnd
 import { useDrag } from "react-dnd";
+import axios from "axios";
+import useAuthHooks from "../../utils/hooks/useAuth";
 
 const TaskCard = ({ data }) => {
-
   const [{ isDragging }, drag] = useDrag({
     type: "card",
     collect: (monitor) => ({
@@ -19,13 +20,44 @@ const TaskCard = ({ data }) => {
     }),
   });
 
-  const { setOpenEditTask, setEditTaskId } = useNavbarContextHooks();
+  const {
+    setOpenEditTask,
+    setEditTaskId,
+    showNotification,
+    setShowNotification,
+    setCallTask,
+  } = useNavbarContextHooks();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const { getToken } = useAuthHooks();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const open = Boolean(anchorEl);
+
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+
+  // task id
+  const id = data.id;
+  // token
+  const token = getToken();
+  // delete task url
+  const deleteurl = `${process.env.REACT_APP_API_KEY}/task/${id}`;
+  // task deleted
+  const handleTaskDelete = async () => {
+    const res = await axios.delete(deleteurl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.data.status) {
+      setCallTask((prevState) => !prevState);
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: res.data.message,
+      });
+    }
   };
 
   const handleTaskDetails = async () => {
@@ -33,13 +65,13 @@ const TaskCard = ({ data }) => {
     setEditTaskId(data.id);
   };
 
-  // custom menu call to action 
+  // custom menu call to action
   // const menuItemData = [
   //   { icon: <DeleteOutlineIcon />, name: "Delete Task" },
   //   { icon: <ModeEditOutlineIcon />, name: "Edit Task" },
   // ];
 
-  const compoId = "account-menu";
+  // const compoId = "account-menu";
 
   const cardWrapCss = isDragging
     ? {
@@ -116,8 +148,8 @@ const TaskCard = ({ data }) => {
             <UsersList data={data.users} avatarSize={25} />
           </Box>
         </Box>
-        <Tooltip title="Task Action">
-          <IconButton
+        <Tooltip title="Delete Task">
+          {/* <IconButton
             onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
@@ -126,6 +158,9 @@ const TaskCard = ({ data }) => {
             aria-expanded={open ? "true" : undefined}
           >
             <MoreHorizIcon />
+          </IconButton> */}
+          <IconButton onClick={handleTaskDelete} size="small" sx={{ ml: 2 }}>
+            <MdDeleteOutline color="red" size={23} />
           </IconButton>
         </Tooltip>
       </Box>

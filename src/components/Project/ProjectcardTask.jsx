@@ -28,7 +28,6 @@ const ProjectcardTask = ({ data }) => {
 
   // task deleted
   const handleTaskDelete = async () => {
-    console.log("task delete", id);
     const res = await axios.delete(deleteurl, {
       headers: {
         Authorization: `Bearer ${token}`,
