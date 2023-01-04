@@ -28,6 +28,7 @@
     border-radius: 10px;
     cursor: pointer;
     background-color: #ffffff;
+    flex-grow: 5;
 }
 
 .projectTaskCardDragOn{
@@ -40,6 +41,7 @@
     border-radius: 10px;
     cursor: pointer;
     background-color: #ffffff;
+    flex-grow: 5;
     opacity: 0.5;
 }
 
