@@ -21,7 +21,7 @@ import TextField from "@mui/material/TextField";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 // react hook form
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import UserSelect from "../Form/UserSelect";
 
 // date time picker
@@ -81,21 +81,26 @@ const AddTaskModal = () => {
 
   
   const image = watch(["image"]);
+  const image1 = useWatch({
+    control,
+    name: "image",
+  });
 
-//  useEffect(() => {
-//     setImagePreview(image[0])
-//  }, [image]);
+ useEffect(() => {
+   if (image[0]?.length) {
+     // const url = URL.createObjectURL(image);
+     // console.log(url);
+     const objArr = Object.values(image[0]);
+     console.log(image1);
+     const url = URL.createObjectURL(objArr[0]);
+     console.log(url);
+     setImagePreview(url);
+     console.log(image.length);
+     console.log(image);
+   }
+ }, [image1]);
 
-  if (image[0]?.length) {
-    // const url = URL.createObjectURL(image);
-    // console.log(url);
-    const objArr = Object.values(image[0]);
-    console.log(objArr);
-    const url = URL.createObjectURL(objArr[0]);
-    console.log(url);
-    console.log(image.length);
-    console.log(image);
-  }
+  
 
   // get all user
   const userUrl = `${process.env.REACT_APP_API_KEY}/project/user/${projectId}`;
@@ -394,12 +399,7 @@ const AddTaskModal = () => {
                     <FileUploadIcon />
                   </Button>
                 </Stack>
-                {/* {imagePreview?.length > 0 && (
-                  <img
-                    src={URL.createObjectURL(imagePreview)}
-                    alt="Selected file"
-                  />
-                )} */}
+                {imagePreview && <img src={imagePreview} alt="Selected file" />}
               </Box>
             </Box>
             {/* popup footer  */}
