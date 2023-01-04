@@ -1,16 +1,23 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect } from "react";
 import ReactQuill from "react-quill";
 import "../../../src/App.css";
 
 import FileUploadIcon from "@mui/icons-material/FileUpload";
-import { Select, Stack, Typography } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
-import { BsFlag } from "react-icons/bs";
+// import { BsFlag } from "react-icons/bs";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 // react hook form
@@ -20,7 +27,10 @@ import UserSelect from "../Form/UserSelect";
 // date time picker
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import axios from "axios";
+import { AiOutlineCloseSquare } from "react-icons/ai";
 import useAuthHooks from "../../utils/hooks/useAuth";
+import useFilePreview from "../../utils/hooks/useFilePreview";
+import { useState } from "react";
 
 // import {
 
@@ -37,6 +47,10 @@ const style = {
   // padding: "15px 15px",
 };
 
+const closeBtn = {
+  cursor: "pointer",
+};
+
 const AddTaskModal = () => {
   const {
     openAddTask,
@@ -48,8 +62,7 @@ const AddTaskModal = () => {
     setShowNotification,
   } = useNavbarContextHooks();
 
-  const { getToken  } = useAuthHooks();
-
+  const { getToken } = useAuthHooks();
 
   // hook form control
   const {
@@ -57,12 +70,32 @@ const AddTaskModal = () => {
     handleSubmit,
     control,
     reset,
+    watch,
     formState: { errors },
-  } = useForm({ defaultValues: { priority: "four" } });
+  } = useForm({ defaultValues: { priority: "thired" } });
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
   const [users, setUsers] = React.useState(false);
+  const [imagePreview , setImagePreview] = useState(null);
+
+  
+  const image = watch(["image"]);
+
+//  useEffect(() => {
+//     setImagePreview(image[0])
+//  }, [image]);
+
+  if (image[0]?.length) {
+    // const url = URL.createObjectURL(image);
+    // console.log(url);
+    const objArr = Object.values(image[0]);
+    console.log(objArr);
+    const url = URL.createObjectURL(objArr[0]);
+    console.log(url);
+    console.log(image.length);
+    console.log(image);
+  }
 
   // get all user
   const userUrl = `${process.env.REACT_APP_API_KEY}/project/user/${projectId}`;
@@ -87,7 +120,7 @@ const AddTaskModal = () => {
 
   // close task model
   const handleClose = () => {
-    reset({ priority: "four" });
+    reset({ priority: "thired" });
     setPersonName([]);
     setOpenAddTask(false);
   };
@@ -104,10 +137,8 @@ const AddTaskModal = () => {
   };
 
   const onSubmit = async (data) => {
-
     // check task user added or not
     if (personName.length > 0) {
-
       // create form data
       const formData = new FormData();
       formData.append("name", data.name);
@@ -150,7 +181,6 @@ const AddTaskModal = () => {
         handleClose();
         setCallTask((prevState) => !prevState);
       }
-
     }
   };
 
@@ -169,6 +199,9 @@ const AddTaskModal = () => {
               p: 2,
               borderBottom: "1px solid gray",
               borderRadius: "10px 10px 0px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             <Typography
@@ -179,6 +212,9 @@ const AddTaskModal = () => {
             >
               Add Task
             </Typography>
+            <Box sx={closeBtn} onClick={handleClose}>
+              <AiOutlineCloseSquare size={25} color="#DB4C3F" />
+            </Box>
           </Box>
 
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -256,11 +292,11 @@ const AddTaskModal = () => {
                   name="remain"
                   control={control}
                   rules={{
-                    required: "Please add remain time",
+                    required: "Please add when task will be end",
                   }}
                   render={({ field }) => (
                     <DateTimePicker
-                      label="Remain Date"
+                      label="Task Last Time"
                       disablePast
                       renderInput={(params) => (
                         <TextField fullWidth {...params} />
@@ -284,51 +320,58 @@ const AddTaskModal = () => {
 
               {/* task prioroty  */}
               <Box sx={{ margin: "10px 0px 10px 0px" }}>
-                <Tooltip title="set priority" placement="top-start" arrow>
-                  <Box>
-                    <Controller
-                      name="priority"
-                      autoWidth
-                      size="small"
-                      control={control}
-                      render={({ field }) => (
-                        <Select
-                          sx={{
-                            color: "#fff",
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Priority
+                  </InputLabel>
+                  <Controller
+                    name="priority"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    autoWidth
+                    size="small"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        input={<OutlinedInput fullWidth label="Select User" />}
+                        sx={{
+                          color: "#fff",
+                          paddingRight: "0px",
+                          position: "static",
+                          "& .MuiSvgIcon-root": {
+                            color: "white",
+                          },
+                          "& .MuiSelect-select": {
                             paddingRight: "0px",
+                          },
+                          "& .MuiOutlinedInput-root": {
                             position: "static",
-                            "& .MuiSvgIcon-root": {
-                              color: "white",
-                            },
-                            "& .MuiSelect-select": {
-                              paddingRight: "0px",
-                            },
-                            "& .MuiOutlinedInput-root": {
-                              position: "static",
-                            },
-                            "& .Mui-focused": {
-                              position: "static",
-                            },
-                          }}
-                          {...field}
-                        >
-                          <MenuItem value="first">
-                            <BsFlag color="yellow" />
-                          </MenuItem>
-                          <MenuItem value="second">
-                            <BsFlag color="green" />
-                          </MenuItem>
-                          <MenuItem value="thired">
-                            <BsFlag color="red" />
-                          </MenuItem>
-                          <MenuItem value="four">
-                            <BsFlag color="black" />
-                          </MenuItem>
-                        </Select>
-                      )}
-                    />
-                  </Box>
-                </Tooltip>
+                          },
+                          "& .Mui-focused": {
+                            position: "static",
+                          },
+                        }}
+                        {...field}
+                      >
+                        <MenuItem value="first">
+                          <Typography variant="caption" color="primary">
+                            !!High
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem value="second">
+                          <Typography variant="caption" color="#F89C0E">
+                            !Low
+                          </Typography>
+                        </MenuItem>
+                        <MenuItem value="thired">
+                          <Typography variant="caption" color="#6c78af">
+                            Normal
+                          </Typography>
+                        </MenuItem>
+                      </Select>
+                    )}
+                  />
+                </FormControl>
               </Box>
 
               {/* select a image  */}
@@ -343,7 +386,7 @@ const AddTaskModal = () => {
                     Upload Image
                     <input
                       {...register("image")}
-                      multiple
+                      // multiple
                       hidden
                       accept="image/*"
                       type="file"
@@ -351,6 +394,12 @@ const AddTaskModal = () => {
                     <FileUploadIcon />
                   </Button>
                 </Stack>
+                {/* {imagePreview?.length > 0 && (
+                  <img
+                    src={URL.createObjectURL(imagePreview)}
+                    alt="Selected file"
+                  />
+                )} */}
               </Box>
             </Box>
             {/* popup footer  */}

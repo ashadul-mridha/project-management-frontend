@@ -58,7 +58,7 @@ const ProjectDetails = () => {
     //   userRole === "admin" ? projectDetailsData : projectDetailsData.project?.[0];
 
 
-  console.log("slug", projectDetailsData);
+  // console.log("slug", projectDetailsData);
 
   return (
     <Box>

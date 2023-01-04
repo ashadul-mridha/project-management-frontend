@@ -11,8 +11,8 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 // react hook form
 import { Controller, useForm } from "react-hook-form";
 import { Box } from '@mui/system';
-import { Button, MenuItem, Select, TextField, Tooltip, Typography } from '@mui/material';
-import { BsFlag } from 'react-icons/bs';
+import { Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField,  Typography } from '@mui/material';
+// import { BsFlag } from 'react-icons/bs';
 
 
 
@@ -34,7 +34,7 @@ const EditTaskDetailsForm = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: { priority: "four" } });
+  } = useForm({ defaultValues: { priority: "thired" } });
 
   // get task current data
   useEffect(() => {
@@ -154,7 +154,7 @@ const EditTaskDetailsForm = () => {
             }}
             render={({ field }) => (
               <DateTimePicker
-                label="Remain Date"
+                label="Task  Last End Time"
                 disablePast
                 renderInput={(params) => <TextField fullWidth {...params} />}
                 {...field}
@@ -176,52 +176,58 @@ const EditTaskDetailsForm = () => {
 
         {/* task prioroty  */}
         <Box sx={{ margin: "10px 0px 10px 0px" }}>
-          <Tooltip title="set priority" placement="top-start" arrow>
-            <Box>
-              <Controller
-                name="priority"
-                autoWidth
-                size="small"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    sx={{
-                      color: "#fff",
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Priority</InputLabel>
+            <Controller
+              name="priority"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              autoWidth
+              size="small"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  input={<OutlinedInput fullWidth label="Select User" />}
+                  sx={{
+                    color: "#fff",
+                    paddingRight: "0px",
+                    position: "static",
+                    "& .MuiSvgIcon-root": {
+                      color: "white",
+                    },
+                    "& .MuiSelect-select": {
                       paddingRight: "0px",
+                    },
+                    "& .MuiOutlinedInput-root": {
                       position: "static",
-                      "& .MuiSvgIcon-root": {
-                        color: "white",
-                      },
-                      "& .MuiSelect-select": {
-                        paddingRight: "0px",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        position: "static",
-                      },
-                      "& .Mui-focused": {
-                        position: "static",
-                      },
-                    }}
-                    {...field}
-                  >
-                    <MenuItem value="first">
-                      <BsFlag color="yellow" />
-                    </MenuItem>
-                    <MenuItem value="second">
-                      <BsFlag color="green" />
-                    </MenuItem>
-                    <MenuItem value="thired">
-                      <BsFlag color="red" />
-                    </MenuItem>
-                    <MenuItem value="four">
-                      <BsFlag color="black" />
-                    </MenuItem>
-                  </Select>
-                )}
-              />
-            </Box>
-          </Tooltip>
+                    },
+                    "& .Mui-focused": {
+                      position: "static",
+                    },
+                  }}
+                  {...field}
+                >
+                  <MenuItem value="first">
+                    <Typography variant="caption" color="primary">
+                      !!High
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem value="second">
+                    <Typography variant="caption" color="#F89C0E">
+                      !Low
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem value="thired">
+                    <Typography variant="caption" color="#6c78af">
+                      Normal
+                    </Typography>
+                  </MenuItem>
+                </Select>
+              )}
+            />
+          </FormControl>
         </Box>
+
         {/* popup footer  */}
         <Box
           sx={{
