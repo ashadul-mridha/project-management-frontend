@@ -30,7 +30,7 @@ import axios from "axios";
 import { AiOutlineCloseSquare } from "react-icons/ai";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import useFilePreview from "../../utils/hooks/useFilePreview";
-import { useState } from "react";
+import PreviewImage from "../PreviewImage/PreviewImage";
 
 // import {
 
@@ -39,7 +39,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate( -50%, -50%)",
-  width: 600,
+  width: 800,
   bgcolor: "#ffffff",
   boxShadow: 50,
   outline: "none",
@@ -70,37 +70,19 @@ const AddTaskModal = () => {
     handleSubmit,
     control,
     reset,
-    watch,
     formState: { errors },
   } = useForm({ defaultValues: { priority: "thired" } });
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
   const [users, setUsers] = React.useState(false);
-  const [imagePreview , setImagePreview] = useState(null);
 
-  
-  const image = watch(["image"]);
-  const image1 = useWatch({
+  // watch upload image and preview
+  const image = useWatch({
     control,
     name: "image",
   });
-
- useEffect(() => {
-   if (image[0]?.length) {
-     // const url = URL.createObjectURL(image);
-     // console.log(url);
-     const objArr = Object.values(image[0]);
-     console.log(image1);
-     const url = URL.createObjectURL(objArr[0]);
-     console.log(url);
-     setImagePreview(url);
-     console.log(image.length);
-     console.log(image);
-   }
- }, [image1]);
-
-  
+  const [imagePreview] = useFilePreview(image);
 
   // get all user
   const userUrl = `${process.env.REACT_APP_API_KEY}/project/user/${projectId}`;
@@ -391,7 +373,7 @@ const AddTaskModal = () => {
                     Upload Image
                     <input
                       {...register("image")}
-                      // multiple
+                      multiple
                       hidden
                       accept="image/*"
                       type="file"
@@ -399,7 +381,8 @@ const AddTaskModal = () => {
                     <FileUploadIcon />
                   </Button>
                 </Stack>
-                {imagePreview && <img src={imagePreview} alt="Selected file" />}
+                {imagePreview ? <PreviewImage itemData={imagePreview} /> : null}
+                {/* {imagePreview && imagePreview} */}
               </Box>
             </Box>
             {/* popup footer  */}
