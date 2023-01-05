@@ -1,11 +1,10 @@
 import { Button, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
 import React from "react";
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logoImage from "../../assets/image/login.png";
 
 // react hooks form
@@ -14,8 +13,7 @@ import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
 const Login = () => {
-
-  const {showNotification, setShowNotification} = useNavbarContextHooks();
+  const { showNotification, setShowNotification } = useNavbarContextHooks();
   const { setUserToBrowser } = useAuthHooks();
   let navigate = useNavigate();
 
@@ -23,42 +21,58 @@ const Login = () => {
 
   //after submit form
   const onSubmit = async (data) => {
-
     const res = await axios.post("http://localhost:5000/api/user/login", data);
 
-    if( res.data.status){
-
-        const userData = res.data.data;
-        setUserToBrowser(userData);
-        navigate(`/`);
-
+    if (res.data.status) {
+      const userData = res.data.data;
+      setUserToBrowser(userData);
+      navigate(`/`);
     } else {
-
       setShowNotification({
         ...showNotification,
         status: true,
         message: res.data.message,
       });
     }
-
-
   };
   return (
     <>
-      <Container>
+      <Box>
         <Grid container spacing={2} sx={{ alignItems: "center" }}>
           <Grid item lg={6}>
             <Box>
+              <img src={logoImage} alt="login" height={"300px"} width="100%" />
+            </Box>
+          </Grid>
+          <Grid
+            item
+            lg={6}
+            sx={{
+              backgroundColor: "#dddddd",
+              height: "calc(100vh - 30px)",
+              alignSelf: "center",
+            }}
+          >
+            <Box
+              sx={{
+                padding: "0px 100px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                height: "100%",
+              }}
+            >
               <Typography
                 sx={{
                   margin: "5px 0px",
                   fontSize: "25px",
                   fontWeight: "500",
+                  textAlign: "center",
                 }}
                 variant="h2"
                 color="initial"
               >
-                Login
+                Welcome Project & Meeting Management Software
               </Typography>
               {/* form */}
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -94,7 +108,7 @@ const Login = () => {
                 </Box>
               </form>
 
-              {/* <Typography
+              <Typography
                 sx={{ fontSize: "14px", fontWeight: "400" }}
                 variant="p"
                 color="#222222"
@@ -106,16 +120,26 @@ const Login = () => {
                 >
                   Forget Password
                 </Link>
-              </Typography> */}
-            </Box>
-          </Grid>
-          <Grid item lg={6}>
-            <Box>
-              <img src={logoImage} alt="login" height={"100%"} width="100%" />
+              </Typography>
             </Box>
           </Grid>
         </Grid>
-      </Container>
+        <Box
+          sx={{
+            width: "100%",
+            padding: '6px 0px 0px 0px'
+          }}
+        >
+          <Typography
+            variant="subtitle2"
+            color="primary"
+            sx={{ textAlign: "center" }}
+          >
+            &#169; {new Date().getFullYear()} Decode Lab. All rights
+            reserved
+          </Typography>
+        </Box>
+      </Box>
     </>
   );
 };
