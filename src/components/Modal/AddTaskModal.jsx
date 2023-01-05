@@ -381,7 +381,13 @@ const AddTaskModal = () => {
                     <FileUploadIcon />
                   </Button>
                 </Stack>
-                {imagePreview ? <PreviewImage itemData={imagePreview} /> : null}
+                {imagePreview ? (
+                  <PreviewImage
+                    itemData={imagePreview}
+                    height={500}
+                    width={750}
+                  />
+                ) : null}
               </Box>
             </Box>
             {/* popup footer  */}

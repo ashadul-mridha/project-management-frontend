@@ -1,16 +1,17 @@
-import styles from "./user.module.css";
-import { Button, MenuItem, Typography } from "@mui/material";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import { Button, MenuItem, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { Stack } from "@mui/material";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
+import styles from "./user.module.css";
 
 // react hooks form
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { insertFormData } from "../../api/axios";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+import useFilePreview from "../../utils/hooks/useFilePreview";
+import PreviewImage from "../PreviewImage/PreviewImage";
 
 const AddUser = () => {
   const { showNotification, setShowNotification } = useNavbarContextHooks();
@@ -21,7 +22,7 @@ const AddUser = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: { userRole : 'user'} });
+  } = useForm({ defaultValues: { userRole: "user" } });
 
   //after submit form
   const onSubmit = async (data) => {
@@ -30,20 +31,27 @@ const AddUser = () => {
     formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("password", data.password);
+    formData.append("phone", data.phone);
+    formData.append("address", data.address);
     formData.append("image", data.image[0]);
-
-    console.log(data.image[0]);
 
     const url = `${process.env.REACT_APP_API_KEY}/user/registration`;
 
     const res = await insertFormData(url, formData);
 
     if (res.data.status) {
-      reset({ name: "", email: "", password: "", image: "" });
+      reset({
+        name: "",
+        email: "",
+        password: "",
+        image: "",
+        phone: "",
+        address: "",
+      });
       setShowNotification({
         ...showNotification,
         status: true,
-        message: "new user add successfull",
+        message: "New user add successfull",
       });
     } else {
       setShowNotification({
@@ -53,6 +61,15 @@ const AddUser = () => {
       });
     }
   };
+
+  // image preview
+  const image = useWatch({
+    control,
+    name: "image",
+  });
+
+  const [imagePreview] = useFilePreview(image);
+
   return (
     <>
       <Box className={styles.WrapperContainer}>
@@ -64,6 +81,7 @@ const AddUser = () => {
                   margin: "5px 0px 20px 0px",
                   fontSize: "20px",
                   fontWeight: "500",
+                  textAlign: "center",
                 }}
                 variant="h2"
                 color="primary"
@@ -72,8 +90,8 @@ const AddUser = () => {
               </Typography>
               {/* form */}
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={2}>
-                  <Grid item lg={6} md={12}>
+                <Grid container spacing={2} justifyContent="center">
+                  <Grid item lg={8} md={12}>
                     <Box>
                       <Controller
                         name="name"
@@ -94,7 +112,7 @@ const AddUser = () => {
                       />
                     </Box>
                   </Grid>
-                  <Grid item lg={6} md={12}>
+                  <Grid item lg={8} md={12}>
                     <Box>
                       <Controller
                         name="email"
@@ -120,7 +138,7 @@ const AddUser = () => {
                       />
                     </Box>
                   </Grid>
-                  <Grid item lg={6} md={12}>
+                  <Grid item lg={8} md={12}>
                     <Box>
                       <Controller
                         name="password"
@@ -145,7 +163,7 @@ const AddUser = () => {
                       />
                     </Box>
                   </Grid>
-                  <Grid item lg={6} md={12}>
+                  <Grid item lg={8} md={12}>
                     <Box>
                       <Controller
                         name="userRole"
@@ -166,7 +184,43 @@ const AddUser = () => {
                       />
                     </Box>
                   </Grid>
-                  <Grid item lg={12} md={12}>
+                  <Grid item lg={8} md={12}>
+                    <Box>
+                      <Controller
+                        name="phone"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            helperText={errors?.phone?.message}
+                            error={errors.phone ? true : false}
+                            {...field}
+                            fullWidth
+                            size="small"
+                            label="Phone"
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item lg={8} md={12}>
+                    <Box>
+                      <Controller
+                        name="address"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            helperText={errors?.address?.message}
+                            error={errors.address ? true : false}
+                            {...field}
+                            fullWidth
+                            size="small"
+                            label="Address"
+                          />
+                        )}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item lg={8} md={12}>
                     <Box>
                       <Stack direction="column" sx={{ my: 1 }}>
                         <Button
@@ -197,21 +251,37 @@ const AddUser = () => {
                           </Typography>
                         )}
                       </Stack>
+                      {imagePreview && image?.length ? (
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <PreviewImage
+                            itemData={imagePreview}
+                            height={250}
+                            width={250}
+                            singleimg
+                          />
+                        </Box>
+                      ) : null}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={8} md={12}>
+                    <Box sx={{ margin: "5px 0px" }}>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        size="large"
+                      >
+                        Add New User
+                      </Button>
                     </Box>
                   </Grid>
                 </Grid>
-
-                <Box sx={{ margin: "10px 0px" }}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    size="large"
-                  >
-                    Add New User
-                  </Button>
-                </Box>
               </form>
 
               {/* <Typography
@@ -229,7 +299,7 @@ const AddUser = () => {
               </Typography> */}
             </Box>
           </Grid>
-          {/* <Grid item lg={6}>
+          {/* <Grid item lg={8}>
             <Box>
               <img src={logoImage} alt="login" height={"100%"} width="100%" />
             </Box>

@@ -48,10 +48,10 @@ const TaskAttacment = () => {
     control,
     name: "image",
   });
-  console.log(image);
+  // console.log(image);
 
   const [imagePreview] = useFilePreview(image);
-  console.log(imagePreview);
+  // console.log(imagePreview);
 
   // upload image
   const onSubmit = async (data) => {
@@ -125,7 +125,7 @@ const TaskAttacment = () => {
               </Button>
             </Stack>
             {imagePreview && image?.length ? (
-              <PreviewImage itemData={imagePreview} />
+              <PreviewImage itemData={imagePreview} height={500} width={750} />
             ) : null}
           </Box>
           <Box className={styles.actionBtn}>
