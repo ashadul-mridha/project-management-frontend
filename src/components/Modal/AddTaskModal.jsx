@@ -382,7 +382,6 @@ const AddTaskModal = () => {
                   </Button>
                 </Stack>
                 {imagePreview ? <PreviewImage itemData={imagePreview} /> : null}
-                {/* {imagePreview && imagePreview} */}
               </Box>
             </Box>
             {/* popup footer  */}

@@ -1,23 +1,23 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Typography } from "@mui/material";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
-import TaskAttacment from "../Task/TaskAttacment";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { AiOutlineCloseSquare } from "react-icons/ai";
-import EditTaskDetailsForm from "../Task/EditTaskDetailsForm";
+import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 import Comment from "../Comment/Comment";
- 
+import EditTaskDetailsForm from "../Task/EditTaskDetailsForm";
+import TaskAttacment from "../Task/TaskAttacment";
+
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate( -50%, -50%)",
-  width: 600,
+  width: 800,
   bgcolor: "#ffffff",
   boxShadow: 50,
   outline: "none",
@@ -25,17 +25,14 @@ const style = {
 };
 
 const closeBtn = {
-    cursor: 'pointer'
-}
+  cursor: "pointer",
+};
 
 const EditTaskModal = () => {
-  const {
-    openEditTask,
-    setOpenEditTask,
-  } = useNavbarContextHooks();
+  const { openEditTask, setOpenEditTask } = useNavbarContextHooks();
 
   // accordion of task
-  const [expanded, setExpanded] = useState('panel1');
+  const [expanded, setExpanded] = useState("panel1");
 
   // close task model
   const handleClose = () => {
@@ -46,8 +43,6 @@ const EditTaskModal = () => {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
-
 
   return (
     <>
