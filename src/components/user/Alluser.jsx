@@ -40,6 +40,7 @@ export default function Alluser() {
       headerAlign: "center",
       align: "center",
       width: 150,
+      editable: true,
     },
     {
       field: "email",
@@ -48,6 +49,7 @@ export default function Alluser() {
       headerAlign: "center",
       align: "center",
       width: 170,
+      editable: true,
     },
     {
       field: "userRole",
