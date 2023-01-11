@@ -17,6 +17,10 @@ const theme = createTheme({
       main: "#FAFAFA",
       dark : 'gray',
     },
+    success: {
+      main: "#00800",
+      dark : 'rgb(0, 109, 0)',
+    },
   },
   components: {
     MuiTypography: {
