@@ -68,7 +68,6 @@ const ProfilePage = () => {
   const [imagePreview] = useFilePreview(newUploadImage);
 
   // update user profile
-
   const onSubmit = async (data) => {
     // create form data
     const formData = new FormData();
@@ -90,7 +89,7 @@ const ProfilePage = () => {
       },
     });
 
-    console.log(res.data);
+    // console.log(res.data);
 
     if (res.data.status) {
       setShowNotification({
@@ -160,7 +159,7 @@ const ProfilePage = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          disabled={edit}
+                          disabled={!edit}
                           size="small"
                           label="Name"
                           InputLabelProps={{ shrink: true }}
@@ -196,7 +195,7 @@ const ProfilePage = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          disabled={edit}
+                          disabled={!edit}
                           size="small"
                           label="Phone"
                           InputLabelProps={{ shrink: true }}
@@ -214,7 +213,7 @@ const ProfilePage = () => {
                         <TextField
                           {...field}
                           fullWidth
-                          disabled={edit}
+                          disabled={!edit}
                           size="small"
                           label="Address"
                           InputLabelProps={{ shrink: true }}
@@ -245,7 +244,7 @@ const ProfilePage = () => {
                     />
                   </Box>
                 </Grid>
-                {!edit ? (
+                {edit ? (
                   <>
                     <Grid item lg={6} md={12}>
                       <Box sx={{}}>

@@ -17,6 +17,7 @@ export default function Alluser() {
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState(5);
   const [rowId, setRowId] = useState(null);
+  const [fetchUser, setFetchUser] = useState(false);
 
   //table colume
   const columns = useMemo(
@@ -94,7 +95,7 @@ export default function Alluser() {
         align: "center",
         type: "actions",
         renderCell: (params) => (
-          <EditUserActions {...{ params, rowId, setRowId }} />
+          <EditUserActions {...{ params, rowId, setRowId, setFetchUser }} />
         ),
       },
     ],
@@ -113,7 +114,7 @@ export default function Alluser() {
     };
 
     fetchData();
-  }, [token]);
+  }, [token, fetchUser]);
 
   return (
     <>
