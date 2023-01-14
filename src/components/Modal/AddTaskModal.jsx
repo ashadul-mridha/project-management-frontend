@@ -115,12 +115,23 @@ const AddTaskModal = () => {
   // react quill modules
   const modules = {
     toolbar: [
-      [{ header: [1, 2, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ align: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image"],
       [{ color: [] }, { background: [] }],
+      ["clean"],
     ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
   };
 
   const onSubmit = async (data) => {
@@ -251,10 +262,10 @@ const AddTaskModal = () => {
                   name="desc"
                   control={control}
                   theme="snow"
-                  modules={modules}
                   render={({ field }) => (
                     <ReactQuill
                       {...field}
+                      modules={modules}
                       placeholder={"Write Description"}
                       onChange={(text) => {
                         field.onChange(text);
