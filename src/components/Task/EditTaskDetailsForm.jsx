@@ -51,7 +51,8 @@ const EditTaskDetailsForm = () => {
         name: res.data.data.name,
         desc: res.data.data.desc,
         priority: res.data.data.priority,
-        remain: res.data.data.remain,
+        start_time: res.data.data.start_time,
+        end_time: res.data.data.end_time,
       });
     };
     fetchData();
@@ -144,13 +145,43 @@ const EditTaskDetailsForm = () => {
           />
         </Box>
 
-        {/* task remain  */}
+        {/* task start time  */}
         <Box sx={{ margin: "10px 0px 10px 0px" }}>
           <Controller
-            name="remain"
+            name="start_time"
             control={control}
             rules={{
-              required: "Please add remain time",
+              required: "Please add start time",
+            }}
+            render={({ field }) => (
+              <DateTimePicker
+                label="Task  Start Time"
+                disablePast
+                renderInput={(params) => <TextField fullWidth {...params} />}
+                {...field}
+              />
+            )}
+          />
+          {errors.start_time && (
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "400" }}
+              variant="overline"
+              display="block"
+              gutterBottom
+              color={"primary"}
+            >
+              {errors.start_time.message}
+            </Typography>
+          )}
+        </Box>
+
+        {/* task end time  */}
+        <Box sx={{ margin: "10px 0px 10px 0px" }}>
+          <Controller
+            name="end_time"
+            control={control}
+            rules={{
+              required: "Please add task end time",
             }}
             render={({ field }) => (
               <DateTimePicker
@@ -161,7 +192,7 @@ const EditTaskDetailsForm = () => {
               />
             )}
           />
-          {errors.remain && (
+          {errors.end_time && (
             <Typography
               sx={{ fontSize: "12px", fontWeight: "400" }}
               variant="overline"
@@ -169,7 +200,7 @@ const EditTaskDetailsForm = () => {
               gutterBottom
               color={"primary"}
             >
-              {errors.remain.message}
+              {errors.end_time.message}
             </Typography>
           )}
         </Box>

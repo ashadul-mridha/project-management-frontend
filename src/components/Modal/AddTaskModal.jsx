@@ -133,7 +133,8 @@ const AddTaskModal = () => {
       formData.append("projectId", projectId);
       formData.append("statusId", statusId);
       formData.append("priority", data.priority);
-      formData.append("remain", data.remain);
+      formData.append("start_time", data.start_time);
+      formData.append("end_time", data.end_time);
       formData.append("assignUser", JSON.stringify(personName));
       Array.from(data.image).forEach((image) => {
         formData.append("image", image);
@@ -273,10 +274,42 @@ const AddTaskModal = () => {
                 />
               </Box>
 
-              {/* task remain  */}
+              {/* task start time  */}
               <Box sx={{ margin: "10px 0px 10px 0px" }}>
                 <Controller
-                  name="remain"
+                  name="start_time"
+                  control={control}
+                  rules={{
+                    required: "Please add when task will be start",
+                  }}
+                  render={({ field }) => (
+                    <DateTimePicker
+                      label="Task Start Time"
+                      disablePast
+                      renderInput={(params) => (
+                        <TextField fullWidth {...params} />
+                      )}
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.start_time && (
+                  <Typography
+                    sx={{ fontSize: "12px", fontWeight: "400" }}
+                    variant="overline"
+                    display="block"
+                    gutterBottom
+                    color={"primary"}
+                  >
+                    {errors.start_time.message}
+                  </Typography>
+                )}
+              </Box>
+
+              {/* task end time  */}
+              <Box sx={{ margin: "10px 0px 10px 0px" }}>
+                <Controller
+                  name="end_time"
                   control={control}
                   rules={{
                     required: "Please add when task will be end",
@@ -292,7 +325,7 @@ const AddTaskModal = () => {
                     />
                   )}
                 />
-                {errors.remain && (
+                {errors.end_time && (
                   <Typography
                     sx={{ fontSize: "12px", fontWeight: "400" }}
                     variant="overline"
@@ -300,7 +333,7 @@ const AddTaskModal = () => {
                     gutterBottom
                     color={"primary"}
                   >
-                    {errors.remain.message}
+                    {errors.end_time.message}
                   </Typography>
                 )}
               </Box>
