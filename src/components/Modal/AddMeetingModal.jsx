@@ -50,7 +50,7 @@ const AddMeetingModal = () => {
     control,
     reset,
     formState: { errors },
-  } = useForm({ defaultValues: { } });
+  } = useForm({ defaultValues: {} });
 
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
@@ -102,51 +102,61 @@ const AddMeetingModal = () => {
   // react quill modules
   const modules = {
     toolbar: [
-      [{ header: [1, 2, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ align: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image"],
       [{ color: [] }, { background: [] }],
+      ["clean"],
     ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
   };
 
-    const onSubmit = async (data) => {
-    
-      /* Merging the data object with the personName array. */
-      const allData = {
-        ...data,
-        users : personName
-      }
-    
-      /* Sending a POST request to the server. */
-      const url = `${process.env.REACT_APP_API_KEY}/meeting`;
-      const res = await axios({
-        method: "post",
-        url: url,
-        data: allData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const onSubmit = async (data) => {
+    /* Merging the data object with the personName array. */
+    const allData = {
+      ...data,
+      users: personName,
+    };
 
-      if (res.data.status) {
-        setShowNotification({
-          ...showNotification,
-          status: true,
-          message: "New Meeting Added",
-        });
-        handleClose();
-        setCallMeeting((prevState) => !prevState);
-      } else {
-        setShowNotification({
-          ...showNotification,
-          status: true,
-          message: res.data.message,
-        });
-        handleClose();
-        setCallMeeting((prevState) => !prevState);
-      }
+    /* Sending a POST request to the server. */
+    const url = `${process.env.REACT_APP_API_KEY}/meeting`;
+    const res = await axios({
+      method: "post",
+      url: url,
+      data: allData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.data.status) {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: "New Meeting Added",
+      });
+      handleClose();
+      setCallMeeting((prevState) => !prevState);
+    } else {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: res.data.message,
+      });
+      handleClose();
+      setCallMeeting((prevState) => !prevState);
     }
+  };
 
   return (
     <>
@@ -395,10 +405,10 @@ const AddMeetingModal = () => {
                   name="desc"
                   control={control}
                   theme="snow"
-                  modules={modules}
                   render={({ field }) => (
                     <ReactQuill
                       {...field}
+                      modules={modules}
                       placeholder={"Write Description"}
                       onChange={(text) => {
                         field.onChange(text);

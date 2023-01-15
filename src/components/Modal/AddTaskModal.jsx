@@ -135,12 +135,13 @@ const AddTaskModal = () => {
   };
 
   const onSubmit = async (data) => {
+    console.log(data.desc);
     // check task user added or not
     if (personName.length > 0) {
       // create form data
       const formData = new FormData();
       formData.append("name", data.name);
-      formData.append("desc", data.name);
+      formData.append("desc", data.desc);
       formData.append("projectId", projectId);
       formData.append("statusId", statusId);
       formData.append("priority", data.priority);

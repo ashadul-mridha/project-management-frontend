@@ -61,20 +61,38 @@ const EditTaskDetailsForm = () => {
   // react quill modules
   const modules = {
     toolbar: [
-      [{ header: [1, 2, 5, 6, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ align: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
+      [{ header: "1" }, { header: "2" }, { font: [] }],
+      [{ size: [] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image"],
       [{ color: [] }, { background: [] }],
+      ["clean"],
     ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
+
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("desc", data.desc);
+    formData.append("priority", data.priority);
+    formData.append("start_time", data.start_time);
+    formData.append("end_time", data.end_time);
     // task update Request
     const res = await axios.put(
       `${process.env.REACT_APP_API_KEY}/task/${taskId}`,
-      data,
+      formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -132,10 +150,10 @@ const EditTaskDetailsForm = () => {
             name="desc"
             control={control}
             theme="snow"
-            modules={modules}
             render={({ field }) => (
               <ReactQuill
                 {...field}
+                modules={modules}
                 placeholder={"Write Description"}
                 onChange={(text) => {
                   field.onChange(text);
