@@ -93,7 +93,7 @@ const Login = () => {
                     defaultValue={""}
                     control={control}
                     render={({ field }) => (
-                      <TextField {...field} fullWidth label="Password" />
+                      <TextField {...field} fullWidth type="password" label="Password" />
                     )}
                   />
                 </Box>
@@ -118,7 +118,7 @@ const Login = () => {
                 Forgot Password?
                 <Link
                   style={{ paddingLeft: "5px", color: "#DB4C3F" }}
-                  to={"/reset/password"}
+                  to={"/forgot/password"}
                 >
                   Forgot Password
                 </Link>

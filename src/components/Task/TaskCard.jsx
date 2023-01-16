@@ -131,8 +131,8 @@ const TaskCard = ({ data }) => {
                   fontWeight: "400",
                 }}
               >
-                {new Date(data.remain).toUTCString().substring(0, 16)}
-                {/* {data.remain.substring(0, 10)} */}
+                {new Date(data.end_time).toUTCString().substring(0, 16)}
+                {/* {data.end_time.substring(0, 10)} */}
               </Typography>
 
               <Typography
@@ -140,7 +140,7 @@ const TaskCard = ({ data }) => {
                 variant="subtitle2"
                 component="div"
               >
-                {/* {new Date(data.remain).toUTCString().substring(0, 16)} */}
+                {/* {new Date(data.end_time).toUTCString().substring(0, 16)} */}
               </Typography>
             </Box>
           </Box>

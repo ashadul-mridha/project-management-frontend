@@ -4,17 +4,16 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import logoImage from "../../../assets/image/login.png";
 
 // react hooks form
 import { Controller, useForm } from "react-hook-form";
-// import useAuthHooks from "../../../utils/hooks/useAuth";
-// import useNavbarContextHooks from "../../../utils/hooks/useNavbarContext";
+import useNavbarContextHooks from "../../../utils/hooks/useNavbarContext";
 
 const EnterEmail = () => {
-//   const { showNotification, setShowNotification } = useNavbarContextHooks();
-//   const { setUserToBrowser } = useAuthHooks();
+  const { showNotification, setShowNotification } = useNavbarContextHooks();
+
 //   let navigate = useNavigate();
 const [success , setSuccess] = useState(false);
 
@@ -24,20 +23,24 @@ const [success , setSuccess] = useState(false);
   const onSubmit = async (data) => {
 
     console.log(data);
-    setSuccess( prevState => !prevState);
-    // const res = await axios.post("http://localhost:5000/api/user/login", data);
 
-    // if (res.data.status) {
-    //   const userData = res.data.data;
-    //   setUserToBrowser(userData);
-    //   navigate(`/`);
-    // } else {
-    //   setShowNotification({
-    //     ...showNotification,
-    //     status: true,
-    //     message: res.data.message,
-    //   });
-    // }
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_KEY}/user/forgot/password`,
+      data
+    );
+
+    if (res.data.status) {
+      setSuccess((prevState) => !prevState);
+      console.log(res.data);
+    } else {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: res.data.message,
+      });
+    }
+
+
   };
   return (
     <>

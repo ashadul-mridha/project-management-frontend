@@ -4,18 +4,20 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import logoImage from "../../../assets/image/login.png";
 
 // react hooks form
 import { Controller, useForm } from "react-hook-form";
-// import useAuthHooks from "../../../utils/hooks/useAuth";
-// import useNavbarContextHooks from "../../../utils/hooks/useNavbarContext";
+import useNavbarContextHooks from "../../../utils/hooks/useNavbarContext";
 
 const UpdatePassword = () => {
-  //   const { showNotification, setShowNotification } = useNavbarContextHooks();
-  //   const { setUserToBrowser } = useAuthHooks();
-  //   let navigate = useNavigate();
+
+  const { showNotification, setShowNotification } = useNavbarContextHooks();
+  let navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const resetToken = searchParams.get("reset_token");
+
   const [success, setSuccess] = useState(false);
 
   const {
@@ -28,21 +30,29 @@ const UpdatePassword = () => {
 
   //after submit form
   const onSubmit = async (data) => {
-    console.log(data);
+    
+    const resetData = {
+      password: data.password,
+      token: resetToken,
+    };
+    // console.log(resetData);
     setSuccess((prevState) => !prevState);
-    // const res = await axios.post("http://localhost:5000/api/user/login", data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_KEY}/user/reset/password`,
+      resetData
+    );
 
-    // if (res.data.status) {
-    //   const userData = res.data.data;
-    //   setUserToBrowser(userData);
-    //   navigate(`/`);
-    // } else {
-    //   setShowNotification({
-    //     ...showNotification,
-    //     status: true,
-    //     message: res.data.message,
-    //   });
-    // }
+    if (res.data.status) {
+      // const userData = res.data.data;
+      navigate(`/`);
+    } else {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: res.data.message,
+      });
+    }
+
   };
   return (
     <>
