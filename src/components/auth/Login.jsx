@@ -79,6 +79,7 @@ const Login = () => {
                 <Box sx={{ margin: "15px 0px 15px 0px" }}>
                   <Controller
                     name="email"
+                    defaultValue={""}
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
@@ -89,6 +90,7 @@ const Login = () => {
                 <Box sx={{ margin: "15px 0px 15px 0px" }}>
                   <Controller
                     name="password"
+                    defaultValue={""}
                     control={control}
                     render={({ field }) => (
                       <TextField {...field} fullWidth label="Password" />
@@ -116,7 +118,7 @@ const Login = () => {
                 Forgot Password?
                 <Link
                   style={{ paddingLeft: "5px", color: "#DB4C3F" }}
-                  to={"/forgot/password"}
+                  to={"/reset/password"}
                 >
                   Forgot Password
                 </Link>

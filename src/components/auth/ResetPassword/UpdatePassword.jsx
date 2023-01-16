@@ -12,19 +12,24 @@ import { Controller, useForm } from "react-hook-form";
 // import useAuthHooks from "../../../utils/hooks/useAuth";
 // import useNavbarContextHooks from "../../../utils/hooks/useNavbarContext";
 
-const EnterEmail = () => {
-//   const { showNotification, setShowNotification } = useNavbarContextHooks();
-//   const { setUserToBrowser } = useAuthHooks();
-//   let navigate = useNavigate();
-const [success , setSuccess] = useState(false);
+const UpdatePassword = () => {
+  //   const { showNotification, setShowNotification } = useNavbarContextHooks();
+  //   const { setUserToBrowser } = useAuthHooks();
+  //   let navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
 
-  const { handleSubmit, control } = useForm();
+  const {
+    formState: { errors },
+    handleSubmit,
+    watch,
+    control,
+  } = useForm({ password: "", password_repeat: "" });
+  let pwd = watch("password");
 
   //after submit form
   const onSubmit = async (data) => {
-
     console.log(data);
-    setSuccess( prevState => !prevState);
+    setSuccess((prevState) => !prevState);
     // const res = await axios.post("http://localhost:5000/api/user/login", data);
 
     // if (res.data.status) {
@@ -76,7 +81,7 @@ const [success , setSuccess] = useState(false);
                 variant="h2"
                 color="initial"
               >
-                Forgot your password? 😥😥
+                Password reset 😍
               </Typography>
               {success ? (
                 <Typography
@@ -90,7 +95,7 @@ const [success , setSuccess] = useState(false);
                   variant="p"
                   color="initial"
                 >
-                  You’ve been emailed a password reset link.
+                  Your Password was updated successfull
                 </Typography>
               ) : (
                 <>
@@ -105,20 +110,50 @@ const [success , setSuccess] = useState(false);
                     variant="p"
                     color="initial"
                   >
-                    To reset your password, please enter the email address of
-                    your account ❤.
+                    Please enter a new password for your account.
                   </Typography>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Box sx={{ margin: "15px 0px 15px 0px" }}>
                       <Controller
-                        name="email"
                         defaultValue={""}
+                        name="password"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{
+                          required: "You must specify a password",
+                        }}
                         render={({ field }) => (
-                          <TextField {...field} fullWidth label="Email" />
+                          <TextField
+                            {...field}
+                            fullWidth
+                            type="password"
+                            label="Password"
+                          />
                         )}
                       />
+                      {errors?.password && <p>{errors.password.message}</p>}
+                    </Box>
+                    <Box sx={{ margin: "15px 0px 15px 0px" }}>
+                      <Controller
+                        defaultValue={"dfg"}
+                        name="password_repeat"
+                        control={control}
+                        rules={{
+                          required: "You must specify a password",
+                          validate: (value) =>
+                            value === pwd || "The passwords do not match",
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            type="password"
+                            label="Confirm Password"
+                          />
+                        )}
+                      />
+                      {errors?.password_repeat && (
+                        <p> {errors.password_repeat.message}</p>
+                      )}
                     </Box>
                     <Box sx={{ margin: "15px 0px 15px 0px" }}>
                       <Button
@@ -135,7 +170,7 @@ const [success , setSuccess] = useState(false);
                 </>
               )}
 
-              <Typography
+              {/* <Typography
                 sx={{ fontSize: "14px", fontWeight: "400" }}
                 variant="p"
                 color="#222222"
@@ -147,7 +182,7 @@ const [success , setSuccess] = useState(false);
                 >
                   Go Login
                 </Link>
-              </Typography>
+              </Typography> */}
             </Box>
           </Grid>
         </Grid>
@@ -170,4 +205,4 @@ const [success , setSuccess] = useState(false);
   );
 };
 
-export default EnterEmail;
+export default UpdatePassword;

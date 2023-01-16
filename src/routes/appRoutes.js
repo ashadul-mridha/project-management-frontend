@@ -14,6 +14,7 @@ import Alluser from '../components/user/Alluser';
 import AllMeeting from '../components/meeting/AllMeeting';
 import ViewMeeting from '../components/meeting/ViewMeeting';
 import EnterEmail from '../components/auth/ResetPassword/EnterEmail';
+import UpdatePassword from '../components/auth/ResetPassword/UpdatePassword';
 
 const AppRouter = () => {
     return (
@@ -39,6 +40,7 @@ const AppRouter = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/forgot/password" element={<EnterEmail />} />
+                <Route path="/reset/password" element={<UpdatePassword />} />
             </Routes>
         </>
     );
