@@ -5,35 +5,37 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logoImage from "../../assets/image/login.png";
+import logoImage from "../../../assets/image/login.png";
 
 // react hooks form
 import { Controller, useForm } from "react-hook-form";
-import useAuthHooks from "../../utils/hooks/useAuth";
-import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
+// import useAuthHooks from "../../../utils/hooks/useAuth";
+// import useNavbarContextHooks from "../../../utils/hooks/useNavbarContext";
 
-const Login = () => {
-  const { showNotification, setShowNotification } = useNavbarContextHooks();
-  const { setUserToBrowser } = useAuthHooks();
-  let navigate = useNavigate();
+const EnterEmail = () => {
+//   const { showNotification, setShowNotification } = useNavbarContextHooks();
+//   const { setUserToBrowser } = useAuthHooks();
+//   let navigate = useNavigate();
 
   const { handleSubmit, control } = useForm();
 
   //after submit form
   const onSubmit = async (data) => {
-    const res = await axios.post("http://localhost:5000/api/user/login", data);
 
-    if (res.data.status) {
-      const userData = res.data.data;
-      setUserToBrowser(userData);
-      navigate(`/`);
-    } else {
-      setShowNotification({
-        ...showNotification,
-        status: true,
-        message: res.data.message,
-      });
-    }
+    console.log(data);
+    // const res = await axios.post("http://localhost:5000/api/user/login", data);
+
+    // if (res.data.status) {
+    //   const userData = res.data.data;
+    //   setUserToBrowser(userData);
+    //   navigate(`/`);
+    // } else {
+    //   setShowNotification({
+    //     ...showNotification,
+    //     status: true,
+    //     message: res.data.message,
+    //   });
+    // }
   };
   return (
     <>
@@ -64,15 +66,29 @@ const Login = () => {
             >
               <Typography
                 sx={{
-                  margin: "5px 0px",
+                  margin: "10px 0px",
                   fontSize: "25px",
                   fontWeight: "500",
-                  textAlign: "center",
+                  textAlign: "left",
                 }}
                 variant="h2"
                 color="initial"
               >
-                Welcome Project & Meeting Management Software
+                Forgot your password? 😥😥
+              </Typography>
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  textAlign: "left",
+                  textTransform: "lowercase"
+                }}
+                variant="p"
+                color="initial"
+              >
+                To reset your password, please enter the email address of your
+                account ❤.
               </Typography>
               {/* form */}
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -87,15 +103,6 @@ const Login = () => {
                   />
                 </Box>
                 <Box sx={{ margin: "15px 0px 15px 0px" }}>
-                  <Controller
-                    name="password"
-                    control={control}
-                    render={({ field }) => (
-                      <TextField {...field} fullWidth label="Password" />
-                    )}
-                  />
-                </Box>
-                <Box sx={{ margin: "15px 0px 15px 0px" }}>
                   <Button
                     type="submit"
                     variant="contained"
@@ -103,22 +110,21 @@ const Login = () => {
                     fullWidth
                     size="large"
                   >
-                    Login
+                    Reset my password
                   </Button>
                 </Box>
               </form>
-
               <Typography
                 sx={{ fontSize: "14px", fontWeight: "400" }}
                 variant="p"
                 color="#222222"
               >
-                Forgot Password?
+                Go Login?
                 <Link
                   style={{ paddingLeft: "5px", color: "#DB4C3F" }}
-                  to={"/forgot/password"}
+                  to={"/login"}
                 >
-                  Forgot Password
+                  Go Login
                 </Link>
               </Typography>
             </Box>
@@ -143,4 +149,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default EnterEmail;
