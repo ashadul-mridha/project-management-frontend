@@ -19,6 +19,8 @@ const NavbarContextProvider = ({ children }) => {
   const [openEditTask, setOpenEditTask] = React.useState(false);
   //add meeting modal
   const [openAddMeeting, setOpenAddMeeting] = React.useState(false);
+  //add booking modal
+  const [openAddBooking, setOpenAddBooking] = React.useState(false);
 
   const [projectId, setProjectId] = React.useState();
   const [statusId, setStatusId] = React.useState();
@@ -35,6 +37,7 @@ const NavbarContextProvider = ({ children }) => {
   const [callProject, setCallProject] = useState(false);
   const [callTask, setCallTask] = useState(false);
   const [callMeeting, setCallMeeting] = useState(false);
+  const [callBooking, setCallBooking] = useState(false);
 
   const getStatusId = async (id) => {
     const res = await axios.get(`${process.env.REACT_APP_URL}/project/${id}`);
@@ -63,7 +66,6 @@ const NavbarContextProvider = ({ children }) => {
       setCallTask((prevState) => !prevState);
     }
   };
-
 
   return (
     <NavContext.Provider
@@ -96,6 +98,10 @@ const NavbarContextProvider = ({ children }) => {
         setOpenAddMeeting,
         callMeeting,
         setCallMeeting,
+        openAddBooking,
+        setOpenAddBooking,
+        callBooking,
+        setCallBooking,
       }}
     >
       {children}

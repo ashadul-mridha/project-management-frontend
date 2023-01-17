@@ -15,6 +15,8 @@ import AllMeeting from '../components/meeting/AllMeeting';
 import ViewMeeting from '../components/meeting/ViewMeeting';
 import EnterEmail from '../components/auth/ResetPassword/EnterEmail';
 import UpdatePassword from '../components/auth/ResetPassword/UpdatePassword';
+import AllBooking from '../components/bookingGallary/AllBooking';
+import ViewBooking from '../components/bookingGallary/ViewBooking';
 
 const AppRouter = () => {
     return (
@@ -35,8 +37,10 @@ const AppRouter = () => {
                     <Route path="/project/:id" element={<ProjectDetails />} /> 
                     <Route path="/meeting/all" element={<AllMeeting />} />
                     <Route path="/meeting/view" element={<ViewMeeting />} />
-                    
+                    <Route path="/booking/all" element={<AllBooking />} />
+                    <Route path="/booking/view" element={<ViewBooking />} />
                 </Route>
+                
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/forgot/password" element={<EnterEmail />} />

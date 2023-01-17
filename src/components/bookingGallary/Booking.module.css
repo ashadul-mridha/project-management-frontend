@@ -1,0 +1,60 @@
+
+.allProject{
+    margin-right: -5px;
+    margin-top: 5px;
+}
+.allBooking> a{
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.allBooking> a > p{
+    margin: 0px;
+}
+.allBooking > a:hover{
+    background-color: #EEEEEE;
+}
+
+.allBooking> a > .allBooking__imgWithTitle{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.allBooking__imgWithTitle__img{
+    /* height: 30px; */
+    width: 30px;
+}
+.allBooking__imgWithTitle__img > img{
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.allBooking> a > .allBooking__imgWithTitle > p{
+    font-size: 14px;
+    margin: 0px 0px 0px 8px;
+    color: #000000;
+}
+
+.allBooking> a > .allBooking__notification{
+    font-size: 14px;
+    color: #aaaaaa;
+}
+.allBooking> a >  .allBooking__notification__delete{
+    display: none;
+}
+.allBooking:hover{
+    cursor: pointer;
+}
+.allBooking:hover > a > .allBooking__notification{
+    display: none;
+}
+.allBooking:hover > a >  .allBooking__notification__delete{
+    display: block;
+}

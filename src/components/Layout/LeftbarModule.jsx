@@ -8,6 +8,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import AllProject from "../projectAccordion/AllProject";
 import MeetingNavbar from "../meeting/MeetingNavbar";
+import BookingNavbar from "../bookingGallary/BookingNavbar";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -76,6 +77,17 @@ export default function LeftbarModule() {
         </AccordionSummary>
         <AccordionDetails>
           <MeetingNavbar />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel3"}
+        onChange={handleChange("panel3")}
+      >
+        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+          <Typography>Booking</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <BookingNavbar />
         </AccordionDetails>
       </Accordion>
     </div>

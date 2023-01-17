@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import EditTaskModal from './components/Modal/EditTaskModal';
 import Notification from './components/Notification/Notification';
 import AddMeetingModal from './components/Modal/AddMeetingModal';
+import AddBookingModal from './components/Modal/AddBookingModal';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
       <AddTaskModal />
       <EditTaskModal />
       <AddMeetingModal />
+      <AddBookingModal />
       <Notification />
     </>
   );
