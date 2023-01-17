@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -18,7 +18,7 @@ const UpdatePassword = () => {
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("reset_token");
 
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     formState: { errors },
@@ -36,15 +36,21 @@ const UpdatePassword = () => {
       token: resetToken,
     };
     // console.log(resetData);
-    setSuccess((prevState) => !prevState);
+    setLoading((prevState) => !prevState);
     const res = await axios.post(
       `${process.env.REACT_APP_API_KEY}/user/reset/password`,
       resetData
     );
+    setLoading((prevState) => !prevState);
 
     if (res.data.status) {
       // const userData = res.data.data;
       navigate(`/`);
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: 'Login with new password',
+      });
     } else {
       setShowNotification({
         ...showNotification,
@@ -91,94 +97,82 @@ const UpdatePassword = () => {
                 variant="h2"
                 color="initial"
               >
-                Password reset 😍
+                Password reset
               </Typography>
-              {success ? (
-                <Typography
-                  sx={{
-                    margin: "5px 0px 15px 0px",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    textAlign: "left",
-                    textTransform: "lowercase",
-                  }}
-                  variant="p"
-                  color="initial"
-                >
-                  Your Password was updated successfull
-                </Typography>
-              ) : (
-                <>
-                  <Typography
-                    sx={{
-                      margin: "5px 0px",
-                      fontSize: "14px",
-                      fontWeight: "400",
-                      textAlign: "left",
-                      textTransform: "lowercase",
+              <Typography
+                sx={{
+                  margin: "5px 0px",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  textAlign: "left",
+                  textTransform: "lowercase",
+                }}
+                variant="p"
+                color="initial"
+              >
+                Please enter a new password for your account.
+              </Typography>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Box sx={{ margin: "15px 0px 15px 0px" }}>
+                  <Controller
+                    defaultValue={""}
+                    name="password"
+                    control={control}
+                    rules={{
+                      required: "You must specify a password",
                     }}
-                    variant="p"
-                    color="initial"
-                  >
-                    Please enter a new password for your account.
-                  </Typography>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <Box sx={{ margin: "15px 0px 15px 0px" }}>
-                      <Controller
-                        defaultValue={""}
-                        name="password"
-                        control={control}
-                        rules={{
-                          required: "You must specify a password",
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            fullWidth
-                            type="password"
-                            label="Password"
-                          />
-                        )}
-                      />
-                      {errors?.password && <p>{errors.password.message}</p>}
-                    </Box>
-                    <Box sx={{ margin: "15px 0px 15px 0px" }}>
-                      <Controller
-                        defaultValue={"dfg"}
-                        name="password_repeat"
-                        control={control}
-                        rules={{
-                          required: "You must specify a password",
-                          validate: (value) =>
-                            value === pwd || "The passwords do not match",
-                        }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            fullWidth
-                            type="password"
-                            label="Confirm Password"
-                          />
-                        )}
-                      />
-                      {errors?.password_repeat && (
-                        <p> {errors.password_repeat.message}</p>
-                      )}
-                    </Box>
-                    <Box sx={{ margin: "15px 0px 15px 0px" }}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
                         fullWidth
-                        size="large"
-                      >
-                        Reset my password
-                      </Button>
-                    </Box>
-                  </form>
-                </>
-              )}
+                        type="password"
+                        label="Password"
+                      />
+                    )}
+                  />
+                  {errors?.password && <p>{errors.password.message}</p>}
+                </Box>
+                <Box sx={{ margin: "15px 0px 15px 0px" }}>
+                  <Controller
+                    defaultValue={"dfg"}
+                    name="password_repeat"
+                    control={control}
+                    rules={{
+                      required: "You must specify a password",
+                      validate: (value) =>
+                        value === pwd || "The passwords do not match",
+                    }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        type="password"
+                        label="Confirm Password"
+                      />
+                    )}
+                  />
+                  {errors?.password_repeat && (
+                    <p> {errors.password_repeat.message}</p>
+                  )}
+                </Box>
+                <Box sx={{ margin: "15px 0px 15px 0px" }}>
+                  {loading ? (
+                    <CircularProgress
+                      color="primary"
+                    />
+                  ) : (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      fullWidth
+                      size="large"
+                    >
+                      Reset my password
+                    </Button>
+                  )}
+                </Box>
+              </form>
 
               {/* <Typography
                 sx={{ fontSize: "14px", fontWeight: "400" }}

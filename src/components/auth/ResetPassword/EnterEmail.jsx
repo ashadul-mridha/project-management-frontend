@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
@@ -16,18 +16,21 @@ const EnterEmail = () => {
 
 //   let navigate = useNavigate();
 const [success , setSuccess] = useState(false);
+const [loading, setLoading] = useState(false);
 
   const { handleSubmit, control } = useForm();
 
   //after submit form
   const onSubmit = async (data) => {
 
-    console.log(data);
+    // console.log(data);
 
+    setLoading((prevState) => !prevState);
     const res = await axios.post(
       `${process.env.REACT_APP_API_KEY}/user/forgot/password`,
       data
     );
+    setLoading((prevState) => !prevState);
 
     if (res.data.status) {
       setSuccess((prevState) => !prevState);
@@ -79,7 +82,7 @@ const [success , setSuccess] = useState(false);
                 variant="h2"
                 color="initial"
               >
-                Forgot your password? 😥😥
+                Forgot your password? 
               </Typography>
               {success ? (
                 <Typography
@@ -124,15 +127,19 @@ const [success , setSuccess] = useState(false);
                       />
                     </Box>
                     <Box sx={{ margin: "15px 0px 15px 0px" }}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        size="large"
-                      >
-                        Reset my password
-                      </Button>
+                      {loading ? (
+                        <CircularProgress color="primary" />
+                      ) : (
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          fullWidth
+                          size="large"
+                        >
+                          Reset my password
+                        </Button>
+                      )}
                     </Box>
                   </form>
                 </>
