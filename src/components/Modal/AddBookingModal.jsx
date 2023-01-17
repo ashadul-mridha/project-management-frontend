@@ -1,4 +1,4 @@
-import { Grid, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -55,7 +55,6 @@ const AddBookingModal = () => {
   // state of api calling data
   const [personName, setPersonName] = React.useState([]);
   const [users, setUsers] = React.useState(false);
-  const [projects, setProjects] = React.useState(false);
 
   // get all user
   const userUrl = `${process.env.REACT_APP_API_KEY}/user`;
@@ -75,22 +74,6 @@ const AddBookingModal = () => {
     fetchData();
   }, [token, userUrl]);
 
-  // get all project
-  const projectUrl = `${process.env.REACT_APP_API_KEY}/project`;
-
-  //calling api via useEffect
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await axios.get(projectUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setProjects(res.data.data);
-    };
-
-    fetchData();
-  }, [projectUrl, token]);
 
   // close task model
   const handleClose = () => {
@@ -131,33 +114,33 @@ const AddBookingModal = () => {
     console.log(allData);
 
     /* Sending a POST request to the server. */
-    // const url = `${process.env.REACT_APP_API_KEY}/meeting`;
+    const url = `${process.env.REACT_APP_API_KEY}/booking`;
     const res = await axios({
       method: "post",
-    //   url: url,
+      url: url,
       data: allData,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    // if (res.data.status) {
-    //   setShowNotification({
-    //     ...showNotification,
-    //     status: true,
-    //     message: "New Booking Added",
-    //   });
-    //   handleClose();
-    //   setCallBooking((prevState) => !prevState);
-    // } else {
-    //   setShowNotification({
-    //     ...showNotification,
-    //     status: true,
-    //     message: res.data.message,
-    //   });
-    //   handleClose();
-    //   setCallBooking((prevState) => !prevState);
-    // }
+    if (res.data.status) {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: "New Booking Added",
+      });
+      handleClose();
+      setCallBooking((prevState) => !prevState);
+    } else {
+      setShowNotification({
+        ...showNotification,
+        status: true,
+        message: res.data.message,
+      });
+      handleClose();
+      setCallBooking((prevState) => !prevState);
+    }
 
   };
 
@@ -234,7 +217,7 @@ const AddBookingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="link"
+                        name="address"
                         control={control}
                         rules={{
                           required: "Please add booking address",
@@ -248,7 +231,7 @@ const AddBookingModal = () => {
                           />
                         )}
                       />
-                      {errors.link && (
+                      {errors.address && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -256,7 +239,7 @@ const AddBookingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.link.message}
+                          {errors.address.message}
                         </Typography>
                       )}
                     </Box>
@@ -266,6 +249,9 @@ const AddBookingModal = () => {
                       <Controller
                         name="place"
                         control={control}
+                        rules={{
+                          required: "Please add booking place",
+                        }}
                         render={({ field }) => (
                           <TextField
                             {...field}
@@ -427,7 +413,7 @@ const AddBookingModal = () => {
                 </Grid>
               </Box>
 
-              {/* client name & phone  */}
+              {/* client emaiul & address  */}
               <Box sx={{ margin: "10px 0px 10px" }}>
                 <Grid container spacing={2}>
                   <Grid item lg={6}>
