@@ -18,9 +18,7 @@ import axios from "axios";
 import useAuthHooks from "../../utils/hooks/useAuth";
 import useNavbarContextHooks from "../../utils/hooks/useNavbarContext";
 
-
 // custom components
-
 
 /**
  * It's a appointment custom component  that takes in a bunch of props and returns a styled appointment component.
@@ -54,7 +52,7 @@ const Appointment = ({ children, style, ...restProps }) => (
         marginTop: "5px",
       }}
     >
-      Link: {restProps.data.link}
+      Link: {restProps.data?.address}
     </Typography>
     <Typography
       variant="h6"
@@ -64,7 +62,7 @@ const Appointment = ({ children, style, ...restProps }) => (
         marginTop: "5px",
       }}
     >
-      Password: {restProps.data?.password}
+      Password: {restProps.data?.place}
     </Typography>
   </Appointments.Appointment>
 );
@@ -97,7 +95,7 @@ const AppointmentTooltipContent = ({
             marginTop: "5px",
           }}
         >
-          Link: {appointmentData.link}
+          Link: {appointmentData?.address}
         </Typography>
         <Typography
           variant="h6"
@@ -107,7 +105,7 @@ const AppointmentTooltipContent = ({
             marginTop: "5px",
           }}
         >
-          Password: {appointmentData?.password}
+          Password: {appointmentData?.place}
         </Typography>
         <div
           style={{ fontSize: "12px" }}
@@ -119,11 +117,10 @@ const AppointmentTooltipContent = ({
 );
 
 const ViewBooking = () => {
-
-  const [meeting , setMeeting ] = React.useState([]);
+  const [Booking, setBooking] = React.useState([]);
 
   const { getUser, getToken } = useAuthHooks();
-  const { callMeeting } = useNavbarContextHooks();
+  const { callBooking } = useNavbarContextHooks();
 
   // get login user role
   const { userRole } = getUser();
@@ -132,10 +129,9 @@ const ViewBooking = () => {
   /* data fetch url set by user role. */
   const url =
     userRole === "admin"
-      ? `${process.env.REACT_APP_API_KEY}/meeting`
-      : `${process.env.REACT_APP_API_KEY}/user/meeting`;
+      ? `${process.env.REACT_APP_API_KEY}/booking`
+      : `${process.env.REACT_APP_API_KEY}/user/booking`;
 
-  
   /* Fetching data from the server. */
   React.useEffect(() => {
     const fetchData = async () => {
@@ -145,41 +141,41 @@ const ViewBooking = () => {
         },
       });
       if (userRole === "admin") {
-        setMeeting(res.data.data);
+        setBooking(res.data.data);
       } else {
-        setMeeting(res.data.data.meetings);
+        setBooking(res.data.data.bookings);
       }
     };
     fetchData();
-  }, [callMeeting, token, url, userRole]);
+  }, [callBooking, token, url, userRole]);
 
   const today = new Date();
 
-    return (
-      <>
-        <Paper>
-          <Scheduler data={meeting}>
-            <ViewState
-              defaultCurrentDate={`${today}`}
-              defaultCurrentViewName="Week"
-            />
-            <DayView startDayHour={1} endDayHour={24} />
-            <WeekView startDayHour={1} endDayHour={24} />
-            <MonthView startDayHour={1} endDayHour={24} />
+  return (
+    <>
+      <Paper>
+        <Scheduler data={Booking}>
+          <ViewState
+            defaultCurrentDate={`${today}`}
+            defaultCurrentViewName="Week"
+          />
+          <DayView startDayHour={1} endDayHour={24} />
+          <WeekView startDayHour={1} endDayHour={24} />
+          <MonthView startDayHour={1} endDayHour={24} />
 
-            <Toolbar />
-            <DateNavigator />
-            <TodayButton />
-            <ViewSwitcher />
-            <Appointments appointmentComponent={Appointment} />
-            <AppointmentTooltip
-              contentComponent={AppointmentTooltipContent}
-              showCloseButton
-            />
-          </Scheduler>
-        </Paper>
-      </>
-    );
+          <Toolbar />
+          <DateNavigator />
+          <TodayButton />
+          <ViewSwitcher />
+          <Appointments appointmentComponent={Appointment} />
+          <AppointmentTooltip
+            contentComponent={AppointmentTooltipContent}
+            showCloseButton
+          />
+        </Scheduler>
+      </Paper>
+    </>
+  );
 };
 
 export default ViewBooking;

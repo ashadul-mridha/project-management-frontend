@@ -184,7 +184,7 @@ const AddBookingModal = () => {
               {/* booking title  */}
               <Box sx={{ margin: "10px 0px 10px" }}>
                 <Controller
-                  name="title"
+                  name="name"
                   control={control}
                   rules={{
                     required: "Please add booking title",
@@ -198,7 +198,7 @@ const AddBookingModal = () => {
                     />
                   )}
                 />
-                {errors.title && (
+                {errors.name && (
                   <Typography
                     sx={{ fontSize: "12px", fontWeight: "400" }}
                     variant="overline"
@@ -206,7 +206,7 @@ const AddBookingModal = () => {
                     gutterBottom
                     color={"primary"}
                   >
-                    {errors.title.message}
+                    {errors.name.message}
                   </Typography>
                 )}
               </Box>
@@ -283,7 +283,7 @@ const AddBookingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="startTime"
+                        name="startDate"
                         control={control}
                         rules={{
                           required: "Please add when start booking",
@@ -299,7 +299,7 @@ const AddBookingModal = () => {
                           />
                         )}
                       />
-                      {errors.startTime && (
+                      {errors.startDate && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -307,7 +307,7 @@ const AddBookingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.startTime.message}
+                          {errors.startDate.message}
                         </Typography>
                       )}
                     </Box>
@@ -315,7 +315,7 @@ const AddBookingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="endTime"
+                        name="endDate"
                         control={control}
                         rules={{
                           required: "Please add when end booking",
@@ -331,7 +331,7 @@ const AddBookingModal = () => {
                           />
                         )}
                       />
-                      {errors.endTime && (
+                      {errors.endDate && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -339,7 +339,7 @@ const AddBookingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.endTime.message}
+                          {errors.endDate.message}
                         </Typography>
                       )}
                     </Box>

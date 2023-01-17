@@ -13,7 +13,7 @@ import BookingCard from './BookingCard';
 
 const AllBooking = () => {
 
-  const [meetings , setMeetings] = useState([]);
+  const [bookings , setBookings] = useState([]);
  
   const { getUser, getToken } = useAuthHooks();
   const { callMeeting } = useNavbarContextHooks();
@@ -25,8 +25,8 @@ const AllBooking = () => {
   /* data fetch url set by user role. */
   const url =
     userRole === "admin"
-      ? `${process.env.REACT_APP_API_KEY}/meeting`
-      : `${process.env.REACT_APP_API_KEY}/user/meeting`;
+      ? `${process.env.REACT_APP_API_KEY}/booking`
+      : `${process.env.REACT_APP_API_KEY}/user/booking`;
 
   /* Fetching data from the server. */
   React.useEffect(() => {
@@ -37,9 +37,9 @@ const AllBooking = () => {
         },
       });
       if (userRole === "admin") {
-        setMeetings(res.data.data);
+        setBookings(res.data.data);
       } else {
-        setMeetings(res.data.data.meetings);
+        setBookings(res.data.data.meetings);
       }
     };
     fetchData();
@@ -54,7 +54,7 @@ const AllBooking = () => {
       >
         <ViewHeader data={headerData} />
 
-        {meetings?.map((meeting) => (
+        {bookings?.map((meeting) => (
           <BookingCard key={meeting.id} data={meeting} />
         ))}
       </Box>

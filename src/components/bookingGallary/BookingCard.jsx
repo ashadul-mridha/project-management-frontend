@@ -65,7 +65,7 @@ const BookingCard = ({ data }) => {
                 variant="h6"
                 component="div"
               >
-                {data.name}
+                {data.title}
               </Typography>
 
               <Typography
@@ -75,7 +75,8 @@ const BookingCard = ({ data }) => {
                   fontWeight: "400",
                 }}
               >
-                {new Date(data.link).toUTCString().substring(0, 16)}
+                {data.address}
+                {/* {new Date(data.address).toUTCString().substring(0, 16)} */}
               </Typography>
 
               <Typography
@@ -83,7 +84,7 @@ const BookingCard = ({ data }) => {
                 variant="subtitle2"
                 component="div"
               >
-                {new Date(data.startDate).toUTCString().substring(0, 16)}
+                {new Date(data.startTime).toUTCString().substring(0, 16)}
               </Typography>
             </Box>
           </Box>
