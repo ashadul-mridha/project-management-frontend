@@ -77,6 +77,7 @@ export default function UserSelect({ personName, setPersonName, alluser, validat
             <TextField
               {...params}
               label="Select User"
+              size="small"
               placeholder="Please select user"
             />
           )}

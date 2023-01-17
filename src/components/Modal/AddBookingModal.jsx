@@ -128,34 +128,37 @@ const AddBookingModal = () => {
       users: personName,
     };
 
+    console.log(allData);
+
     /* Sending a POST request to the server. */
-    const url = `${process.env.REACT_APP_API_KEY}/meeting`;
+    // const url = `${process.env.REACT_APP_API_KEY}/meeting`;
     const res = await axios({
       method: "post",
-      url: url,
+    //   url: url,
       data: allData,
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    if (res.data.status) {
-      setShowNotification({
-        ...showNotification,
-        status: true,
-        message: "New Booking Added",
-      });
-      handleClose();
-      setCallBooking((prevState) => !prevState);
-    } else {
-      setShowNotification({
-        ...showNotification,
-        status: true,
-        message: res.data.message,
-      });
-      handleClose();
-      setCallBooking((prevState) => !prevState);
-    }
+    // if (res.data.status) {
+    //   setShowNotification({
+    //     ...showNotification,
+    //     status: true,
+    //     message: "New Booking Added",
+    //   });
+    //   handleClose();
+    //   setCallBooking((prevState) => !prevState);
+    // } else {
+    //   setShowNotification({
+    //     ...showNotification,
+    //     status: true,
+    //     message: res.data.message,
+    //   });
+    //   handleClose();
+    //   setCallBooking((prevState) => !prevState);
+    // }
+
   };
 
   return (
@@ -195,24 +198,24 @@ const AddBookingModal = () => {
                 overflowY: "scroll",
               }}
             >
-              {/* booking name  */}
+              {/* booking title  */}
               <Box sx={{ margin: "10px 0px 10px" }}>
                 <Controller
-                  name="name"
+                  name="title"
                   control={control}
                   rules={{
-                    required: "Please add booking name",
+                    required: "Please add booking title",
                   }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
-                      label="Booking Name"
+                      label="Booking Title"
                       size="small"
                     />
                   )}
                 />
-                {errors.name && (
+                {errors.title && (
                   <Typography
                     sx={{ fontSize: "12px", fontWeight: "400" }}
                     variant="overline"
@@ -220,66 +223,72 @@ const AddBookingModal = () => {
                     gutterBottom
                     color={"primary"}
                   >
-                    {errors.name.message}
+                    {errors.title.message}
                   </Typography>
                 )}
               </Box>
 
-              {/* booking link or address  */}
+              {/* booking address &  place  */}
               <Box sx={{ margin: "10px 0px 10px" }}>
-                <Controller
-                  name="link"
-                  control={control}
-                  rules={{
-                    required: "Please add booking link or address",
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      label="Booking link or address"
-                      size="small"
-                    />
-                  )}
-                />
-                {errors.link && (
-                  <Typography
-                    sx={{ fontSize: "12px", fontWeight: "400" }}
-                    variant="overline"
-                    display="block"
-                    gutterBottom
-                    color={"primary"}
-                  >
-                    {errors.link.message}
-                  </Typography>
-                )}
-              </Box>
-
-              {/* booking password  */}
-              <Box sx={{ margin: "10px 0px 10px" }}>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      label="Booking Password"
-                      size="small"
-                    />
-                  )}
-                />
-                {errors.password && (
-                  <Typography
-                    sx={{ fontSize: "12px", fontWeight: "400" }}
-                    variant="overline"
-                    display="block"
-                    gutterBottom
-                    color={"primary"}
-                  >
-                    {errors.password.message}
-                  </Typography>
-                )}
+                <Grid container spacing={2}>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="link"
+                        control={control}
+                        rules={{
+                          required: "Please add booking address",
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            label="Booking address"
+                            size="small"
+                          />
+                        )}
+                      />
+                      {errors.link && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.link.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="place"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            label="Booking Place"
+                            size="small"
+                          />
+                        )}
+                      />
+                      {errors.place && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.place.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
               </Box>
 
               {/* booking schedule  */}
@@ -288,7 +297,7 @@ const AddBookingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="startDate"
+                        name="startTime"
                         control={control}
                         rules={{
                           required: "Please add when start booking",
@@ -304,7 +313,7 @@ const AddBookingModal = () => {
                           />
                         )}
                       />
-                      {errors.startDate && (
+                      {errors.startTime && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -312,7 +321,7 @@ const AddBookingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.startDate.message}
+                          {errors.startTime.message}
                         </Typography>
                       )}
                     </Box>
@@ -320,7 +329,7 @@ const AddBookingModal = () => {
                   <Grid item lg={6}>
                     <Box>
                       <Controller
-                        name="endDate"
+                        name="endTime"
                         control={control}
                         rules={{
                           required: "Please add when end booking",
@@ -336,7 +345,7 @@ const AddBookingModal = () => {
                           />
                         )}
                       />
-                      {errors.endDate && (
+                      {errors.endTime && (
                         <Typography
                           sx={{ fontSize: "12px", fontWeight: "400" }}
                           variant="overline"
@@ -344,7 +353,133 @@ const AddBookingModal = () => {
                           gutterBottom
                           color={"primary"}
                         >
-                          {errors.endDate.message}
+                          {errors.endTime.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              {/* client name & phone  */}
+              <Box sx={{ margin: "10px 0px 10px" }}>
+                <Grid container spacing={2}>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="clientName"
+                        control={control}
+                        rules={{
+                          required: "Please add Client Name",
+                        }}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            label="Client Name"
+                            size="small"
+                          />
+                        )}
+                      />
+                      {errors.clientName && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.clientName.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="clientPhone"
+                        rules={{
+                          required: "Please add Client Phone",
+                        }}
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            label="Client phone"
+                            size="small"
+                          />
+                        )}
+                      />
+                      {errors.clientPhone && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.clientPhone.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              {/* client name & phone  */}
+              <Box sx={{ margin: "10px 0px 10px" }}>
+                <Grid container spacing={2}>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="clientEmail"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            label="Client Email"
+                            size="small"
+                          />
+                        )}
+                      />
+                      {errors.clientEmail && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.clientEmail.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item lg={6}>
+                    <Box>
+                      <Controller
+                        name="clientAddress"
+                        control={control}
+                        render={({ field }) => (
+                          <TextField
+                            {...field}
+                            fullWidth
+                            label="Client Address"
+                            size="small"
+                          />
+                        )}
+                      />
+                      {errors.clientAddress && (
+                        <Typography
+                          sx={{ fontSize: "12px", fontWeight: "400" }}
+                          variant="overline"
+                          display="block"
+                          gutterBottom
+                          color={"primary"}
+                        >
+                          {errors.clientAddress.message}
                         </Typography>
                       )}
                     </Box>
@@ -355,37 +490,6 @@ const AddBookingModal = () => {
               {/* booking users  */}
               <Box sx={{ margin: "10px 0px 10px 0px" }}>
                 <Grid container spacing={2}>
-                  <Grid item lg={12}>
-                    <Box>
-                      <InputLabel id="demo-simple-select-standard-label">
-                        Select Project
-                      </InputLabel>
-                      <Controller
-                        name="project"
-                        control={control}
-                        render={({ field }) => (
-                          <Select {...field} fullWidth size="small">
-                            {projects?.map((project) => (
-                              <MenuItem key={project.id} value={project.id}>
-                                {project.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        )}
-                      />
-                      {errors.project && (
-                        <Typography
-                          sx={{ fontSize: "12px", fontWeight: "400" }}
-                          variant="overline"
-                          display="block"
-                          gutterBottom
-                          color={"primary"}
-                        >
-                          {errors.project.message}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Grid>
                   <Grid item lg={12}>
                     <Box>
                       <UserSelect
