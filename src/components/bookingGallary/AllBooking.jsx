@@ -39,7 +39,7 @@ const AllBooking = () => {
       if (userRole === "admin") {
         setBookings(res.data.data);
       } else {
-        setBookings(res.data.data.meetings);
+        setBookings(res.data.data.bookings);
       }
     };
     fetchData();
